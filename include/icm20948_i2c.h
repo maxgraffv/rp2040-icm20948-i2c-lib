@@ -5,7 +5,7 @@
 #include "hardware/i2c.h"
 
 /*
-    USER BANK 0
+    User Bank 0
 */
 #define WHO_AM_I 0x00
 #define USER_CTRL 0x03
@@ -38,6 +38,30 @@
 #define GYRO_ZOUT_L 0x38
 #define TEMP_OUT_H 0x39
 #define TEMP_OUT_L 0x3A
+#define EXT_SLV_SENS_DATA_00 0x3B
+#define EXT_SLV_SENS_DATA_01 0x3C
+#define EXT_SLV_SENS_DATA_02 0x3D
+#define EXT_SLV_SENS_DATA_03 0x3E
+#define EXT_SLV_SENS_DATA_04 0x3F
+#define EXT_SLV_SENS_DATA_05 0x40
+#define EXT_SLV_SENS_DATA_06 0x41
+#define EXT_SLV_SENS_DATA_07 0x42
+#define EXT_SLV_SENS_DATA_08 0x43
+#define EXT_SLV_SENS_DATA_09 0x44
+#define EXT_SLV_SENS_DATA_10 0x45
+#define EXT_SLV_SENS_DATA_11 0x46
+#define EXT_SLV_SENS_DATA_12 0x47
+#define EXT_SLV_SENS_DATA_13 0x48
+#define EXT_SLV_SENS_DATA_14 0x49
+#define EXT_SLV_SENS_DATA_15 0x4A
+#define EXT_SLV_SENS_DATA_16 0x4B
+#define EXT_SLV_SENS_DATA_17 0x4C
+#define EXT_SLV_SENS_DATA_18 0x4D
+#define EXT_SLV_SENS_DATA_19 0x4E
+#define EXT_SLV_SENS_DATA_20 0x4F
+#define EXT_SLV_SENS_DATA_21 0x50
+#define EXT_SLV_SENS_DATA_22 0x51
+#define EXT_SLV_SENS_DATA_23 0x52
 #define FIFO_EN_1 0x66
 #define FIFO_EN_2 0x67
 #define FIFO_RST 0x68
@@ -49,9 +73,8 @@
 #define FIFO_CFG 0x76
 #define REG_BANK_SEL 0x7F
 
-// User Bank 1
 /*
-    USER BANK 1
+    User Bank 1
 */
 #define SELF_TEST_X_GYRO 0x02
 #define SELF_TEST_Y_GYRO 0x03
@@ -135,5 +158,6 @@
 #define MAG_ST2 0x18
 #define MAG_CNTL2 0x31
 #define MAG_CNTL3 0x32
+
 
 #endif
