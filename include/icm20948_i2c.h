@@ -3,6 +3,7 @@
 
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
+#include <stdint.h>
 
 /*
     User Bank 0
@@ -159,5 +160,39 @@
 #define MAG_CNTL2 0x31
 #define MAG_CNTL3 0x32
 
+typedef enum{ 
+	Bank0 = 0, 
+	Bank1 = 1, 
+	Bank2 = 2, 
+	Bank3 = 3
+} UserBank;
 
+typedef struct{
+	uint8_t i2c_address;
+	uint8_t who_am_i_val;
+	i2c_inst_t i2c;
+}ICM20948;
+
+int ICM20948_init(ICM20948* icm, int addr_pullup, i2c_inst_t* i2c_chosen);
+
+void ICM20948_selectBank( ICM20948* icm, UserBank bank );
+
+int ICM20948_who_am_i_check(ICM20948* icm);
+int ICM20948_get_who_i_am(ICM20948* icm);
+
+float ICM20948_get_gyro_x_deg(ICM20948* icm);
+float ICM20948_get_gyro_y_deg(ICM20948* icm);
+float ICM20948_get_gyro_z_deg(ICM20948* icm);
+
+float ICM20948_get_accel_x_deg(ICM20948* icm);
+float ICM20948_get_accel_y_deg(ICM20948* icm);
+float ICM20948_get_accel_z_deg(ICM20948* icm);
+
+float ICM20948_get_mag_x_deg(ICM20948* icm);
+float ICM20948_get_mag_y_deg(ICM20948* icm);
+float ICM20948_get_mag_z_deg(ICM20948* icm);
+
+float ICM20948_get_temp(ICM20948* icm);
+
+	
 #endif
