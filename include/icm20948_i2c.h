@@ -173,12 +173,32 @@ typedef struct{
 	i2c_inst_t i2c;
 }ICM20948;
 
-int ICM20948_init(ICM20948* icm, int addr_pullup, i2c_inst_t* i2c_chosen);
-
 void ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
-int ICM20948_who_am_i_check(ICM20948* icm);
-int ICM20948_get_who_i_am(ICM20948* icm);
+uint8_t ICM20948_init(ICM20948* icm, uint8_t addr_pin_high, i2c_inst_t* i2c_chosen);
+
+uint8_t ICM20948_who_am_i_check(ICM20948* icm);
+uint8_t ICM20948_get_who_i_am(ICM20948* icm);
+
+uint8_t ICM20948_get_USER_CTRL(ICM20948* icm);
+uint8_t ICM20948_set_USER_CTRL(ICM20948* icm, uint8_t val_to_set);
+
+uint8_t ICM20948_set_DMP_EN(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_FIFO_EN(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_I2C_MST_EN(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_I2C_IF_DIS(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_DMP_RST(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_SRAM_RST(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_I2C_MST_RST(ICM20948* icm, uint8_t enable_bit);
+
+uint8_t ICM20948_get_LP_CONFIG(ICM20948* icm);
+uint8_t ICM20948_set_LP_CONFIG(ICM20948* icm, uint8_t val_to_set);
+
+uint8_t ICM20948_set_I2C_MST_CYCLE(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_ACCEL_CYCLE(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_GYRO_CYCLE(ICM20948* icm, uint8_t enable_bit);
+
+
 
 float ICM20948_get_gyro_x_deg(ICM20948* icm);
 float ICM20948_get_gyro_y_deg(ICM20948* icm);
