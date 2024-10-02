@@ -173,8 +173,11 @@ typedef struct{
 	i2c_inst_t i2c;
 }ICM20948;
 
-void ICM20948_selectBank( ICM20948* icm, UserBank bank );
+int ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
+/*
+    
+*/
 uint8_t ICM20948_init(ICM20948* icm, uint8_t addr_pin_high, i2c_inst_t* i2c_chosen);
 
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
@@ -310,30 +313,21 @@ void ICM20948_set_DELAY_TIMEL(ICM20948* icm, uint8_t val_to_set);
 /*
     ACCEL
 */
-uint8_t ICM20948_get_ACCEL_XOUT_H(ICM20948* icm);
-uint8_t ICM20948_get_ACCEL_XOUT_L(ICM20948* icm);
-
-uint8_t ICM20948_get_ACCEL_YOUT_H(ICM20948* icm);
-uint8_t ICM20948_get_ACCEL_YOUT_L(ICM20948* icm);
-
-uint8_t ICM20948_get_ACCEL_ZOUT_H(ICM20948* icm);
-uint8_t ICM20948_get_ACCEL_ZOUT_L(ICM20948* icm);
+uint8_t ICM20948_get_ACCEL_X(ICM20948* icm);
+uint8_t ICM20948_get_ACCEL_Y(ICM20948* icm);
+uint8_t ICM20948_get_ACCEL_Z(ICM20948* icm);
 
 /*
 	GYRO
 */
-uint8_t ICM20948_get_GYRO_XOUT_H(ICM20948* icm);
-uint8_t ICM20948_get_GYRO_XOUT_L(ICM20948* icm);
-
-uint8_t ICM20948_get_GYRO_YOUT_H(ICM20948* icm);
-uint8_t ICM20948_get_GYRO_YOUT_L(ICM20948* icm);
-
-uint8_t ICM20948_get_GYRO_ZOUT_H(ICM20948* icm);
-uint8_t ICM20948_get_GYRO_ZOUT_L(ICM20948* icm);
+uint8_t ICM20948_get_GYRO_X(ICM20948* icm);
+uint8_t ICM20948_get_GYRO_Y(ICM20948* icm);
+uint8_t ICM20948_get_GYRO_Z(ICM20948* icm);
 
 /*
 	TEMP
 */
+float ICM20948_get_TEMP(ICM20948* icm);
 uint8_t ICM20948_get_TEMP_OUT_H(ICM20948* icm);
 uint8_t ICM20948_get_TEMP_OUT_L(ICM20948* icm);
 
@@ -856,27 +850,6 @@ uint8_t ICM20948_get_REG_BANK_SEL(ICM20948* icm);
 void ICM20948_set_REG_BANK_SEL(ICM20948* icm, uint8_t val_to_set);
 
 
-
-
-
-
-
-/*
-	GYRO
-*/
-float ICM20948_get_gyro_x_deg(ICM20948* icm);
-float ICM20948_get_gyro_y_deg(ICM20948* icm);
-float ICM20948_get_gyro_z_deg(ICM20948* icm);
-
-float ICM20948_get_accel_x_deg(ICM20948* icm);
-float ICM20948_get_accel_y_deg(ICM20948* icm);
-float ICM20948_get_accel_z_deg(ICM20948* icm);
-
-float ICM20948_get_mag_x_deg(ICM20948* icm);
-float ICM20948_get_mag_y_deg(ICM20948* icm);
-float ICM20948_get_mag_z_deg(ICM20948* icm);
-
-float ICM20948_get_temp(ICM20948* icm);
 
 	
 #endif
