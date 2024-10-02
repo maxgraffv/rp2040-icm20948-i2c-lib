@@ -9,6 +9,10 @@ project(ICM20948 C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
+#set(CMAKE_C_COMPILER arm-none-eabi-gcc)
+#set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
+#set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
+
 pico_sdk_init()
 
 include_directories(
