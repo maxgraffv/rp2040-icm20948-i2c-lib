@@ -177,6 +177,7 @@ int ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
 /*
     To initiate 
+        USER_CTRL
         LP_CONFIG
         PWR_MGMT_1
         PWR_MGMT_2
@@ -546,12 +547,6 @@ uint8_t ICM20948_get_FIFO_CFG(ICM20948* icm);
 void ICM20948_set_FIFO_CFG(ICM20948* icm, uint8_t val_to_set);
 
 /*
-    REG_BANK_SEL
-*/
-uint8_t ICM20948_get_REG_BANK_SEL(ICM20948* icm);
-void ICM20948_set_REG_BANK_SEL(ICM20948* icm, uint8_t val_to_set);
-
-/*
     SELF_TEST_X_GYRO
 */
 uint8_t ICM20948_get_SELF_TEST_X_GYRO(ICM20948* icm);
@@ -885,13 +880,6 @@ void ICM20948_set_I2C_SLV4_DO(ICM20948* icm, uint8_t val_to_set);
     I2C_SLV4_DI
 */
 uint8_t ICM20948_get_I2C_SLV4_DI(ICM20948* icm);
-
-/*
-    REG_BANK_SEL
-*/
-uint8_t ICM20948_get_REG_BANK_SEL(ICM20948* icm);
-void ICM20948_set_REG_BANK_SEL(ICM20948* icm, uint8_t val_to_set);
-
 
 
 	
