@@ -176,7 +176,50 @@ typedef struct{
 int ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
 /*
-    
+    To initiate 
+        LP_CONFIG
+        PWR_MGMT_1
+        PWR_MGMT_2
+        INT_PIN_CFG
+        INT_ENABLE
+        INT_ENABLE_1
+        INT_ENABLE_2
+        INT_ENABLE_3
+        DELAY_TIMEH
+        DELAY_TIMEL
+        FIFO_EN_1
+        FIFO_EN_2
+        FIFO_RST
+        FIFO_MODE
+        FIFO_R_W
+        FIFO_CFG
+        SELF_TEST_X_GYRO
+        SELF_TEST_Y_GYRO
+        SELF_TEST_Z_GYRO
+        SELF_TEST_X_ACCEL
+        SELF_TEST_Y_ACCEL
+        SELF_TEST_Z_ACCEL
+        A_OFFS_H
+        ...
+        TIMEBASE_CORRECTION_PLL
+        GYRO_SMPLRT_DIV
+        GYRO_CONFIG_1
+        GYRO_CONFIG_2
+        G_OFFS_USR
+        ...
+        ODR_ALIGN_EN
+        ACCEL_SMPLRT_DIV_1
+        ACCEL_SMPLRT_DIV_2
+        ACCEL_INTEL_CTRL
+        ACCEL_WOM_THR
+        ACCEL_CONFIG
+        ACCEL_CONFIG_2
+        FSYNC_CONFIG
+        TEMP_CONFIG
+        MOD_CTRL_USR
+
+        I2C ???? - whole bank3
+
 */
 uint8_t ICM20948_init(ICM20948* icm, uint8_t addr_pin_high, i2c_inst_t* i2c_chosen);
 
