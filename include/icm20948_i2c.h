@@ -283,8 +283,9 @@ typedef struct{
 	i2c_inst_t i2c;
 }ICM20948;
 
-int ICM20948_selectBank( ICM20948* icm, UserBank bank );
+uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
+ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
 uint8_t ICM20948_init(ICM20948* icm, uint8_t addr_pin_high, i2c_inst_t* i2c_chosen);
 
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
@@ -295,14 +296,6 @@ uint8_t ICM20948_get_who_i_am(ICM20948* icm);
 */
 uint8_t ICM20948_get_USER_CTRL(ICM20948* icm);
 uint8_t ICM20948_set_USER_CTRL(ICM20948* icm, uint8_t val_to_set);
-
-uint8_t ICM20948_set_DMP_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_FIFO_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_I2C_MST_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_I2C_IF_DIS(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_DMP_RST(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_SRAM_RST(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_I2C_MST_RST(ICM20948* icm, uint8_t enable_bit);
 
 /*
 	LP_CONFIG - Low Power Mode Configuration
@@ -321,12 +314,6 @@ uint8_t ICM20948_set_GYRO_CYCLE(ICM20948* icm, uint8_t enable_bit);
 uint8_t ICM20948_get_PWR_MGMT_1(ICM20948* icm);
 uint8_t ICM20948_set_PWR_MGMT_1(ICM20948* icm, uint8_t val_to_set);
 
-uint8_t ICM20948_set_DEVICE_RESET(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_SLEEP(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_LP_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_TEMP_DIS(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_CLKSEL(ICM20948* icm, uint8_t enable_bit);
-
 /*
 	PWR_MGMT_2 - Power Management Register 2
 */
@@ -342,25 +329,11 @@ uint8_t ICM20948_set_DISABLE_GYRO(ICM20948* icm, uint8_t enable_bit);
 uint8_t ICM20948_get_INT_PIN_CONFIG(ICM20948* icm);
 uint8_t ICM20948_set_INT_PIN_CONFIG(ICM20948* icm, uint8_t val_to_set);
 
-uint8_t ICM20948_set_INT1_ACTL(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_INT1_OPEN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_INT1_LATCH_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_INT_ANYRD_2CLEAR(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_ACTL_FSYNC(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_FSYNC_INT_MODE_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_BYPASS_EN(ICM20948* icm, uint8_t enable_bit);
-
 /*
 	INT_ENABLE
 */
 uint8_t ICM20948_get_INT_ENABLE(ICM20948* icm);
 uint8_t ICM20948_set_INT_ENABLE(ICM20948* icm, uint8_t val_to_set);
-
-uint8_t ICM20948_set_REG_WOF_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_WOM_INT_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_PLL_RDY_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_DMP_INT1_EN(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_I2C_MST_INT_EN(ICM20948* icm, uint8_t enable_bit);
 
 /*
 	INT_ENABLE_1
@@ -420,23 +393,29 @@ void ICM20948_set_DELAY_TIMEL(ICM20948* icm, uint8_t val_to_set);
 /*
     ACCEL
 */
-uint8_t ICM20948_get_ACCEL_X(ICM20948* icm);
-uint8_t ICM20948_get_ACCEL_Y(ICM20948* icm);
-uint8_t ICM20948_get_ACCEL_Z(ICM20948* icm);
+uint16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
+uint16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
+uint16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
+
+float ICM20948_get_ACCEL_X(ICM20948* icm);
+float ICM20948_get_ACCEL_Y(ICM20948* icm);
+float ICM20948_get_ACCEL_Z(ICM20948* icm);
 
 /*
 	GYRO
 */
-uint8_t ICM20948_get_GYRO_X(ICM20948* icm);
-uint8_t ICM20948_get_GYRO_Y(ICM20948* icm);
-uint8_t ICM20948_get_GYRO_Z(ICM20948* icm);
+uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
+uint16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
+uint16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);
+
+float ICM20948_get_GYRO_X_deg(ICM20948* icm);
+float ICM20948_get_GYRO_Y_deg(ICM20948* icm);
+float ICM20948_get_GYRO_Z_deg(ICM20948* icm);
 
 /*
 	TEMP
 */
 float ICM20948_get_TEMP(ICM20948* icm);
-uint8_t ICM20948_get_TEMP_OUT_H(ICM20948* icm);
-uint8_t ICM20948_get_TEMP_OUT_L(ICM20948* icm);
 
 /*
     EXT_SLV_SENS_DATA_00
