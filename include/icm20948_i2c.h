@@ -283,7 +283,7 @@ typedef struct{
 uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
-uint8_t ICM20948_init(ICM20948* icm, uint8_t addr_pin_high, i2c_inst_t* i2c_chosen);
+uint8_t ICM20948_defaultInit(ICM20948* icm)
 
 uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
