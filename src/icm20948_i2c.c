@@ -66,10 +66,7 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high )
 
 uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 {
-	uint8_t data_read;
-	imu_selectBank(icm, Bank0);
-	i2c_write_blocking( icm->i2c_ptr, icm->i2c_address, WHO_AM_I , 1, 1 );
-	i2c_read_blocking( icm->i2c_ptr, icm->i2c_address, &data_read, 1, 0 );
+	uint8_t data_read = ICM20948_get_register(icm, Bank0, WHO_AM_I);
 	
 	return data_read;
 }
