@@ -160,6 +160,116 @@
 #define MAG_CNTL2 0x31
 #define MAG_CNTL3 0x32
 
+// USER_CTRL Register (0x03)
+#define USER_CTRL_DMP_EN         7  // Enable DMP
+#define USER_CTRL_FIFO_EN        6  // Enable FIFO
+#define USER_CTRL_I2C_MST_EN     5  // Enable I2C Master Module
+#define USER_CTRL_I2C_IF_DIS     4  // Disable I2C interface, enable SPI Mode Only
+#define USER_CTRL_DMP_RST        3  // Reset DMP
+#define USER_CTRL_SRAM_RST       2  // Reset SRAM
+#define USER_CTRL_I2C_MST_RST    1  // Reset I2C Master
+
+// LP_CONFIG Register (0x05)
+#define LP_CONFIG_I2C_MST_CYCLE  6  // I2C Master cycle mode
+#define LP_CONFIG_ACCEL_CYCLE    5  // Accelerometer in duty cycle mode
+#define LP_CONFIG_GYRO_CYCLE     4  // Gyroscope in duty cycle mode
+
+// PWR_MGMT_1 Register (0x06)
+#define PWR_MGMT_1_DEVICE_RESET  7  // Reset the entire device
+#define PWR_MGMT_1_SLEEP         6  // Put device to sleep
+#define PWR_MGMT_1_LP_EN         5  // Enable low power mode
+#define PWR_MGMT_1_TEMP_DIS      3  // Disable temperature sensor
+#define PWR_MGMT_1_CLKSEL2       2  // Clock source select bit 2
+#define PWR_MGMT_1_CLKSEL1       1  // Clock source select bit 1
+#define PWR_MGMT_1_CLKSEL0       0  // Clock source select bit 0
+
+// PWR_MGMT_2 Register (0x07)
+#define PWR_MGMT_2_DISABLE_XA    5  // Disable accelerometer X-axis
+#define PWR_MGMT_2_DISABLE_YA    4  // Disable accelerometer Y-axis
+#define PWR_MGMT_2_DISABLE_ZA    3  // Disable accelerometer Z-axis
+#define PWR_MGMT_2_DISABLE_XG    2  // Disable gyroscope X-axis
+#define PWR_MGMT_2_DISABLE_YG    1  // Disable gyroscope Y-axis
+#define PWR_MGMT_2_DISABLE_ZG    0  // Disable gyroscope Z-axis
+
+// INT_PIN_CFG Register (0x0F)
+#define INT_PIN_CFG_ACTL         7  // Active low for INT pin
+#define INT_PIN_CFG_OPEN         6  // Open drain INT pin
+#define INT_PIN_CFG_LATCH_INT_EN 5  // Latch INT pin until cleared
+#define INT_PIN_CFG_INT_ANYRD_2CLEAR 4  // Clear INT status on any read
+#define INT_PIN_CFG_ACTL_FSYNC	 3	// FSYNC pin as interrupt is active low
+#define INT_PIN_CFG_FSYNC_INT_MODE_EN 2 // FSYNC pin used as an Interrupt
+#define INT_PIN_CFG_BYPASS_EN 	 1 // BYPASS MODE enable
+
+// INT_ENABLE Register (0x10)
+#define INT_ENABLE_REG_WOF_EN    7  // Enable wake on FSYNC interrupt
+#define INT_ENABLE_WOM_INT_EN    3  // Enable wake on motion interrupt
+#define INT_ENABLE_PLL_RDY_EN    2  // Enable PLLY RDY
+#define INT_ENABLE_DMP_INT1_EN	 1  // Enable DMP interrupt to pin 1
+#define INT_ENABLE_I2C_MST_INT_EN 0 //Enable I2C master Interrupt to pin 1
+
+// INT_ENABLE_1 Register (0x11)
+#define INT_ENABLE_1_RAW_DATA_0RDY_EN 0  // Enable raw data ready interrupt to pin 1
+
+// INT_ENABLE_2 Register (0x12)
+#define INT_ENABLE_2_FIFO_OVERFLOW_EN 3  // Enable FIFO overflow interrupt to pin 1
+
+// INT_ENABLE_3 Register (0x13)
+#define INT_ENABLE_3_FIFO_WM_EN  0  // Enable FIFO watermark interrupt to pin 1
+
+// FIFO_EN_1 Register (0x66)
+#define FIFO_EN_1_SLV_3_FIFO_EN  3  // Enable Slave 3 data in FIFO
+#define FIFO_EN_1_SLV_2_FIFO_EN  2  // Enable Slave 2 data in FIFO
+#define FIFO_EN_1_SLV_1_FIFO_EN  1  // Enable Slave 1 data in FIFO
+#define FIFO_EN_1_SLV_0_FIFO_EN  0  // Enable Slave 0 data in FIFO
+
+// FIFO_EN_2 Register (0x67)
+#define FIFO_EN_2_ACCEL_FIFO_EN  4  // Enable accelerometer data in FIFO
+#define FIFO_EN_2_GYRO_Z_FIFO_EN 3  // Enable gyroscope Z-axis data in FIFO
+#define FIFO_EN_2_GYRO_Y_FIFO_EN 2  // Enable gyroscope Y-axis data in FIFO
+#define FIFO_EN_2_GYRO_X_FIFO_EN 1  // Enable gyroscope X-axis data in FIFO
+#define FIFO_EN_2_TEMP_FIFO_EN   0  // Enable temperature data in FIFO
+
+// FIFO_RST Register (0x68)
+#define FIFO_RST_FIFO_RESET_4      4  // Reset FIFO
+#define FIFO_RST_FIFO_RESET_3      3  // Reset FIFO
+#define FIFO_RST_FIFO_RESET_2      2  // Reset FIFO
+#define FIFO_RST_FIFO_RESET_1      1  // Reset FIFO
+#define FIFO_RST_FIFO_RESET_0      0  // Reset FIFO
+
+// FIFO_MODE Register (0x69)
+#define FIFO_MODE_STREAM_MODE    0  // FIFO stream mode
+
+// FIFO_CFG Register (0x76)
+#define FIFO_CFG_FIFO_CFG        0  // FIFO configuration, stop on full
+
+// ACCEL_CONFIG Register (0x14, Bank 2)
+#define ACCEL_CONFIG_ACCEL_FS_SEL1 4  // Accelerometer full-scale select bit 1
+#define ACCEL_CONFIG_ACCEL_FS_SEL0 3  // Accelerometer full-scale select bit 0
+
+//GYRO_CONFIG_1 Register
+#define GYRO_CONFIG_1_GYRO_DLPFCFG_2 5 // Gyro low Pass Filter 2
+#define GYRO_CONFIG_1_GYRO_DLPFCFG_1 4 // Gyro low Pass Filter 1
+#define GYRO_CONFIG_1_GYRO_DLPFCFG_0 3 // Gyro low Pass Filter 0
+#define GYRO_CONFIG_1_GYRO_FS_SEL_1	 2 //Gyro Full Scale Select 1
+#define GYRO_CONFIG_1_GYRO_FS_SEL_0	 1 //Gyro Full Scale Select 0
+#define GYRO_CONFIG_1_GYRO_FCHOICE 	 0 // Enable gyro DLPF
+
+//GYRO_CONFIG_2 Register
+#define GYRO_CONFIG_2_XGYRO_CTEN	 5 // X Gyro Self-Test Enable
+#define GYRO_CONFIG_2_YGYRO_CTEN	 4 // Y Gyro Self-Test Enable
+#define GYRO_CONFIG_2_ZGYRO_CTEN	 3 // Z Gyro Self-Test Enable
+#define GYRO_CONFIG_2_GYRO_AVGCFG_2  2 // Avrg filter Config for LP mode	 
+#define GYRO_CONFIG_2_GYRO_AVGCFG_1  1 // Avrg filter Config for LP mode	 
+#define GYRO_CONFIG_2_GYRO_AVGCFG_0  0 // Avrg filter Config for LP mode	 
+
+//ODR_ALIGN_EN Register
+#define ODR_ALIGN_EN 	0 // Enable ODR start-time alignment
+
+
+
+// ACCEL_CONFIG_2 Register (0x15, Bank 2)
+#define ACCEL_CONFIG_2_DEC2_CFG  4  // Decimator for low-power mode
+
 typedef enum{ 
 	Bank0 = 0, 
 	Bank1 = 1, 
@@ -175,53 +285,6 @@ typedef struct{
 
 int ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
-/*
-    To initiate 
-        USER_CTRL
-        LP_CONFIG
-        PWR_MGMT_1
-        PWR_MGMT_2
-        INT_PIN_CFG
-        INT_ENABLE
-        INT_ENABLE_1
-        INT_ENABLE_2
-        INT_ENABLE_3
-        DELAY_TIMEH
-        DELAY_TIMEL
-        FIFO_EN_1
-        FIFO_EN_2
-        FIFO_RST
-        FIFO_MODE
-        FIFO_R_W
-        FIFO_CFG
-        SELF_TEST_X_GYRO
-        SELF_TEST_Y_GYRO
-        SELF_TEST_Z_GYRO
-        SELF_TEST_X_ACCEL
-        SELF_TEST_Y_ACCEL
-        SELF_TEST_Z_ACCEL
-        A_OFFS_H
-        ...
-        TIMEBASE_CORRECTION_PLL
-        GYRO_SMPLRT_DIV
-        GYRO_CONFIG_1
-        GYRO_CONFIG_2
-        G_OFFS_USR
-        ...
-        ODR_ALIGN_EN
-        ACCEL_SMPLRT_DIV_1
-        ACCEL_SMPLRT_DIV_2
-        ACCEL_INTEL_CTRL
-        ACCEL_WOM_THR
-        ACCEL_CONFIG
-        ACCEL_CONFIG_2
-        FSYNC_CONFIG
-        TEMP_CONFIG
-        MOD_CTRL_USR
-
-        I2C ???? - whole bank3
-
-*/
 uint8_t ICM20948_init(ICM20948* icm, uint8_t addr_pin_high, i2c_inst_t* i2c_chosen);
 
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
