@@ -45,18 +45,40 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr_created, uint8_t addr_pin_h
 		icm_ptr->i2c_address = 0b1101000;
 }
 
-int imu_who_am_i_check(IMU* imu)
+uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 {
 	uint8_t data_read;
 	imu_selectBank(imu, Bank0);
 	i2c_write_blocking( i2c0, imu->i2c_address, WHO_AM_I , 1, 1 );
 	i2c_read_blocking( i2c0, imu->i2c_address, &data_read, 1, 0 );
 	
-	if(data_read == imu->who_am_i_val)
-		return 1;
-	else
-		return 0;
+	return data_read;
 }
+
+uint8_t ICM20948_who_am_i_check(ICM20948* icm)
+{
+	uint8_t who_am_i_val_read = ICM20948_get_who_am_i(icm);
+	uint8_t who_am_i_val_isOK = 0x00;
+	if(who_am_i_val_read == icm->who_am_i_val)
+		who_am_i_val_OK = 1;
+
+	return who_am_i_val_isOK;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

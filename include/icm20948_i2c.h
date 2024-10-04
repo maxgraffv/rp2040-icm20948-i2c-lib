@@ -90,7 +90,6 @@
 #define ZA_OFFS_H 0x1A
 #define ZA_OFFS_L 0x1B
 #define TIMEBASE_CORRECTION_PLL 0x28
-#define REG_BANK_SEL_1 0x7F
 
 /*
     User Bank 2
@@ -114,7 +113,6 @@
 #define FSYNC_CONFIG 0x52
 #define TEMP_CONFIG 0x53
 #define MOD_CTRL_USR 0x54
-#define REG_BANK_SEL_2 0x7F
 
 /*
     User Bank 3
@@ -143,7 +141,6 @@
 #define I2C_SLV4_CTRL 0x15
 #define I2C_SLV4_DO 0x16
 #define I2C_SLV4_DI 0x17
-#define REG_BANK_SEL_3 0x7F
 
 /*
     Magnetometer Registers
@@ -288,8 +285,8 @@ uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
 uint8_t ICM20948_init(ICM20948* icm, uint8_t addr_pin_high, i2c_inst_t* i2c_chosen);
 
+uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
-uint8_t ICM20948_get_who_i_am(ICM20948* icm);
 
 /*
 	USER_CTRL
