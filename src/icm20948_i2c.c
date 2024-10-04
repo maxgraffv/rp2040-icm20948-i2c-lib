@@ -1,13 +1,12 @@
 #include "icm20948_i2c.h"
 #include "stdio.h"
 
-void imu_selectBank( IMU* imu ,UserBank bank )
+uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank )
 {
-	uint8_t imu_i2c_address = imu->i2c_address;
+	uint8_t icm_i2c_address = icm->i2c_address;
 	uint8_t bank_select_register_addr = 127;
 	uint8_t bank_selected = 0x00;
 
-	i2c_write_blocking( i2c0, imu_i2c_address, &bank_select_register_addr, 1, 1 );
 
 	switch (bank)
 	{
@@ -28,8 +27,22 @@ void imu_selectBank( IMU* imu ,UserBank bank )
 			break;
 	}
 
-	i2c_write_blocking( i2c0, imu_i2c_address, &bank_selected, 1, 0 );
+	i2c_write_blocking( icm->i2c_chosen_ptr, icm->i2c_address, &bank_select_register_addr, 1, 1 );
+	i2c_write_blocking( icm->i2c_chosen_ptr, icm->i2c_address, &bank_selected, 1, 0 );
 
+	return 1;
+}
+
+ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr_created, uint8_t addr_pin_high )
+{
+	ICM20948* icm_ptr = (ICM20948*)malloc(sizeof(ICM20948));
+
+	icm_ptr->i2c_chosen_ptr = i2c_chosen_ptr_created;
+	icm_ptr->who_am_i_val = WHO_AM_I;
+	if(addr_pin_high)
+		icm_ptr->i2c_address = 0b1101001;
+	else
+		icm_ptr->i2c_address = 0b1101000;
 }
 
 int imu_who_am_i_check(IMU* imu)
