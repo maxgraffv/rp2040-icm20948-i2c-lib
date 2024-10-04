@@ -27,17 +27,36 @@ uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank )
 			break;
 	}
 
-	i2c_write_blocking( icm->i2c_chosen_ptr, icm->i2c_address, &bank_select_register_addr, 1, 1 );
-	i2c_write_blocking( icm->i2c_chosen_ptr, icm->i2c_address, &bank_selected, 1, 0 );
+	i2c_write_blocking( icm->i2c_ptr, icm->i2c_address, &bank_select_register_addr, 1, 1 );
+	i2c_write_blocking( icm->i2c_ptr, icm->i2c_address, &bank_selected, 1, 0 );
 
 	return 1;
 }
 
-ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr_created, uint8_t addr_pin_high )
+uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr)
+{
+	uint8_t reg_val = 0x00;
+	ICM20948_selectBank(icm, bank);
+	i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, reg_addr, 1, 1);
+	i2c_read_blocking(icm->i2c_ptr, icm->i2c_address, &reg_val, 1, 0);
+
+	return reg_val;
+}
+
+uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value)
+{
+	ICM20948_selectBank(icm, bank);
+	i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, reg_addr, 1, 1);
+	i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, &value, 1, 0);
+
+	return 1;
+}
+
+ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high )
 {
 	ICM20948* icm_ptr = (ICM20948*)malloc(sizeof(ICM20948));
 
-	icm_ptr->i2c_chosen_ptr = i2c_chosen_ptr_created;
+	icm_ptr->i2c_ptr = i2c_chosen_ptr;
 	icm_ptr->who_am_i_val = WHO_AM_I;
 	if(addr_pin_high)
 		icm_ptr->i2c_address = 0b1101001;
@@ -48,9 +67,9 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr_created, uint8_t addr_pin_h
 uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 {
 	uint8_t data_read;
-	imu_selectBank(imu, Bank0);
-	i2c_write_blocking( i2c0, imu->i2c_address, WHO_AM_I , 1, 1 );
-	i2c_read_blocking( i2c0, imu->i2c_address, &data_read, 1, 0 );
+	imu_selectBank(icm, Bank0);
+	i2c_write_blocking( icm->i2c_ptr, icm->i2c_address, WHO_AM_I , 1, 1 );
+	i2c_read_blocking( icm->i2c_ptr, icm->i2c_address, &data_read, 1, 0 );
 	
 	return data_read;
 }
@@ -65,6 +84,11 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm)
 	return who_am_i_val_isOK;
 }
 
+uint8_t ICM20948_defaultInit(ICM20948* icm)
+{
+
+
+}
 
 
 

@@ -277,13 +277,16 @@ typedef enum{
 typedef struct{
 	uint8_t i2c_address;
 	uint8_t who_am_i_val;
-	i2c_inst_t i2c;
+	i2c_inst_t* i2c_ptr;
 }ICM20948;
 
 uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
 uint8_t ICM20948_defaultInit(ICM20948* icm)
+
+uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr);
+uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value);
 
 uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
