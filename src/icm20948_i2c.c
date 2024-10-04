@@ -83,6 +83,35 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm)
 
 uint8_t ICM20948_defaultInit(ICM20948* icm)
 {
+	uint8_t USER_CTRL = 0x00;
+	uint8_t LP_CONFIG = 0x00;
+	uint8_t PWR_MGMT_1 = 0x00;
+	uint8_t PWR_MGMT_2 = 0x00;
+	uint8_t INT_PIN_CFG = 0x00;
+	uint8_t INT_ENABLE = 0x00;
+	uint8_t INT_ENABLE_1 = 0x00;
+	uint8_t INT_ENABLE_2 = 0x00;
+	uint8_t INT_ENABLE_3 = 0x00;
+	uint8_t FIFO_EN_1 = 0x00;
+	uint8_t FIFO_EN_2 = 0x00;
+	uint8_t FIFO_RST = 0x00;
+	uint8_t FIFO_MODE = 0x00;
+	uint8_t FIFO_CFG = 0x00;
+	
+	uint8_t GYRO_SMPLRT_DIV = 0x00;
+	uint8_t GYRO_CONFIG_1 = 0x00;
+	uint8_t GYRO_CONFIG_2 = 0x00;
+	uint8_t ODR_ALIGN_EN = 0x00;
+	uint8_t ACCEL_SMPLRT_DIV_1 = 0x00;
+	uint8_t ACCEL_SMPLRT_DIV_2 = 0x00;
+	uint8_t ACCEL_INTEL_CTRL = 0x00;
+	uint8_t ACCEL_WOM_THR = 0x00;
+	uint8_t ACCEL_CONFIG = 0x00;
+	uint8_t ACCEL_CONFIG_2 = 0x00;
+	uint8_t FSYNC_CONFIG = 0x00;
+	uint8_t TEMP_CONFIG = 0x00;
+	uint8_t MOD_CTRL_USR = 0x00;
+
 
 
 }
