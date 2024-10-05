@@ -37,7 +37,7 @@ uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr)
 {
 	uint8_t reg_val = 0x00;
 	ICM20948_selectBank(icm, bank);
-	i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, reg_addr, 1, 1);
+	i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, &reg_addr, 1, 1);
 	i2c_read_blocking(icm->i2c_ptr, icm->i2c_address, &reg_val, 1, 0);
 
 	return reg_val;
@@ -46,7 +46,7 @@ uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr)
 uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value)
 {
 	ICM20948_selectBank(icm, bank);
-	i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, reg_addr, 1, 1);
+	i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, &reg_addr, 1, 1);
 	i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, &value, 1, 0);
 
 	return 1;
@@ -64,7 +64,7 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high )
 		icm_ptr->i2c_address = 0b1101000;
 }
 
-uint8_t ICM20948_get_who_am_i(ICM20948* icm);
+uint8_t ICM20948_get_who_am_i(ICM20948* icm)
 {
 	uint8_t data_read = ICM20948_get_register(icm, Bank0, WHO_AM_I);
 	
@@ -76,44 +76,85 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm)
 	uint8_t who_am_i_val_read = ICM20948_get_who_am_i(icm);
 	uint8_t who_am_i_val_isOK = 0x00;
 	if(who_am_i_val_read == icm->who_am_i_val)
-		who_am_i_val_OK = 1;
+		who_am_i_val_isOK = 1;
 
 	return who_am_i_val_isOK;
 }
 
 uint8_t ICM20948_defaultInit(ICM20948* icm)
 {
-	uint8_t USER_CTRL = 0x00;
-	uint8_t LP_CONFIG = 0x00;
-	uint8_t PWR_MGMT_1 = 0x00;
-	uint8_t PWR_MGMT_2 = 0x00;
-	uint8_t INT_PIN_CFG = 0x00;
-	uint8_t INT_ENABLE = 0x00;
-	uint8_t INT_ENABLE_1 = 0x00;
-	uint8_t INT_ENABLE_2 = 0x00;
-	uint8_t INT_ENABLE_3 = 0x00;
-	uint8_t FIFO_EN_1 = 0x00;
-	uint8_t FIFO_EN_2 = 0x00;
-	uint8_t FIFO_RST = 0x00;
-	uint8_t FIFO_MODE = 0x00;
-	uint8_t FIFO_CFG = 0x00;
-	
-	uint8_t GYRO_SMPLRT_DIV = 0x00;
-	uint8_t GYRO_CONFIG_1 = 0x00;
-	uint8_t GYRO_CONFIG_2 = 0x00;
-	uint8_t ODR_ALIGN_EN = 0x00;
-	uint8_t ACCEL_SMPLRT_DIV_1 = 0x00;
-	uint8_t ACCEL_SMPLRT_DIV_2 = 0x00;
-	uint8_t ACCEL_INTEL_CTRL = 0x00;
-	uint8_t ACCEL_WOM_THR = 0x00;
-	uint8_t ACCEL_CONFIG = 0x00;
-	uint8_t ACCEL_CONFIG_2 = 0x00;
-	uint8_t FSYNC_CONFIG = 0x00;
-	uint8_t TEMP_CONFIG = 0x00;
-	uint8_t MOD_CTRL_USR = 0x00;
+	uint8_t USER_CTRL_reg = 0x00;
+	uint8_t LP_CONFIG_reg = 0x00;
+	uint8_t PWR_MGMT_1_reg = 0x00;
+	uint8_t PWR_MGMT_2_reg = 0x00;
+	uint8_t INT_PIN_CFG_reg = 0x00;
+	uint8_t INT_ENABLE_reg = 0x00;
+	uint8_t INT_ENABLE_1_reg = 0x00;
+	uint8_t INT_ENABLE_2_reg = 0x00;
+	uint8_t INT_ENABLE_3_reg = 0x00;
+	uint8_t FIFO_EN_1_reg = 0x00;
+	uint8_t FIFO_EN_2_reg = 0x00;
+	uint8_t FIFO_RST_reg = 0x00;
+	uint8_t FIFO_MODE_reg = 0x00;
+	uint8_t FIFO_CFG_reg = 0x00;
+	uint8_t GYRO_SMPLRT_DIV_reg = 0x00;
+	uint8_t GYRO_CONFIG_1_reg = 0x00;
+	uint8_t GYRO_CONFIG_2_reg = 0x00;
+	uint8_t ODR_ALIGN_EN_reg = 0x00;
+	uint8_t ACCEL_SMPLRT_DIV_1_reg = 0x00;
+	uint8_t ACCEL_SMPLRT_DIV_2_reg = 0x00;
+	uint8_t ACCEL_INTEL_CTRL_reg = 0x00;
+	uint8_t ACCEL_WOM_THR_reg = 0x00;
+	uint8_t ACCEL_CONFIG_reg = 0x00;
+	uint8_t ACCEL_CONFIG_2_reg = 0x00;
+	uint8_t FSYNC_CONFIG_reg = 0x00;
+	uint8_t TEMP_CONFIG_reg = 0x00;
+	uint8_t MOD_CTRL_USR_reg = 0x00;
 
 
+	printf("ICM supposedly in sleep mode\n");
 
+	gpio_put(25, 1);
+	sleep_ms(300);
+	gpio_put(25, 0);
+	sleep_ms(300);
+
+	uint8_t isSleepMode = ICM20948_get_register(icm, Bank0, PWR_MGMT_1) & 0b01000000;
+	if(isSleepMode)
+		printf("ICM is in sleep mode\n");
+	else
+		printf("ICM not in sleep mode\n");
+
+	gpio_put(25, 1);
+	sleep_ms(300);
+	gpio_put(25, 0);
+	sleep_ms(300);
+
+	printf("Getting Raw Gyro \n");
+	ICM20948_get_GYRO_X_raw(icm);
+	printf("Waking... \n");
+
+	gpio_put(25, 1);
+	sleep_ms(300);
+	gpio_put(25, 0);
+	sleep_ms(300);
+
+	PWR_MGMT_1_reg = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+	PWR_MGMT_1_reg &= ~(1<<PWR_MGMT_1_SLEEP);
+
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, PWR_MGMT_1_reg);
+	printf("Woken!!! \n");
+
+	gpio_put(25, 1);
+	sleep_ms(300);
+	gpio_put(25, 0);
+	sleep_ms(300);
+
+	for(int i = 0; i < 20; i++)
+		ICM20948_get_GYRO_X_raw(icm);
+
+
+	return 1;
 }
 
 
@@ -132,7 +173,7 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 
 
 
-float imu_get_gyro_x_deg(IMU* imu)
+uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 {
 	uint8_t GYRO_XOUT_H_reg = GYRO_XOUT_H;
 	uint8_t GYRO_XOUT_L_reg = GYRO_XOUT_L;
@@ -144,10 +185,14 @@ float imu_get_gyro_x_deg(IMU* imu)
     
 	float gyro_sensitivity = 131;
 	
-	i2c_write_blocking( i2c0, imu->i2c_address, &GYRO_XOUT_H_reg , 1, 1 );
-	i2c_read_blocking( i2c0, imu->i2c_address, &gyro_x_H, 1, 1 );
-	i2c_write_blocking( i2c0, imu->i2c_address, &GYRO_XOUT_L_reg, 1, 1 );
-	i2c_read_blocking( i2c0, imu->i2c_address, &gyro_x_L, 1, 0 );
+	i2c_write_blocking( icm->i2c_ptr, icm->i2c_address, &GYRO_XOUT_H_reg , 1, 1 );
+	i2c_read_blocking( icm->i2c_ptr, icm->i2c_address, &gyro_x_H, 1, 1 );
+
+	// gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H);
+
+	i2c_write_blocking( icm->i2c_ptr, icm->i2c_address, &GYRO_XOUT_L_reg, 1, 1 );
+	i2c_read_blocking( icm->i2c_ptr, icm->i2c_address, &gyro_x_L, 1, 0 );
+	// gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L);
 	printf("GYRO L: %d\n", gyro_x_H);
 	printf("GYRO H: %d\n", gyro_x_L);
 
@@ -155,7 +200,7 @@ float imu_get_gyro_x_deg(IMU* imu)
 	gyro_x_raw |= gyro_x_L;
 	printf("GYRO RAW: %d\n", gyro_x_raw);
 
-	x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
+	// x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
 
-	return x_deg;
+	return gyro_x_raw;
 }
