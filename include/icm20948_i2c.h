@@ -157,6 +157,9 @@
 #define MAG_CNTL2 0x31
 #define MAG_CNTL3 0x32
 
+//WHO_AM_I Register
+#define WHO_AM_I_VALUE 0xEA
+
 // USER_CTRL Register (0x03)
 #define USER_CTRL_DMP_EN         7  // Enable DMP
 #define USER_CTRL_FIFO_EN        6  // Enable FIFO
@@ -260,7 +263,7 @@
 #define GYRO_CONFIG_2_GYRO_AVGCFG_0  0 // Avrg filter Config for LP mode	 
 
 //ODR_ALIGN_EN Register
-#define ODR_ALIGN_EN 	0 // Enable ODR start-time alignment
+#define ODR_ALIGN_EN_bit 	0 // Enable ODR start-time alignment
 
 
 
@@ -283,7 +286,7 @@ typedef struct{
 uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
-uint8_t ICM20948_defaultInit(ICM20948* icm)
+uint8_t ICM20948_defaultInit(ICM20948* icm);
 
 uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr);
 uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value);
