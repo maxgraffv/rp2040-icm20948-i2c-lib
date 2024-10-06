@@ -1,5 +1,6 @@
 #include "icm20948_i2c.h"
 #include "stdio.h"
+#include <stdlib.h>
 
 uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank )
 {
@@ -52,16 +53,19 @@ uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, ui
 	return 1;
 }
 
-ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high )
+ICM20948* createICM20948( i2c_inst_t* i2c_chosen, uint8_t addr_pin_high )
 {
+	printf("ICM20948 Creating\n");
 	ICM20948* icm_ptr = (ICM20948*)malloc(sizeof(ICM20948));
 
-	icm_ptr->i2c_ptr = i2c_chosen_ptr;
-	icm_ptr->who_am_i_val = WHO_AM_I;
+	icm_ptr->i2c_ptr = i2c_chosen;
+	icm_ptr->who_am_i_val = WHO_AM_I_VALUE ;
 	if(addr_pin_high)
 		icm_ptr->i2c_address = 0b1101001;
 	else
 		icm_ptr->i2c_address = 0b1101000;
+
+	return icm_ptr;
 }
 
 uint8_t ICM20948_get_who_am_i(ICM20948* icm)
@@ -83,6 +87,8 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm)
 
 uint8_t ICM20948_defaultInit(ICM20948* icm)
 {
+	printf("ICM Default Init...\n");
+
 	uint8_t USER_CTRL_reg = 0x00;
 	uint8_t LP_CONFIG_reg = 0x00;
 	uint8_t PWR_MGMT_1_reg = 0x00;
@@ -114,10 +120,7 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 
 	printf("ICM supposedly in sleep mode\n");
 
-	gpio_put(25, 1);
-	sleep_ms(300);
-	gpio_put(25, 0);
-	sleep_ms(300);
+	
 
 	uint8_t isSleepMode = ICM20948_get_register(icm, Bank0, PWR_MGMT_1) & 0b01000000;
 	if(isSleepMode)
@@ -146,12 +149,15 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 	printf("Woken!!! \n");
 
 	gpio_put(25, 1);
-	sleep_ms(300);
+	sleep_ms(1000);
 	gpio_put(25, 0);
-	sleep_ms(300);
+	sleep_ms(1000);
 
 	for(int i = 0; i < 20; i++)
+	{
 		ICM20948_get_GYRO_X_raw(icm);
+		sleep_ms(5000);
+	}
 
 
 	return 1;
