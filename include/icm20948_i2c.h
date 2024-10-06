@@ -295,7 +295,7 @@ uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
 
 uint8_t ICM20948_isSleepMode(ICM20948* icm);
-uint8_t ICM20948_enableSleep(ICM20948* icm, uint8_t enableSleep);
+uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep);
 
 
 /*
@@ -392,7 +392,7 @@ float ICM20948_get_ACCEL_Z(ICM20948* icm);
 /*
 	GYRO
 */
-uint8_t ICM20948_GYRO_defaultInit();
+uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm);
 
 uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
 uint16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
