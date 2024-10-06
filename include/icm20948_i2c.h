@@ -294,6 +294,9 @@ uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, ui
 uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
 
+uint8_t ICM20948_isSleepMode(ICM20948* icm);
+
+
 /*
 	USER_CTRL
 */
@@ -323,8 +326,8 @@ uint8_t ICM20948_set_PWR_MGMT_1(ICM20948* icm, uint8_t val_to_set);
 uint8_t ICM20948_get_PWR_MGMT_2(ICM20948* icm);
 uint8_t ICM20948_set_PWR_MGMT_2(ICM20948* icm, uint8_t val_to_set);
 
-uint8_t ICM20948_set_DISABLE_ACCEL(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_DISABLE_GYRO(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_ENABLE_ACCEL(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_set_ENABLE_GYRO(ICM20948* icm, uint8_t enable_bit);
 
 /*
 	INT_PIN_CONFIG
@@ -338,21 +341,12 @@ uint8_t ICM20948_set_INT_PIN_CONFIG(ICM20948* icm, uint8_t val_to_set);
 uint8_t ICM20948_get_INT_ENABLE(ICM20948* icm);
 uint8_t ICM20948_set_INT_ENABLE(ICM20948* icm, uint8_t val_to_set);
 
-/*
-	INT_ENABLE_1
-*/
 uint8_t ICM20948_get_INT_ENABLE_1(ICM20948* icm);
 uint8_t ICM20948_set_INT_ENABLE_1(ICM20948* icm, uint8_t val_to_set);
 
-/*
-	INT_ENABLE_2
-*/
 uint8_t ICM20948_get_INT_ENABLE_2(ICM20948* icm);
 uint8_t ICM20948_set_INT_ENABLE_2(ICM20948* icm, uint8_t val_to_set);
 
-/*
-	INT_ENABLE_3
-*/
 uint8_t ICM20948_get_INT_ENABLE_3(ICM20948* icm);
 uint8_t ICM20948_set_INT_ENABLE_3(ICM20948* icm, uint8_t val_to_set);
 
@@ -365,20 +359,8 @@ uint8_t ICM20948_get_I2C_MST_STATUS(ICM20948* icm);
     INT_STATUS
 */
 uint8_t ICM20948_get_INT_STATUS(ICM20948* icm);
-
-/*
-    INT_STATUS_1
-*/
 uint8_t ICM20948_get_INT_STATUS_1(ICM20948* icm);
-
-/*
-    INT_STATUS_2
-*/
 uint8_t ICM20948_get_INT_STATUS_2(ICM20948* icm);
-
-/*
-    INT_STATUS_3
-*/
 uint8_t ICM20948_get_INT_STATUS_3(ICM20948* icm);
 
 /*
@@ -396,6 +378,8 @@ void ICM20948_set_DELAY_TIMEL(ICM20948* icm, uint8_t val_to_set);
 /*
     ACCEL
 */
+uint8_t ICM20948_ACCEL_defaultInit();
+
 uint16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
 uint16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
 uint16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
@@ -407,6 +391,8 @@ float ICM20948_get_ACCEL_Z(ICM20948* icm);
 /*
 	GYRO
 */
+uint8_t ICM20948_GYRO_defaultInit();
+
 uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
 uint16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
 uint16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);
@@ -418,6 +404,9 @@ float ICM20948_get_GYRO_Z_deg(ICM20948* icm);
 /*
 	TEMP
 */
+uint8_t ICM20948_TEMP_defaultInit();
+
+uint16_t ICM20948_get_TEMP_raw(ICM20948* icm);
 float ICM20948_get_TEMP(ICM20948* icm);
 
 /*
