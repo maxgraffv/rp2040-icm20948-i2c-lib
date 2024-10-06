@@ -117,10 +117,7 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 	uint8_t TEMP_CONFIG_reg = 0x00;
 	uint8_t MOD_CTRL_USR_reg = 0x00;
 
-
 	printf("ICM supposedly in sleep mode\n");
-
-	
 
 	uint8_t isSleepMode = ICM20948_get_register(icm, Bank0, PWR_MGMT_1) & 0b01000000;
 	if(isSleepMode)
@@ -148,17 +145,11 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, PWR_MGMT_1_reg);
 	printf("Woken!!! \n");
 
-	gpio_put(25, 1);
-	sleep_ms(1000);
-	gpio_put(25, 0);
-	sleep_ms(1000);
-
 	for(int i = 0; i < 20; i++)
 	{
 		ICM20948_get_GYRO_X_raw(icm);
 		sleep_ms(5000);
 	}
-
 
 	return 1;
 }
