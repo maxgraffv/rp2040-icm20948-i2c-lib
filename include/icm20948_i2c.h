@@ -295,6 +295,7 @@ uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
 
 uint8_t ICM20948_isSleepMode(ICM20948* icm);
+uint8_t ICM20948_enableSleep(ICM20948* icm, uint8_t enableSleep);
 
 
 /*

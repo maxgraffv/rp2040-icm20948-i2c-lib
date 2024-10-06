@@ -126,10 +126,7 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 	ICM20948_get_GYRO_X_raw(icm);
 	printf("Waking... \n");
 
-	PWR_MGMT_1_reg = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
-	PWR_MGMT_1_reg &= ~(1<<PWR_MGMT_1_SLEEP);
 
-	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, PWR_MGMT_1_reg);
 	printf("Woken!!! \n");
 
 	for(int i = 0; i < 20; i++)
@@ -146,6 +143,26 @@ uint8_t ICM20948_isSleepMode(ICM20948* icm)
 	uint8_t isSleepMode = ICM20948_get_register(icm, Bank0, PWR_MGMT_1) & 0b01000000;
 
 	return isSleepMode;
+}
+
+uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep)
+{
+	uint8_t PWR_MGMT_1_reg = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+
+	if(enableSleep)
+	{
+		PWR_MGMT_1_reg |= (1<<PWR_MGMT_1_SLEEP);
+		printf("ICM Sleep Mode enabled");
+	}
+	else
+	{
+		PWR_MGMT_1_reg &= ~(1<<PWR_MGMT_1_SLEEP);
+		printf("ICM Sleep Mode disabled");
+	}
+
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, PWR_MGMT_1_reg);
+
+	return 1;
 }
 
 
