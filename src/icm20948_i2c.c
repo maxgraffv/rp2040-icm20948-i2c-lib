@@ -141,8 +141,9 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 
 	for(int i = 0; i < 20; i++)
 	{
-		ICM20948_get_GYRO_X_raw(icm);
-		sleep_ms(5000);
+		// ICM20948_get_GYRO_X_raw(icm);
+		printf("X deg: %f\n",ICM20948_get_GYRO_X_deg(icm));
+		sleep_ms(500);
 	}
 
 	return 1;
@@ -208,7 +209,8 @@ uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm)
 	GYRO_CONFIG_1_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
 
 	//Choosing 151.8 as Low Pass Filter so DLPFCFG = 2;
-	GYRO_CONFIG_1_val &= ~(1<<GYRO_CONFIG_1_GYRO_DLPFCFG_2);
+	// GYRO_CONFIG_1_val &= ~(1<<GYRO_CONFIG_1_GYRO_DLPFCFG_2);
+	GYRO_CONFIG_1_val |= (1<<GYRO_CONFIG_1_GYRO_DLPFCFG_2);
 	GYRO_CONFIG_1_val |= (1<<GYRO_CONFIG_1_GYRO_DLPFCFG_1);
 	GYRO_CONFIG_1_val &= ~(1<<GYRO_CONFIG_1_GYRO_DLPFCFG_0);
 
@@ -265,18 +267,26 @@ uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 	uint16_t gyro_x_raw = 0x00;
 
     
-	float gyro_sensitivity = 131;
 	
 	gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H_reg);
 	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L_reg);
-	printf("GYRO L: %d\n", gyro_x_H);
-	printf("GYRO H: %d\n", gyro_x_L);
+	// printf("GYRO L: %d\n", gyro_x_H);
+	// printf("GYRO H: %d\n", gyro_x_L);
 
 	gyro_x_raw |= (gyro_x_H<<8);
 	gyro_x_raw |= gyro_x_L;
 	printf("GYRO RAW: %d\n", gyro_x_raw);
 
-	// x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
 
 	return gyro_x_raw;
+}
+
+float ICM20948_get_GYRO_X_deg(ICM20948* icm)
+{
+	uint16_t gyro_x_raw = ICM20948_get_GYRO_X_raw(icm);
+	float gyro_sensitivity = 32.8;
+
+	float x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
+
+	return x_deg;
 }
