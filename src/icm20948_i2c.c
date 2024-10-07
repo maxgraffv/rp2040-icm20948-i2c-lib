@@ -290,3 +290,25 @@ float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 
 	return x_deg;
 }
+
+float ICM20948_getGyroSensitivity(FullScaleRange FS)
+{
+	float sensitivity = 131;
+	switch(FS)
+	{
+		case FS_250:
+			sensitivity = 131;
+		break;
+		case FS_500:
+			sensitivity = 65.5;
+		break;
+		case FS_1000:
+			sensitivity = 32.8;
+		break;
+		case FS_2000:
+			sensitivity = 16.4;
+		break;
+	}
+
+	return sensitivity;
+}

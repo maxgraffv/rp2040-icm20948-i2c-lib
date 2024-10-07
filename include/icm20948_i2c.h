@@ -277,6 +277,13 @@ typedef enum{
 	Bank3 = 3
 } UserBank;
 
+typedef enum{
+    FS_250 = 250,
+    FS_500 = 500,
+    FS_1000 = 1000,
+    FS_2000 = 2000,
+}
+
 typedef struct{
 	uint8_t i2c_address;
 	uint8_t who_am_i_val;
