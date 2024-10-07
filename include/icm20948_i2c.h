@@ -316,7 +316,7 @@ typedef enum{
 
 float ICM20948_getGyroSensitivity(FullScaleRange FS);
 uint8_t ICM20948_get_GYRO_FS_SEL(ICM20948*);
-uint8_t ICM20948_set_FS_GYRO_SEL(ICM20948*, FullScaleRange );
+uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948*, FullScaleRange );
 
 
 typedef enum{
@@ -333,7 +333,7 @@ typedef enum{
 
 uint8_t ICM20948_get_GYRO_DLPFCFG(ICM20948* );
 uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );
-uint8_t ICM20948_GYRO_DLPF(uint8_t enable);
+uint8_t ICM20948_GYRO_DLPF_enable(uint8_t enable);
 
 
 /*
