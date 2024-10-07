@@ -8,6 +8,11 @@ void blink()
 	sleep_ms(300);
 }
 
+
+
+
+
+
 int main()
 {
 	stdio_init_all();
@@ -31,32 +36,6 @@ int main()
     ICM20948* icm1 = createICM20948(i2c0, 1);
 	printf("ICM created\n");
 
-	uint8_t who_am_i_addr = WHO_AM_I;
-	uint8_t who_am_i_read = 0x00;
- 
-	who_am_i_read = ICM20948_who_am_i_check(icm1);
-
-	if(who_am_i_read)
-		printf("WHO AM I OK\n");
-	else
-		printf("FUCK YOU, You piece of shit = %d\n", who_am_i_read);
-
-	uint8_t who_am_i_value = ICM20948_get_who_am_i(icm1);
-	printf("who VALUE = %d\n", who_am_i_value);
-
 	ICM20948_defaultInit(icm1);
-
-
-	// if(ICM20948_isSleepMode(icm1))
-	// 	printf("ICM asleep\n");
-	// else
-	// 	printf("ICM awake\n");
-
-	// ICM20948_Sleep_enable(icm1, 0);
-	
-	// if(ICM20948_isSleepMode(icm1))
-	// 	printf("ICM asleep\n");
-	// else
-	// 	printf("ICM awake\n");
 
 }
