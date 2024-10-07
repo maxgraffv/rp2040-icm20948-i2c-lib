@@ -4,7 +4,6 @@
 
 uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank )
 {
-	uint8_t icm_i2c_address = icm->i2c_address;
 	uint8_t bank_select_register_addr = 127;
 	uint8_t bank_selected = 0x00;
 
@@ -28,10 +27,11 @@ uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank )
 			break;
 	}
 
-	i2c_write_blocking( icm->i2c_ptr, icm->i2c_address, &bank_select_register_addr, 1, 1 );
-	i2c_write_blocking( icm->i2c_ptr, icm->i2c_address, &bank_selected, 1, 0 );
+	uint8_t data[] = {bank_select_register_addr, bank_selected};
+    int result = i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, data, sizeof(data), 0);
 
-	return 1;
+    // Return success (1) or failure (0) based on the I2C operation result
+    return (result == sizeof(data)) ? 1 : 0;
 }
 
 uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr)
@@ -52,8 +52,6 @@ uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, ui
 
 	int result = i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, buffer, 2, 0);
 
-	// i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, &reg_addr, 1, 1);
-	// i2c_write_blocking(icm->i2c_ptr, icm->i2c_address, &value, 1, 0);
 	if (result == PICO_ERROR_GENERIC) {
         printf("Error writing to register 0x%02X\n", reg_addr);
         return 0;  // Indicate failure
@@ -134,12 +132,12 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 	uint8_t MOD_CTRL_USR_reg = 0x00;
 
 
-	ICM20948_GYRO_init(icm, FS_250, GYRO_DLPF_NBW_154_3);
-
 	ICM20948_Sleep_enable(icm, 0);
+	ICM20948_GYRO_init(icm, GYRO_DLPF_NBW_154_3, FS_500);
+
 
 	printf("DLPF: %d \t\t FS: %d \t\t Sensitivity: %f\n", ICM20948_get_GYRO_DLPFCFG(icm), ICM20948_get_GYRO_FS_SEL(icm), ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm)));
-	for(int i = 0; i < 20; i++)
+	for(int i = 0; i < 5; i++)
 	{
 		sleep_ms(500);
 		ICM20948_get_GYRO_X_deg(icm);
@@ -174,12 +172,8 @@ uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep)
 		printf("ICM Sleep Mode disabled\n");
 	}
 
-	printf("PWR MGMT 1 val wrtn: %d\n", PWR_MGMT_1_val);
 	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, PWR_MGMT_1_val);
 	
-	uint8_t PWR_MGMT_1_val2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
-	printf("PWR MGMT 1 val read: %d\n", PWR_MGMT_1_val2);
-
 	return 1;
 }
 
@@ -197,10 +191,8 @@ uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
 	uint8_t ZG_OFFS_USRL_val = 0x00;
 	uint8_t ODR_ALIGN_EN_val = 0x00; //ODR calculated as = 1.1KHz/(1+GYROSMPLRT_DIV)
 
-	ICM20948_Sleep_enable(icm, 0);
-
 	//Choosing DLPF NBW 
-	ICM20948_set_GYRO_DLPFCFG(icm, dlpf);
+	// ICM20948_set_GYRO_DLPFCFG(icm, dlpf);
 
 	//FS_SEL
 	ICM20948_set_GYRO_FS_SEL(icm, fs);
@@ -243,11 +235,11 @@ uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 {
 	uint16_t gyro_x_raw = ICM20948_get_GYRO_X_raw(icm);
-	float gyro_sensitivity = 32.8;
+	float gyro_sensitivity = ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm));
 
 	float x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
 
-	printf("X deg: %f\n",ICM20948_get_GYRO_X_deg(icm));
+	printf("X deg: %f\n",x_deg);
 
 	return x_deg;
 }
@@ -256,8 +248,11 @@ FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948* icm)
 {
 	FullScaleRange FS_sel = FS_250;
 	uint8_t fs_sel_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+	printf("READ: %d\n", fs_sel_val);
 	fs_sel_val &= 0b00000110;
+	printf("READ: %d\n", fs_sel_val);
 	fs_sel_val >>= 1;
+	printf("READ: %d\n", fs_sel_val);
 
 	switch(fs_sel_val)
 	{
@@ -284,10 +279,10 @@ uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948* icm, FullScaleRange fs_sel)
 
 	switch(fs_sel)
 	{
-		case FS_250:
+		case (FS_250):
 			fs_sel_val = 0b00000000;
 		break;
-		case FS_500:
+		case (FS_500):
 			fs_sel_val = 0b00000010;
 		break;
 		case FS_1000:
@@ -301,7 +296,10 @@ uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948* icm, FullScaleRange fs_sel)
 	uint8_t gyro_config_1 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
 	gyro_config_1 &= 0b11111001;
 	gyro_config_1 |= fs_sel_val;
+	printf("GC1 set to %d\n", gyro_config_1);
 	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_1, gyro_config_1);
+	uint8_t gyro_config_2 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+	printf("GC1 red as %d\n", gyro_config_2);
 
 	return 1;
 }
@@ -336,7 +334,7 @@ GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* icm )
 
 	uint8_t fchoice = gyro_config_1 & 0x01;
 
-	if(fchoice)
+	if(!fchoice)
 	{
 		dlpf_sel = GYRO_DLPF_NBW_12316;
 	}
@@ -390,10 +388,10 @@ uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948* icm, GYRO_DLPF dlpf_sel)
 	}
 	else
 	{
-		ICM20948_GYRO_DLPF_enable(icm, 0);
 		gyro_config_1 &= 0b11000111;
 		dlpf_val <<= 3;
 		gyro_config_1 |= dlpf_val;
+		gyro_config_1 |= 0x01;
 		ICM20948_set_register(icm, Bank2, GYRO_CONFIG_1, gyro_config_1);
 	}
 
