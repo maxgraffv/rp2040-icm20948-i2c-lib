@@ -74,12 +74,17 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen, uint8_t addr_pin_high )
 	else
 		icm_ptr->i2c_address = 0b1101000;
 
-	return icm_ptr;
+	
+	if(ICM20948_who_am_i_check(icm_ptr))
+		return icm_ptr;
+	else
+		return 0x00; // Indicate failure
 }
 
 uint8_t ICM20948_get_who_am_i(ICM20948* icm)
 {
 	uint8_t data_read = ICM20948_get_register(icm, Bank0, WHO_AM_I);
+	printf("WHO_AM_I value: %d\n", who_am_i_value);
 	
 	return data_read;
 }
@@ -89,7 +94,12 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm)
 	uint8_t who_am_i_val_read = ICM20948_get_who_am_i(icm);
 	uint8_t who_am_i_val_isOK = 0x00;
 	if(who_am_i_val_read == icm->who_am_i_val)
+	{
 		who_am_i_val_isOK = 1;
+		printf("WHO_AM_I check: POSITIVE\n");
+	}
+	else
+		printf("WHO_AM_I check: NEGATIVE\n");
 
 	return who_am_i_val_isOK;
 }
@@ -289,6 +299,60 @@ float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 	float x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
 
 	return x_deg;
+}
+
+uint8_t ICM20948_get_FS_SEL(ICM20948* icm)
+{
+	FullScaleRange FS_sel = FS_250;
+	uint8_t fs_sel_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+	fs_sel_val &= 0b00000110;
+	fs_sel_val >>= 1;
+
+	switch(fs_sel_val)
+	{
+		case 0:
+			FS_sel = FS_250;
+		break;
+		case 1:
+			FS_sel = FS_500;
+		break;
+		case 2:
+			FS_sel = FS_1000;
+		break;
+		case 3:
+			FS_sel = FS_2000;
+		break;
+	}
+
+	return FS_sel;
+}
+
+uint8_t ICM20948_set_FS_SEL(ICM20948* icm, FullScaleRange fs_sel)
+{
+	uint8_t fs_sel_val = 0b00000000;
+
+	switch(fs_sel)
+	{
+		case FS_250:
+			fs_sel_val = 0b00000000;
+		break;
+		case FS_500:
+			fs_sel_val = 0b00000010;
+		break;
+		case FS_1000:
+			fs_sel_val = 0b00000100;
+		break;
+		case FS_2000:
+			fs_sel_val = 0b00000110;
+		break;
+	}
+
+	uint8_t gyro_config_1 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+	gyro_config_1 &= 0b11111001;
+	gyro_config_1 |= fs_sel_val;
+	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_1, gyro_config_1);
+
+	return 1;
 }
 
 float ICM20948_getGyroSensitivity(FullScaleRange FS)

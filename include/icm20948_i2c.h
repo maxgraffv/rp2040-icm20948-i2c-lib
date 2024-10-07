@@ -281,8 +281,12 @@ typedef enum{
     FS_250 = 250,
     FS_500 = 500,
     FS_1000 = 1000,
-    FS_2000 = 2000,
-}
+    FS_2000 = 2000
+} FullScaleRange;
+
+float ICM20948_getGyroSensitivity(FullScaleRange FS);
+uint8_t ICM20948_get_FS_SEL(ICM20948* icm);
+uint8_t ICM20948_set_FS_SEL(ICM20948* icm);
 
 typedef struct{
 	uint8_t i2c_address;
