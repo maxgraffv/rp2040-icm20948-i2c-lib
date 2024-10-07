@@ -133,14 +133,18 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 
 
 	ICM20948_Sleep_enable(icm, 0);
-	ICM20948_GYRO_init(icm, GYRO_DLPF_NBW_154_3, FS_500);
+	ICM20948_GYRO_init(icm, GYRO_DLPF_NBW_17_8, FS_250);
 
+	float deg = 0;
+	float dps = 0;
 
 	printf("DLPF: %d \t\t FS: %d \t\t Sensitivity: %f\n", ICM20948_get_GYRO_DLPFCFG(icm), ICM20948_get_GYRO_FS_SEL(icm), ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm)));
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < 40; i++)
 	{
-		sleep_ms(500);
-		ICM20948_get_GYRO_X_deg(icm);
+		sleep_ms(250);
+		dps = ICM20948_get_GYRO_X_deg(icm);
+		deg += (dps/4); 
+		printf("Deg: %f\n", deg);
 	}
 
 	return 1;
@@ -192,7 +196,7 @@ uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
 	uint8_t ODR_ALIGN_EN_val = 0x00; //ODR calculated as = 1.1KHz/(1+GYROSMPLRT_DIV)
 
 	//Choosing DLPF NBW 
-	// ICM20948_set_GYRO_DLPFCFG(icm, dlpf);
+	ICM20948_set_GYRO_DLPFCFG(icm, dlpf);
 
 	//FS_SEL
 	ICM20948_set_GYRO_FS_SEL(icm, fs);
@@ -224,9 +228,8 @@ uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 	gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H);
 	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L);
 
-	gyro_x_raw |= (gyro_x_H<<8);
-	gyro_x_raw |= gyro_x_L;
-	printf("GYRO RAW: %d\n", gyro_x_raw);
+	gyro_x_raw |= (int16_t)((gyro_x_H<<8)| gyro_x_L );
+	// printf("GYRO RAW: %d\n", gyro_x_raw);
 
 
 	return gyro_x_raw;
@@ -239,7 +242,7 @@ float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 
 	float x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
 
-	printf("X deg: %f\n",x_deg);
+	// printf("X deg: %f\n",x_deg);
 
 	return x_deg;
 }
@@ -248,11 +251,8 @@ FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948* icm)
 {
 	FullScaleRange FS_sel = FS_250;
 	uint8_t fs_sel_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
-	printf("READ: %d\n", fs_sel_val);
 	fs_sel_val &= 0b00000110;
-	printf("READ: %d\n", fs_sel_val);
 	fs_sel_val >>= 1;
-	printf("READ: %d\n", fs_sel_val);
 
 	switch(fs_sel_val)
 	{
@@ -296,10 +296,7 @@ uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948* icm, FullScaleRange fs_sel)
 	uint8_t gyro_config_1 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
 	gyro_config_1 &= 0b11111001;
 	gyro_config_1 |= fs_sel_val;
-	printf("GC1 set to %d\n", gyro_config_1);
 	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_1, gyro_config_1);
-	uint8_t gyro_config_2 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
-	printf("GC1 red as %d\n", gyro_config_2);
 
 	return 1;
 }
@@ -323,7 +320,7 @@ float ICM20948_getGyroSensitivity(FullScaleRange FS)
 		break;
 	}
 
-	printf("GYRO Sensitivity: %f\n", sensitivity);
+	// printf("GYRO Sensitivity: %f\n", sensitivity);
 	return sensitivity;
 }
 
@@ -375,7 +372,6 @@ GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* icm )
 	printf("GYRO DLPF value: %d\n", dlpf_sel);
 	return dlpf_sel;
 }
-
 
 uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948* icm, GYRO_DLPF dlpf_sel)
 {
