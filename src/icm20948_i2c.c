@@ -134,13 +134,15 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 	uint8_t MOD_CTRL_USR_reg = 0x00;
 
 
-	ICM20948_GYRO_defaultInit(icm);
+	ICM20948_GYRO_init(icm, FS_250, GYRO_DLPF_NBW_154_3);
+
 	ICM20948_Sleep_enable(icm, 0);
 
+	printf("DLPF: %d \t\t FS: %d \t\t Sensitivity: %f\n", ICM20948_get_GYRO_DLPFCFG(icm), ICM20948_get_GYRO_FS_SEL(icm), ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm)));
 	for(int i = 0; i < 20; i++)
 	{
-		printf("X deg: %f\n",ICM20948_get_GYRO_X_deg(icm));
 		sleep_ms(500);
+		ICM20948_get_GYRO_X_deg(icm);
 	}
 
 	return 1;
@@ -182,7 +184,7 @@ uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep)
 }
 
 
-uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm)
+uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
 {
 
 	uint8_t GYRO_SMPLRT_DIV_val = 0x00; //Gyro samplerate divider
@@ -197,21 +199,13 @@ uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm)
 
 	ICM20948_Sleep_enable(icm, 0);
 
-	GYRO_CONFIG_1_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+	//Choosing DLPF NBW 
+	ICM20948_set_GYRO_DLPFCFG(icm, dlpf);
 
-	//Choosing 151.8 as Low Pass Filter so DLPFCFG = 2;
-	// GYRO_CONFIG_1_val &= ~(1<<GYRO_CONFIG_1_GYRO_DLPFCFG_2);
-	GYRO_CONFIG_1_val |= (1<<GYRO_CONFIG_1_GYRO_DLPFCFG_2);
-	GYRO_CONFIG_1_val |= (1<<GYRO_CONFIG_1_GYRO_DLPFCFG_1);
-	GYRO_CONFIG_1_val &= ~(1<<GYRO_CONFIG_1_GYRO_DLPFCFG_0);
+	//FS_SEL
+	ICM20948_set_GYRO_FS_SEL(icm, fs);
 
-	//FCHOICE = 1
-	GYRO_CONFIG_1_val |= (1<<GYRO_CONFIG_1_GYRO_FCHOICE);
-
-	//FS_SEL = 1000dps
-	ICM20948_set_FS_SEL(icm, FS_1000);
-
-	
+	//GYRO CONFIG 2 - default
 	GYRO_CONFIG_2_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_2);
 	GYRO_CONFIG_2_val &= 0b11000000;
 	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_2, GYRO_CONFIG_2_val);
@@ -236,7 +230,7 @@ uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 	uint16_t gyro_x_raw = 0x00;
 	
 	gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H);
-	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L`);
+	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L);
 
 	gyro_x_raw |= (gyro_x_H<<8);
 	gyro_x_raw |= gyro_x_L;
@@ -253,10 +247,12 @@ float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 
 	float x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
 
+	printf("X deg: %f\n",ICM20948_get_GYRO_X_deg(icm));
+
 	return x_deg;
 }
 
-uint8_t ICM20948_get_GYRO_FS_SEL(ICM20948* icm)
+FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948* icm)
 {
 	FullScaleRange FS_sel = FS_250;
 	uint8_t fs_sel_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
@@ -329,5 +325,96 @@ float ICM20948_getGyroSensitivity(FullScaleRange FS)
 		break;
 	}
 
+	printf("GYRO Sensitivity: %f\n", sensitivity);
 	return sensitivity;
 }
+
+GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* icm )
+{
+	GYRO_DLPF dlpf_sel = GYRO_DLPF_NBW_229_8;
+	uint8_t gyro_config_1 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+
+	uint8_t fchoice = gyro_config_1 & 0x01;
+
+	if(fchoice)
+	{
+		dlpf_sel = GYRO_DLPF_NBW_12316;
+	}
+	else
+	{
+		gyro_config_1 &= 0b00111000;
+		gyro_config_1 >>= 3;
+
+		switch(gyro_config_1)
+		{
+			case 0:
+				dlpf_sel = GYRO_DLPF_NBW_229_8;
+			break;
+			case 1:
+				dlpf_sel = GYRO_DLPF_NBW_187_6;
+			break;
+			case 2:
+				dlpf_sel = GYRO_DLPF_NBW_154_3;
+			break;
+			case 3:
+				dlpf_sel = GYRO_DLPF_NBW_73_3;
+			break;
+			case 4:
+				dlpf_sel = GYRO_DLPF_NBW_35_9;
+			break;
+			case 5:
+				dlpf_sel = GYRO_DLPF_NBW_17_8;
+			break;
+			case 6:
+				dlpf_sel = GYRO_DLPF_NBW_8_9;
+			break;
+			case 7:
+				dlpf_sel = GYRO_DLPF_NBW_376_5;
+			break;
+		}
+	}
+
+	printf("GYRO DLPF value: %d\n", dlpf_sel);
+	return dlpf_sel;
+}
+
+
+uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948* icm, GYRO_DLPF dlpf_sel)
+{
+	uint8_t gyro_config_1 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+	uint8_t dlpf_val = dlpf_sel;
+
+	if(dlpf_sel == GYRO_DLPF_NBW_12316)
+	{
+		ICM20948_GYRO_DLPF_enable(icm, 0);
+	}
+	else
+	{
+		ICM20948_GYRO_DLPF_enable(icm, 0);
+		gyro_config_1 &= 0b11000111;
+		dlpf_val <<= 3;
+		gyro_config_1 |= dlpf_val;
+		ICM20948_set_register(icm, Bank2, GYRO_CONFIG_1, gyro_config_1);
+	}
+
+	return 1;
+}
+
+uint8_t ICM20948_GYRO_DLPF_enable(ICM20948* icm, uint8_t enable)
+{
+	uint8_t gyro_config_1 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+
+	switch(enable)
+	{
+		case 0:
+			gyro_config_1 &= ~(1<<GYRO_CONFIG_1_GYRO_FCHOICE);
+		break;
+		default:
+			gyro_config_1 |= (1<<GYRO_CONFIG_1_GYRO_FCHOICE);
+	}
+
+	return 1;
+}
+
+
+

@@ -315,7 +315,7 @@ typedef enum{
 } FullScaleRange;
 
 float ICM20948_getGyroSensitivity(FullScaleRange FS);
-uint8_t ICM20948_get_GYRO_FS_SEL(ICM20948*);
+FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948*);
 uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948*, FullScaleRange );
 
 
@@ -331,9 +331,9 @@ typedef enum{
     GYRO_DLPF_NBW_376_5 = 7
 }GYRO_DLPF;
 
-uint8_t ICM20948_get_GYRO_DLPFCFG(ICM20948* );
+GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* );
 uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );
-uint8_t ICM20948_GYRO_DLPF_enable(uint8_t enable);
+uint8_t ICM20948_GYRO_DLPF_enable(ICM20948*, uint8_t );
 
 
 /*
@@ -430,7 +430,7 @@ float ICM20948_get_ACCEL_Z(ICM20948* icm);
 /*
 	GYRO
 */
-uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm);
+uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, FullScaleRange);
 
 uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
 uint16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
@@ -449,123 +449,31 @@ uint16_t ICM20948_get_TEMP_raw(ICM20948* icm);
 float ICM20948_get_TEMP(ICM20948* icm);
 
 /*
-    EXT_SLV_SENS_DATA_00
+    EXT_SLV_SENS_DATA_00-23
 */
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_00(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_01
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_01(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_02
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_02(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_03
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_03(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_04
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_04(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_05
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_05(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_06
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_06(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_07
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_07(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_08
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_08(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_09
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_09(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_10
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_10(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_11
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_11(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_12
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_12(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_13
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_13(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_14
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_14(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_15
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_15(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_16
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_16(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_17
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_17(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_18
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_18(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_19
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_19(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_20
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_20(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_21
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_21(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_22
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_22(ICM20948* icm);
-
-/*
-    EXT_SLV_SENS_DATA_23
-*/
 uint8_t ICM20948_get_EXT_SLV_SENS_DATA_23(ICM20948* icm);
 
 /*
