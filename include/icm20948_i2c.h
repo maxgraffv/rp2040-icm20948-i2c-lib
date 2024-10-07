@@ -277,16 +277,8 @@ typedef enum{
 	Bank3 = 3
 } UserBank;
 
-typedef enum{
-    FS_250 = 250,
-    FS_500 = 500,
-    FS_1000 = 1000,
-    FS_2000 = 2000
-} FullScaleRange;
 
-float ICM20948_getGyroSensitivity(FullScaleRange FS);
-uint8_t ICM20948_get_FS_SEL(ICM20948* icm);
-uint8_t ICM20948_set_FS_SEL(ICM20948* icm);
+
 
 typedef struct{
 	uint8_t i2c_address;
@@ -307,6 +299,41 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm);
 
 uint8_t ICM20948_isSleepMode(ICM20948* icm);
 uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep);
+
+/*
+    FS_SEL | FullScale Range (degrees/sec) | Sensitivity 
+    00			250								131
+    01			500								65.5
+    10			1000							32.8
+    11			2000							16.4
+*/
+typedef enum{
+    FS_250 = 250,
+    FS_500 = 500,
+    FS_1000 = 1000,
+    FS_2000 = 2000
+} FullScaleRange;
+
+float ICM20948_getGyroSensitivity(FullScaleRange FS);
+uint8_t ICM20948_get_GYRO_FS_SEL(ICM20948*);
+uint8_t ICM20948_set_FS_GYRO_SEL(ICM20948*, FullScaleRange );
+
+
+typedef enum{
+    GYRO_DLPF_NBW_12316 = -1,
+    GYRO_DLPF_NBW_229_8 = 0,
+    GYRO_DLPF_NBW_187_6 = 1,
+    GYRO_DLPF_NBW_154_3 = 2,
+    GYRO_DLPF_NBW_73_3 = 3,
+    GYRO_DLPF_NBW_35_9 = 4,
+    GYRO_DLPF_NBW_17_8 = 5,
+    GYRO_DLPF_NBW_8_9 = 6,
+    GYRO_DLPF_NBW_376_5 = 7
+}GYRO_DLPF;
+
+uint8_t ICM20948_get_GYRO_DLPFCFG(ICM20948* );
+uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );
+uint8_t ICM20948_GYRO_DLPF(uint8_t enable);
 
 
 /*

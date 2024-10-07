@@ -84,7 +84,7 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen, uint8_t addr_pin_high )
 uint8_t ICM20948_get_who_am_i(ICM20948* icm)
 {
 	uint8_t data_read = ICM20948_get_register(icm, Bank0, WHO_AM_I);
-	printf("WHO_AM_I value: %d\n", who_am_i_value);
+	printf("WHO_AM_I value: %d\n", data_read);
 	
 	return data_read;
 }
@@ -133,25 +133,12 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 	uint8_t TEMP_CONFIG_reg = 0x00;
 	uint8_t MOD_CTRL_USR_reg = 0x00;
 
-	if(ICM20948_isSleepMode(icm))
-		printf("ICM is in sleep mode\n");
-	else
-		printf("ICM not in sleep mode\n");
 
-	printf("Getting Raw Gyro \n");
-	ICM20948_get_GYRO_X_raw(icm);
 	ICM20948_GYRO_defaultInit(icm);
-	printf("Waking... \n");
 	ICM20948_Sleep_enable(icm, 0);
-
-	if(ICM20948_isSleepMode(icm))
-		printf("ICM is in sleep mode\n");
-	else
-		printf("ICM not in sleep mode\n");
 
 	for(int i = 0; i < 20; i++)
 	{
-		// ICM20948_get_GYRO_X_raw(icm);
 		printf("X deg: %f\n",ICM20948_get_GYRO_X_deg(icm));
 		sleep_ms(500);
 	}
@@ -162,6 +149,10 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 uint8_t ICM20948_isSleepMode(ICM20948* icm)
 {
 	uint8_t isSleepMode = ICM20948_get_register(icm, Bank0, PWR_MGMT_1) & 0b01000000;
+	if(isSleepMode)
+		printf("ICM IS in sleep mode\n");
+	else
+		printf("ICM NOT in sleep mode\n");
 
 	return isSleepMode;
 }
@@ -169,7 +160,6 @@ uint8_t ICM20948_isSleepMode(ICM20948* icm)
 uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep)
 {
 	uint8_t PWR_MGMT_1_val = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
-	printf("PWR MGMT 1 val read: %d\n", PWR_MGMT_1_val);
 
 	if(enableSleep)
 	{
@@ -196,7 +186,6 @@ uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm)
 {
 
 	uint8_t GYRO_SMPLRT_DIV_val = 0x00; //Gyro samplerate divider
-	uint8_t GYRO_CONFIG_1_val = 0x00;
 	uint8_t GYRO_CONFIG_2_val = 0x00;
 	uint8_t XG_OFFS_USRH_val = 0x00;
 	uint8_t XG_OFFS_USRL_val = 0x00;
@@ -207,14 +196,6 @@ uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm)
 	uint8_t ODR_ALIGN_EN_val = 0x00; //ODR calculated as = 1.1KHz/(1+GYROSMPLRT_DIV)
 
 	ICM20948_Sleep_enable(icm, 0);
-
-	/*
-		FS_SEL | FullScale Range (degrees/sec) | Sensitivity 
-		00			250								131
-		01			500								65.5
-		10			1000							32.8
-		11			2000							16.4
-	*/
 
 	GYRO_CONFIG_1_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
 
@@ -227,20 +208,13 @@ uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm)
 	//FCHOICE = 1
 	GYRO_CONFIG_1_val |= (1<<GYRO_CONFIG_1_GYRO_FCHOICE);
 
-	//FS_SEL = 10
-	GYRO_CONFIG_1_val |= (1<<GYRO_CONFIG_1_GYRO_FS_SEL_1);
-	GYRO_CONFIG_1_val &= ~(1<<GYRO_CONFIG_1_GYRO_FS_SEL_0);
-
-	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_1, GYRO_CONFIG_1_val);
-
+	//FS_SEL = 1000dps
+	ICM20948_set_FS_SEL(icm, FS_1000);
 
 	
 	GYRO_CONFIG_2_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_2);
 	GYRO_CONFIG_2_val &= 0b11000000;
 	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_2, GYRO_CONFIG_2_val);
-
-
-
 
 	return 1;
 }
@@ -255,33 +229,14 @@ uint8_t ICM20948_GYRO_defaultInit(ICM20948* icm)
 //TEMP DEFAULT INIT
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 {
-	uint8_t GYRO_XOUT_H_reg = GYRO_XOUT_H;
-	uint8_t GYRO_XOUT_L_reg = GYRO_XOUT_L;
 	uint8_t gyro_x_H = 0x00;
 	uint8_t gyro_x_L = 0x00;
 	uint16_t gyro_x_raw = 0x00;
-
-    
 	
-	gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H_reg);
-	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L_reg);
-	// printf("GYRO L: %d\n", gyro_x_H);
-	// printf("GYRO H: %d\n", gyro_x_L);
+	gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H);
+	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L`);
 
 	gyro_x_raw |= (gyro_x_H<<8);
 	gyro_x_raw |= gyro_x_L;
@@ -301,7 +256,7 @@ float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 	return x_deg;
 }
 
-uint8_t ICM20948_get_FS_SEL(ICM20948* icm)
+uint8_t ICM20948_get_GYRO_FS_SEL(ICM20948* icm)
 {
 	FullScaleRange FS_sel = FS_250;
 	uint8_t fs_sel_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
@@ -327,7 +282,7 @@ uint8_t ICM20948_get_FS_SEL(ICM20948* icm)
 	return FS_sel;
 }
 
-uint8_t ICM20948_set_FS_SEL(ICM20948* icm, FullScaleRange fs_sel)
+uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948* icm, FullScaleRange fs_sel)
 {
 	uint8_t fs_sel_val = 0b00000000;
 
