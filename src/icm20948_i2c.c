@@ -236,22 +236,24 @@ uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
 
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 {
-	uint8_t gyro_x_H = 0x00;
-	uint8_t gyro_x_L = 0x00;
 	int16_t gyro_x_raw = (int16_t)(ICM20948_get_register_16b(icm, Bank0, GYRO_XOUT_H, GYRO_XOUT_L));
-	
-	gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H);
-	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L);
-
-	gyro_x_raw |= (int16_t)((gyro_x_H<<8)| gyro_x_L );
-	// printf("GYRO RAW: %d\n", gyro_x_raw);
-
-
 
 	return gyro_x_raw;
 }
 
+int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm)
+{
+	int16_t gyro_y_raw = (int16_t)(ICM20948_get_register_16b(icm, Bank0, GYRO_YOUT_H, GYRO_YOUT_L));
 
+	return gyro_y_raw;
+}
+
+int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm)
+{
+	int16_t gyro_z_raw = (int16_t)(ICM20948_get_register_16b(icm, Bank0, GYRO_ZOUT_H, GYRO_ZOUT_L));
+
+	return gyro_z_raw;
+}
 
 float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 {
@@ -259,8 +261,6 @@ float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 	float gyro_sensitivity = ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm));
 
 	float x_deg = ((float)(gyro_x_raw))/gyro_sensitivity;
-
-	// printf("X deg: %f\n",x_deg);
 
 	return x_deg;
 }
