@@ -440,9 +440,7 @@ int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
 int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
 int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);
 
-float ICM20948_get_GYRO_X_deg(ICM20948* icm);
-float ICM20948_get_GYRO_Y_deg(ICM20948* icm);
-float ICM20948_get_GYRO_Z_deg(ICM20948* icm);
+float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw);
 
 /*
 	TEMP

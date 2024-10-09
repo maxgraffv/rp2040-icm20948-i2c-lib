@@ -157,7 +157,7 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 	for(int i = 0; i < 2000; i++)
 	{
 		sleep_ms(10);
-		dps = ICM20948_get_GYRO_X_deg(icm);
+		dps = ICM20948_GYRO_raw_to_dps( icm, ICM20948_get_GYRO_X_raw(icm) );
 		deg += (dps*0.01); 
 		printf("Deg: %f\n", deg);
 	}
@@ -255,14 +255,12 @@ int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm)
 	return gyro_z_raw;
 }
 
-float ICM20948_get_GYRO_X_deg(ICM20948* icm)
+float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw)
 {
-	int16_t gyro_x_raw = ICM20948_get_GYRO_X_raw(icm);
 	float gyro_sensitivity = ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm));
+	float dps = ((float)(gyro_raw))/gyro_sensitivity;
 
-	float x_deg = ((float)(gyro_x_raw))/gyro_sensitivity;
-
-	return x_deg;
+	return dps;
 }
 
 FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948* icm)
