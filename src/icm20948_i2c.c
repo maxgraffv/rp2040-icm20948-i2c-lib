@@ -133,17 +133,17 @@ uint8_t ICM20948_defaultInit(ICM20948* icm)
 
 
 	ICM20948_Sleep_enable(icm, 0);
-	ICM20948_GYRO_init(icm, GYRO_DLPF_NBW_17_8, FS_250);
+	ICM20948_GYRO_init(icm, GYRO_DLPF_NBW_154_3, FS_1000);
 
 	float deg = 0;
 	float dps = 0;
 
 	printf("DLPF: %d \t\t FS: %d \t\t Sensitivity: %f\n", ICM20948_get_GYRO_DLPFCFG(icm), ICM20948_get_GYRO_FS_SEL(icm), ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm)));
-	for(int i = 0; i < 40; i++)
+	for(int i = 0; i < 2000; i++)
 	{
-		sleep_ms(250);
+		sleep_ms(10);
 		dps = ICM20948_get_GYRO_X_deg(icm);
-		deg += (dps/4); 
+		deg += (dps*0.01); 
 		printf("Deg: %f\n", deg);
 	}
 
@@ -219,11 +219,11 @@ uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
 //TEMP DEFAULT INIT
 
 
-uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
+int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 {
 	uint8_t gyro_x_H = 0x00;
 	uint8_t gyro_x_L = 0x00;
-	uint16_t gyro_x_raw = 0x00;
+	int16_t gyro_x_raw = 0x00;
 	
 	gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H);
 	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L);
@@ -237,10 +237,10 @@ uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 
 float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 {
-	uint16_t gyro_x_raw = ICM20948_get_GYRO_X_raw(icm);
+	int16_t gyro_x_raw = ICM20948_get_GYRO_X_raw(icm);
 	float gyro_sensitivity = ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm));
 
-	float x_deg = ((float)gyro_x_raw)/gyro_sensitivity;
+	float x_deg = ((float)(gyro_x_raw))/gyro_sensitivity;
 
 	// printf("X deg: %f\n",x_deg);
 

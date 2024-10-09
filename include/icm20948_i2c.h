@@ -419,9 +419,9 @@ void ICM20948_set_DELAY_TIMEL(ICM20948* icm, uint8_t val_to_set);
 */
 uint8_t ICM20948_ACCEL_defaultInit();
 
-uint16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
-uint16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
-uint16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
+int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
+int16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
+int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
 
 float ICM20948_get_ACCEL_X(ICM20948* icm);
 float ICM20948_get_ACCEL_Y(ICM20948* icm);
@@ -432,9 +432,9 @@ float ICM20948_get_ACCEL_Z(ICM20948* icm);
 */
 uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, FullScaleRange);
 
-uint16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
-uint16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
-uint16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);
+int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
+int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
+int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);
 
 float ICM20948_get_GYRO_X_deg(ICM20948* icm);
 float ICM20948_get_GYRO_Y_deg(ICM20948* icm);
