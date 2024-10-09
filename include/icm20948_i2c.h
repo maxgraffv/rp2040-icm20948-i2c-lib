@@ -294,6 +294,8 @@ uint8_t ICM20948_defaultInit(ICM20948* icm);
 uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr);
 uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value);
 
+uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_addr_H, uint8_t reg_addr_L)
+
 uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
 
@@ -431,6 +433,8 @@ float ICM20948_get_ACCEL_Z(ICM20948* icm);
 	GYRO
 */
 uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, FullScaleRange);
+
+int16_t* ICM20948_get_GYRO_raw(ICM20948* icm);
 
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
 int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);

@@ -60,6 +60,21 @@ uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, ui
 	return 1;
 }
 
+uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_addr_H, uint8_t reg_addr_L)
+{
+	uint8_t H = 0x00;
+	uint8_t L = 0x00;
+	uint16_t val = 0x00;
+
+
+	H = ICM20948_get_register(icm, bank, reg_addr_H);
+	L = ICM20948_get_register(icm, bank, reg_addr_L);
+
+	val |= (uint16_t)((H<<8)| L );
+
+	return val;
+}
+
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen, uint8_t addr_pin_high )
 {
 	printf("ICM20948 Creating\n");
@@ -223,7 +238,7 @@ int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 {
 	uint8_t gyro_x_H = 0x00;
 	uint8_t gyro_x_L = 0x00;
-	int16_t gyro_x_raw = 0x00;
+	int16_t gyro_x_raw = (int16_t)(ICM20948_get_register_16b(icm, Bank0, GYRO_XOUT_H, GYRO_XOUT_L));
 	
 	gyro_x_H = ICM20948_get_register(icm, Bank0, GYRO_XOUT_H);
 	gyro_x_L = ICM20948_get_register(icm, Bank0, GYRO_XOUT_L);
@@ -232,8 +247,11 @@ int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 	// printf("GYRO RAW: %d\n", gyro_x_raw);
 
 
+
 	return gyro_x_raw;
 }
+
+
 
 float ICM20948_get_GYRO_X_deg(ICM20948* icm)
 {
