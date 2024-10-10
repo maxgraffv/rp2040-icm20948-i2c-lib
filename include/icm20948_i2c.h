@@ -360,7 +360,8 @@ uint8_t ICM20948_reset(ICM20948* icm);
 uint8_t ICM20948_isSleepMode(ICM20948* icm);
 uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep);
 uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm);
-uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm)
+uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm);
+uint8_t ICM20948_isLowPowerpMode(ICM20948* icm);
 
 /*
 	PWR_MGMT_2 - Power Management Register 2

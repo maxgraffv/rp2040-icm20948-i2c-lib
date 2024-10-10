@@ -252,6 +252,17 @@ uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm)
 }
 
 
+uint8_t ICM20948_isLowPowerpMode(ICM20948* icm)
+{
+	uint8_t isLP = ICM20948_get_register(icm, Bank0, PWR_MGMT_1) & 0b00100000;
+	if(isLP)
+		printf("ICM IS in low power mode\n");
+	else
+		printf("ICM NOT in low power mode\n");
+
+	return isLP;
+}
+
 
 
 
