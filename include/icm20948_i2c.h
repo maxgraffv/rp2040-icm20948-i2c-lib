@@ -393,8 +393,10 @@ CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948*);
 uint8_t ICM20948_get_PWR_MGMT_2(ICM20948* icm);
 uint8_t ICM20948_set_PWR_MGMT_2(ICM20948* icm, uint8_t val_to_set);
 
-uint8_t ICM20948_set_ENABLE_ACCEL(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_ENABLE_GYRO(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_ACCEL_enable(ICM20948* icm);
+uint8_t ICM20948_ACCEL_disable(ICM20948* icm);
+uint8_t ICM20948_GYRO_enable(ICM20948* icm);
+uint8_t ICM20948_GYRO_disable(ICM20948* icm);
 
 /*
 	INT_PIN_CONFIG

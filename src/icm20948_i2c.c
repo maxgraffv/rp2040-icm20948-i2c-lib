@@ -348,7 +348,41 @@ CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948* icm)
 	return clk_sel;
 }
 
+uint8_t ICM20948_ACCEL_enable(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_2);
+	pwr_mgmt_2 |= 0b00111000;
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_2, pwr_mgmt_2);
 
+	return 1;
+}
+
+uint8_t ICM20948_ACCEL_disable(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_2);
+	pwr_mgmt_2 &= 0b11000111;
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_2, pwr_mgmt_2);
+
+	return 1;
+}
+
+uint8_t ICM20948_GYRO_enable(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_2);
+	pwr_mgmt_2 |= 0b00000111;
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_2, pwr_mgmt_2);
+
+	return 1;
+}
+
+uint8_t ICM20948_GYRO_disable(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_2);
+	pwr_mgmt_2 &= 0b11111000;
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_2, pwr_mgmt_2);
+
+	return 1;
+}
 
 //GYRO SELF-TEST
 
@@ -356,19 +390,14 @@ CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948* icm)
 
 //ACCEL SELF-TEST
 
-//accel enable
-//gyro enable
 //TEMP DEFAULT INIT
 //dmp enable
 //dmp init
 //fifo enable
 //fifo init
 //Low Power Init
-//Low power enable
-//device_reset()
 //Temp init
 
-//select ClockSource
 
 // Wake On Motion enable
 
