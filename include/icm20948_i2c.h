@@ -357,8 +357,11 @@ uint8_t ICM20948_set_GYRO_CYCLE(ICM20948* icm, uint8_t enable_bit);
 	PWR_MGMT_1 - Power Management Register 1
 */
 uint8_t ICM20948_reset(ICM20948* icm);
+
+uint8_t ICM20948_SleepMode_enable(ICM20948* icm);
+uint8_t ICM20948_SleepMode_disable(ICM20948* icm);
 uint8_t ICM20948_isSleepMode(ICM20948* icm);
-uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep);
+
 uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm);
 uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm);
 uint8_t ICM20948_isLowPowerpMode(ICM20948* icm);

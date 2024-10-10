@@ -175,20 +175,24 @@ uint8_t ICM20948_isSleepMode(ICM20948* icm)
 	return isSleepMode;
 }
 
-uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep)
+uint8_t ICM20948_SleepMode_enable(ICM20948* icm)
 {
 	uint8_t PWR_MGMT_1_val = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
 
-	if(enableSleep)
-	{
-		PWR_MGMT_1_val |= (1<<PWR_MGMT_1_SLEEP);
-		printf("ICM Sleep Mode enabled\n");
-	}
-	else
-	{
-		PWR_MGMT_1_val &= ~(1<<PWR_MGMT_1_SLEEP);
-		printf("ICM Sleep Mode disabled\n");
-	}
+	PWR_MGMT_1_val |= (1<<PWR_MGMT_1_SLEEP);
+	printf("ICM Sleep Mode enabled\n");
+
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, PWR_MGMT_1_val);
+	
+	return 1;
+}
+
+uint8_t ICM20948_SleepMode_disable(ICM20948* icm)
+{
+	uint8_t PWR_MGMT_1_val = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+
+	PWR_MGMT_1_val &= ~(1<<PWR_MGMT_1_SLEEP);
+	printf("ICM Sleep Mode disabled\n");
 
 	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, PWR_MGMT_1_val);
 	
@@ -250,7 +254,6 @@ uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm)
 
 	return 1;
 }
-
 
 uint8_t ICM20948_isLowPowerpMode(ICM20948* icm)
 {
