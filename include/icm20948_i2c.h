@@ -371,6 +371,23 @@ uint8_t ICM20948_Temp_disable(ICM20948* icm);
 uint8_t ICM20948_isTemp(ICM20948* icm);
 
 /*
+    heja kocham cie bardzo   
+*/
+
+typedef enum{
+    CLOCK_SRC_Internal_20MHz = 0,
+    CLOCK_SRC_Auto_Sel_1 = 1,
+    // CLOCK_SRC_Auto_Sel = 2,
+    // CLOCK_SRC_Auto_Sel = 3,
+    // CLOCK_SRC_Auto_Sel = 4,
+    // CLOCK_SRC_Auto_Sel = 5,
+    CLOCK_SRC_STOP = 7
+} CLOCK_SRC;
+
+uint8_t ICM20948_set_CLOCK_SRC(ICM20948*, CLOCK_SRC);
+CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948*);
+
+/*
 	PWR_MGMT_2 - Power Management Register 2
 */
 uint8_t ICM20948_get_PWR_MGMT_2(ICM20948* icm);

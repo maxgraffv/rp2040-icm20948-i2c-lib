@@ -290,14 +290,63 @@ uint8_t ICM20948_Temp_disable(ICM20948* icm)
 uint8_t ICM20948_isTemp(ICM20948* icm)
 {
 	uint8_t isTemp_disabled = ICM20948_get_register(icm, Bank0, PWR_MGMT_1) & 0b00100000;
-	if(isLP_disabled)
+	if(isTemp_disabled)
 		printf("Temp Sensor IS DISABLED\n");
 	else
 		printf("Temp Sensor IS ENABLED\n");
 
-	return (!isLP_disabled);
+	return (!isTemp_disabled);
 }
 
+uint8_t ICM20948_set_CLOCK_SRC(ICM20948* icm, CLOCK_SRC clk_src)
+{
+	uint8_t pwr_mgmt_1 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+	pwr_mgmt_1 &= 0b11111000;
+	uint8_t clk = clk_src;
+
+	pwr_mgmt_1 |= clk;
+
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, pwr_mgmt_1);
+
+	return 1;
+}
+
+CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948* icm)
+{
+	CLOCK_SRC clk_sel = CLOCK_SRC_Internal_20MHz;
+	uint8_t clk_val = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+	clk_val &= 0b00000111;
+
+	switch(clk_val)
+	{
+		case 0:
+			clk_sel = CLOCK_SRC_Internal_20MHz;
+		break;
+		case 1:
+			clk_sel = CLOCK_SRC_Auto_Sel_1;
+		break;
+		case 2:
+			clk_sel = CLOCK_SRC_Auto_Sel_1;
+		break;
+		case 3:
+			clk_sel = CLOCK_SRC_Auto_Sel_1;
+		break;
+		case 4:
+			clk_sel = CLOCK_SRC_Auto_Sel_1;
+		break;
+		case 5:
+			clk_sel = CLOCK_SRC_Auto_Sel_1;
+		break;
+		case 6:
+			clk_sel = CLOCK_SRC_Internal_20MHz;
+		break;
+		case 7:
+			clk_sel = CLOCK_SRC_STOP;
+		break;
+	}
+
+	return clk_sel;
+}
 
 
 
