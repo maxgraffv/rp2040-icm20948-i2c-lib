@@ -66,7 +66,6 @@ uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_add
 	uint8_t L = 0x00;
 	uint16_t val = 0x00;
 
-
 	H = ICM20948_get_register(icm, bank, reg_addr_H);
 	L = ICM20948_get_register(icm, bank, reg_addr_L);
 
@@ -224,6 +223,18 @@ uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
 	return 1;
 }
 
+uint8_t ICM20948_reset(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_1 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+
+	pwr_mgmt_1 |= (1<<PWR_MGMT_1_DEVICE_RESET);
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, pwr_mgmt_1);
+
+	return 1;
+}
+
+
+
 //GYRO SELF-TEST
 
 //ACCEL DEFAULT INIT
@@ -271,7 +282,7 @@ int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm)
 	return gyro_z_raw;
 }
 
-int8_t ICM20948_get_GYRO_raw_arr(ICM20948* icm, uint16_t* gyro_array_ptr);
+int8_t ICM20948_get_GYRO_raw_arr(ICM20948* icm, uint16_t* gyro_array_ptr)
 {
 	/*
 		array has to be 3 index size
