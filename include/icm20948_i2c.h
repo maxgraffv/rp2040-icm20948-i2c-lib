@@ -434,7 +434,7 @@ float ICM20948_get_ACCEL_Z(ICM20948* icm);
 */
 uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, FullScaleRange);
 
-int16_t* ICM20948_get_GYRO_raw(ICM20948* icm);
+int8_t ICM20948_get_GYRO_raw_arr(ICM20948* icm, uint16_t* array_ptr);
 
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
 int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);

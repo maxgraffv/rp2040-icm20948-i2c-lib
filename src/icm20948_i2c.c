@@ -255,6 +255,19 @@ int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm)
 	return gyro_z_raw;
 }
 
+int8_t ICM20948_get_GYRO_raw_arr(ICM20948* icm, uint16_t* gyro_array_ptr);
+{
+	/*
+		array has to be 3 index size
+	*/
+
+	gyro_array_ptr[0] = ICM20948_get_GYRO_X_raw(icm);
+	gyro_array_ptr[1] = ICM20948_get_GYRO_Y_raw(icm);
+	gyro_array_ptr[2] = ICM20948_get_GYRO_Z_raw(icm);
+
+	return 1;
+}
+
 float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw)
 {
 	float gyro_sensitivity = ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm));
