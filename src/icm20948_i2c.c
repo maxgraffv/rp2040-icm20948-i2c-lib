@@ -230,8 +230,24 @@ uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
 
 //ACCEL SELF-TEST
 
-
+//accel enable
+//gyro enable
 //TEMP DEFAULT INIT
+//dmp enable
+//dmp init
+//fifo enable
+//fifo init
+//Low Power Init
+//Low power enable
+//device_reset()
+//Temp init
+
+//select ClockSource
+
+// Wake On Motion enable
+
+
+
 
 
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
@@ -438,6 +454,5 @@ uint8_t ICM20948_GYRO_DLPF_enable(ICM20948* icm, uint8_t enable)
 
 	return 1;
 }
-
 
 
