@@ -366,6 +366,10 @@ uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm);
 uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm);
 uint8_t ICM20948_isLowPowerpMode(ICM20948* icm);
 
+uint8_t ICM20948_Temp_enable(ICM20948* icm);
+uint8_t ICM20948_Temp_disable(ICM20948* icm);
+uint8_t ICM20948_isTemp(ICM20948* icm);
+
 /*
 	PWR_MGMT_2 - Power Management Register 2
 */

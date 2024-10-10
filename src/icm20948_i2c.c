@@ -199,7 +199,6 @@ uint8_t ICM20948_SleepMode_disable(ICM20948* icm)
 	return 1;
 }
 
-
 uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
 {
 
@@ -242,6 +241,7 @@ uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm)
 	uint8_t pwr_mgmt_1 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
 
 	pwr_mgmt_1 |= (1<<PWR_MGMT_1_LP_EN);
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, pwr_mgmt_1);
 
 	return 1;
 }
@@ -251,6 +251,7 @@ uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm)
 	uint8_t pwr_mgmt_1 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
 
 	pwr_mgmt_1 &= ~(1<<PWR_MGMT_1_LP_EN);
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, pwr_mgmt_1);
 
 	return 1;
 }
@@ -266,6 +267,36 @@ uint8_t ICM20948_isLowPowerpMode(ICM20948* icm)
 	return isLP;
 }
 
+uint8_t ICM20948_Temp_enable(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_1 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+
+	pwr_mgmt_1 &= ~(1<<PWR_MGMT_1_TEMP_DIS);
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, pwr_mgmt_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_Temp_disable(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_1 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+
+	pwr_mgmt_1 |= (1<<PWR_MGMT_1_TEMP_DIS);
+	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, pwr_mgmt_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_isTemp(ICM20948* icm)
+{
+	uint8_t isTemp_disabled = ICM20948_get_register(icm, Bank0, PWR_MGMT_1) & 0b00100000;
+	if(isLP_disabled)
+		printf("Temp Sensor IS DISABLED\n");
+	else
+		printf("Temp Sensor IS ENABLED\n");
+
+	return (!isLP_disabled);
+}
 
 
 
