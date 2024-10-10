@@ -299,8 +299,6 @@ uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_add
 uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
 
-uint8_t ICM20948_isSleepMode(ICM20948* icm);
-uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep);
 
 /*
     FS_SEL | FullScale Range (degrees/sec) | Sensitivity 
@@ -337,7 +335,7 @@ GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* );
 uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );
 uint8_t ICM20948_GYRO_DLPF_enable(ICM20948*, uint8_t );
 
-uint8_t ICM20948_reset(ICM20948* icm);
+
 /*
 	USER_CTRL
 */
@@ -358,8 +356,11 @@ uint8_t ICM20948_set_GYRO_CYCLE(ICM20948* icm, uint8_t enable_bit);
 /*
 	PWR_MGMT_1 - Power Management Register 1
 */
-uint8_t ICM20948_get_PWR_MGMT_1(ICM20948* icm);
-uint8_t ICM20948_set_PWR_MGMT_1(ICM20948* icm, uint8_t val_to_set);
+uint8_t ICM20948_reset(ICM20948* icm);
+uint8_t ICM20948_isSleepMode(ICM20948* icm);
+uint8_t ICM20948_Sleep_enable(ICM20948* icm, uint8_t enableSleep);
+uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm);
+uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm)
 
 /*
 	PWR_MGMT_2 - Power Management Register 2

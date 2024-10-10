@@ -233,6 +233,27 @@ uint8_t ICM20948_reset(ICM20948* icm)
 	return 1;
 }
 
+uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_1 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+
+	pwr_mgmt_1 |= (1<<PWR_MGMT_1_LP_EN);
+
+	return 1;
+}
+
+uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm)
+{
+	uint8_t pwr_mgmt_1 = ICM20948_get_register(icm, Bank0, PWR_MGMT_1);
+
+	pwr_mgmt_1 &= ~(1<<PWR_MGMT_1_LP_EN);
+
+	return 1;
+}
+
+
+
+
 
 
 //GYRO SELF-TEST
