@@ -384,23 +384,11 @@ uint8_t ICM20948_GYRO_disable(ICM20948* icm)
 	return 1;
 }
 
-//GYRO SELF-TEST
-
-//ACCEL DEFAULT INIT
-
-//ACCEL SELF-TEST
 
 //TEMP DEFAULT INIT
 //dmp enable
 //dmp init
-//fifo enable
-//fifo init
-//Low Power Init
 //Temp init
-
-
-// Wake On Motion enable
-
 
 
 
