@@ -296,27 +296,44 @@ uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, ui
 
 uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_addr_H, uint8_t reg_addr_L);
 
+/*
+    WHO_AM_I
+*/
 uint8_t ICM20948_get_who_am_i(ICM20948* icm);
 uint8_t ICM20948_who_am_i_check(ICM20948* icm);
-
-
 
 /*
 	USER_CTRL
 */
-uint8_t ICM20948_get_USER_CTRL(ICM20948* icm);
-uint8_t ICM20948_set_USER_CTRL(ICM20948* icm, uint8_t val_to_set);
+uint8_t ICM20948_DPM_enable(ICM20948*);
+uint8_t ICM20948_DPM_disable(ICM20948*);
+
+uint8_t ICM20948_FIFO_enable(ICM20948*);
+uint8_t ICM20948_FIFO_disable(ICM20948*);
+
+uint8_t ICM20948_I2C_MST_enable(ICM20948*);
+uint8_t ICM20948_I2C_MST_disable(ICM20948*);
+
+uint8_t ICM20948_SPI_MODE_ONLY_enable(ICM20948*);
+uint8_t ICM20948_SPI_MODE_ONLY_disable(ICM20948*);
+
+uint8_t ICM20948_DPM_reset(ICM20948*);
+uint8_t ICM20948_SRAM_reset(ICM20948*);
+uint8_t ICM20948_I2C_MST_reset(ICM20948*);
+
+
 
 /*
 	LP_CONFIG - Low Power Mode Configuration
 */
-uint8_t ICM20948_get_LP_CONFIG(ICM20948* icm);
-uint8_t ICM20948_set_LP_CONFIG(ICM20948* icm, uint8_t val_to_set);
+uint8_t ICM20948_I2C_MST_CYCLE_enable(ICM20948*);
+uint8_t ICM20948_I2C_MST_CYCLE_disable(ICM20948*);
 
-uint8_t ICM20948_set_I2C_MST_CYCLE(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_ACCEL_CYCLE(ICM20948* icm, uint8_t enable_bit);
-uint8_t ICM20948_set_GYRO_CYCLE(ICM20948* icm, uint8_t enable_bit);
+uint8_t ICM20948_ACCEL_CYCLE_enable(ICM20948*);
+uint8_t ICM20948_ACCEL_CYCLE_disable(ICM20948*);
 
+uint8_t ICM20948_GYRO_CYCLE_enable(ICM20948*);
+uint8_t ICM20948_GYRO_CYCLE_disable(ICM20948*);
 
 /*
 	PWR_MGMT_1 - Power Management Register 1
@@ -354,20 +371,32 @@ CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948*);
 */
 uint8_t ICM20948_ACCEL_enable(ICM20948* icm);
 uint8_t ICM20948_ACCEL_disable(ICM20948* icm);
+
 uint8_t ICM20948_GYRO_enable(ICM20948* icm);
 uint8_t ICM20948_GYRO_disable(ICM20948* icm);
+
+/*
+    TODO: INT_PIN_CFG
+*/
+
 
 /*
     INT_ENABLE
 */
 uint8_t ICM20948_WOF_enable(ICM20948* icm);
 uint8_t ICM20948_WOF_disable(ICM20948* icm);
+
 uint8_t ICM20948_WOM_enable(ICM20948* icm);
 uint8_t ICM20948_WOM_disable(ICM20948* icm);
+
 uint8_t ICM20948_PLL_RDY_enable(ICM20948* icm);
 uint8_t ICM20948_PLL_RDY_disable(ICM20948* icm);
+
 uint8_t ICM20948_DMP_INT1_enable(ICM20948* icm);
 uint8_t ICM20948_DMP_INT1_disable(ICM20948* icm);
+
+uint8_t ICM20948_I2C_MST_INT_enable(ICM20948* icm);
+uint8_t ICM20948_I2C_MST_INT_disable(ICM20948* icm);
 
 uint8_t ICM20948_RAW_DATA_RDY_INT_enable(ICM20948* icm);
 uint8_t ICM20948_RAW_DATA_RDY_INT_disable(ICM20948* icm);
@@ -386,7 +415,15 @@ uint8_t ICM20948_get_i2C_MST_status(ICM20948* icm);
 /*
     INT_STATUS 1/2/3
 */
-uint8_t ICM20948_get_Interrupt_status(ICM20948* icm);
+uint8_t ICM20948_get_WOM_INT_status(ICM20948* icm);
+uint8_t ICM20948_get_PLL_RDY_status(ICM20948* icm);
+uint8_t ICM20948_get_DMP_INT1_status(ICM20948* icm);
+uint8_t ICM20948_get_I2C_MST_INT_status(ICM20948* icm);
+
+uint8_t ICM20948_get_RAW_DATA_RDY_INT_status(ICM20948* icm);
+uint8_t ICM20948_get_FIFO_OVERFLOW_INT_status(ICM20948* icm);
+uint8_t ICM20948_get_FIFO_WATERMARK_INT_status(ICM20948* icm);
+
 
 /*
     DELAY_TIME
@@ -405,9 +442,7 @@ int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
 
-float ICM20948_get_ACCEL_X(ICM20948* icm);
-float ICM20948_get_ACCEL_Y(ICM20948* icm);
-float ICM20948_get_ACCEL_Z(ICM20948* icm);
+float ICM20948_ACCEL_raw_to_mps(ICM20948* icm, int16_t gyro_raw);
 
 uint8_t ICM20948_ACCEL_X_SELF_TEST(ICM20948*);
 uint8_t ICM20948_ACCEL_Y_SELF_TEST(ICM20948*);
@@ -505,7 +540,6 @@ uint8_t ICM20948_get_EXT_SLV_DATA_arr(ICM20948*, EXT_SLV_SENS_DATA, uint8_t* ptr
 /*
     FIFO
 */
-uint8_t ICM20948_FIFO_enable(ICM20948* icm);
 uint8_t ICM20948_FIFO_reset(ICM20948* icm);
 uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE);
 
@@ -515,7 +549,9 @@ uint8_t ICM20948_get_FIFO_COUNT(ICM20948* icm, FIFO_MODE);
 uint8_t ICM20948_SLV_FIFO_enable(ICM20948* icm, EXT_SLV_SENS);
 
 uint8_t ICM20948_FIFO_ACCEL_enable(ICM20948* icm);
-uint8_t ICM20948_FIFO_GYRO_enable(ICM20948* icm);
+uint8_t ICM20948_FIFO_GYRO_X_enable(ICM20948* icm);
+uint8_t ICM20948_FIFO_GYRO_Y_enable(ICM20948* icm);
+uint8_t ICM20948_FIFO_GYRO_Z_enable(ICM20948* icm);
 uint8_t ICM20948_FIFO_TEMP_enable(ICM20948* icm);
 
 uint8_t ICM20948_FIFO_write(ICM20948*, uint8_t);
