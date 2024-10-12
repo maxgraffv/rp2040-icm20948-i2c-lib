@@ -116,7 +116,7 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm)
 	return who_am_i_val_isOK;
 }
 
-uint8_t ICM20948_defaultInit(ICM20948* icm)
+uint8_t ICM20948_Init(ICM20948* icm)
 {
 	printf("ICM Default Init...\n");
 
@@ -384,15 +384,6 @@ uint8_t ICM20948_GYRO_disable(ICM20948* icm)
 	return 1;
 }
 
-
-//TEMP DEFAULT INIT
-//dmp enable
-//dmp init
-//Temp init
-
-
-
-
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm)
 {
 	int16_t gyro_x_raw = (int16_t)(ICM20948_get_register_16b(icm, Bank0, GYRO_XOUT_H, GYRO_XOUT_L));
@@ -582,20 +573,32 @@ uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948* icm, GYRO_DLPF dlpf_sel)
 	return 1;
 }
 
-uint8_t ICM20948_GYRO_DLPF_enable(ICM20948* icm, uint8_t enable)
+uint8_t ICM20948_GYRO_DLPF_enable(ICM20948* icm)
 {
 	uint8_t gyro_config_1 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
 
-	switch(enable)
-	{
-		case 0:
-			gyro_config_1 &= ~(1<<GYRO_CONFIG_1_GYRO_FCHOICE);
-		break;
-		default:
-			gyro_config_1 |= (1<<GYRO_CONFIG_1_GYRO_FCHOICE);
-	}
+	gyro_config_1 |= (1<<GYRO_CONFIG_1_GYRO_FCHOICE);
+
+	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_1,gyro_config_1);
 
 	return 1;
 }
 
+uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* icm)
+{
+	uint8_t gyro_config_1 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_1);
+	gyro_config_1 |= (1<<GYRO_CONFIG_1_GYRO_FCHOICE);
+	gyro_config_1 &= ~(1<<GYRO_CONFIG_1_GYRO_FCHOICE);
+
+	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_1,gyro_config_1);
+	return 1;
+}
+
+
+uint8_t ICM20948_DPM_enable(ICM20948*)
+{
+
+
+
+}
 

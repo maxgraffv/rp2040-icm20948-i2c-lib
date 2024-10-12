@@ -277,30 +277,26 @@ typedef enum{
 	Bank3 = 3
 } UserBank;
 
-
-
-
 typedef struct{
 	uint8_t i2c_address;
 	uint8_t who_am_i_val;
 	i2c_inst_t* i2c_ptr;
 }ICM20948;
 
-uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );
+uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );//ok
 
-ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
-uint8_t ICM20948_defaultInit(ICM20948* icm);
+ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );//ok
+uint8_t ICM20948_Init(ICM20948* icm);//ok
 
-uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr);
-uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value);
-
-uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_addr_H, uint8_t reg_addr_L);
+uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr);//ok
+uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value);//ok
+uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_addr_H, uint8_t reg_addr_L);//ok
 
 /*
     WHO_AM_I
 */
-uint8_t ICM20948_get_who_am_i(ICM20948* icm);
-uint8_t ICM20948_who_am_i_check(ICM20948* icm);
+uint8_t ICM20948_get_who_am_i(ICM20948* icm);//ok
+uint8_t ICM20948_who_am_i_check(ICM20948* icm);//ok
 
 /*
 	USER_CTRL
@@ -338,19 +334,19 @@ uint8_t ICM20948_GYRO_CYCLE_disable(ICM20948*);
 /*
 	PWR_MGMT_1 - Power Management Register 1
 */
-uint8_t ICM20948_reset(ICM20948* icm);
+uint8_t ICM20948_reset(ICM20948* icm);//ok
 
-uint8_t ICM20948_SleepMode_enable(ICM20948* icm);
-uint8_t ICM20948_SleepMode_disable(ICM20948* icm);
-uint8_t ICM20948_isSleepMode(ICM20948* icm);
+uint8_t ICM20948_SleepMode_enable(ICM20948* icm);//OK
+uint8_t ICM20948_SleepMode_disable(ICM20948* icm);//OK
+uint8_t ICM20948_isSleepMode(ICM20948* icm);//OK
 
-uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm);
-uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm);
-uint8_t ICM20948_isLowPowerpMode(ICM20948* icm);
+uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm);//ok
+uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm);//ok
+uint8_t ICM20948_isLowPowerpMode(ICM20948* icm);//ok
 
-uint8_t ICM20948_Temp_enable(ICM20948* icm);
-uint8_t ICM20948_Temp_disable(ICM20948* icm);
-uint8_t ICM20948_isTemp(ICM20948* icm);
+uint8_t ICM20948_Temp_enable(ICM20948* icm);//ok
+uint8_t ICM20948_Temp_disable(ICM20948* icm);//ok
+uint8_t ICM20948_isTemp(ICM20948* icm);//ok
 
 
 typedef enum{
@@ -363,20 +359,22 @@ typedef enum{
     CLOCK_SRC_STOP = 7
 } CLOCK_SRC;
 
-uint8_t ICM20948_set_CLOCK_SRC(ICM20948*, CLOCK_SRC);
-CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948*);
+uint8_t ICM20948_set_CLOCK_SRC(ICM20948*, CLOCK_SRC);//ok
+CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948*);//ok
 
 /*
 	PWR_MGMT_2 - Power Management Register 2
 */
-uint8_t ICM20948_ACCEL_enable(ICM20948* icm);
-uint8_t ICM20948_ACCEL_disable(ICM20948* icm);
+uint8_t ICM20948_ACCEL_enable(ICM20948* icm);//ok
+uint8_t ICM20948_ACCEL_disable(ICM20948* icm);//ok
 
-uint8_t ICM20948_GYRO_enable(ICM20948* icm);
-uint8_t ICM20948_GYRO_disable(ICM20948* icm);
+uint8_t ICM20948_GYRO_enable(ICM20948* icm);//ok
+uint8_t ICM20948_GYRO_disable(ICM20948* icm);//ok
 
 /*
-    TODO: INT_PIN_CFG
+  !!!!!!!!!!!!!!!!!!!!!
+ !! TODO: INT_PIN_CFG !!
+  !!!!!!!!!!!!!!!!!!!!!
 */
 
 
@@ -466,7 +464,7 @@ uint16_t ICM20948_set_WOM_THRESHOLD(ICM20948*, uint8_t);
 /*
 	GYRO
 */
-uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, FullScaleRange);
+uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, FullScaleRange);//OK
 
 /*
     FS_SEL | FullScale Range (degrees/sec) | Sensitivity 
@@ -482,9 +480,9 @@ typedef enum{
     FS_2000 = 2000
 } FullScaleRange;
 
-float ICM20948_getGyroSensitivity(FullScaleRange FS);
-FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948*);
-uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948*, FullScaleRange );
+float ICM20948_getGyroSensitivity(FullScaleRange FS);//OK
+FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948*);//OK
+uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948*, FullScaleRange );//OK
 
 
 typedef enum{
@@ -499,17 +497,19 @@ typedef enum{
     GYRO_DLPF_NBW_376_5 = 7
 }GYRO_DLPF;
 
-GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* );
-uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );
-uint8_t ICM20948_GYRO_DLPF_enable(ICM20948*, uint8_t );
+GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* );//OK
+uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );//OK
 
-int8_t ICM20948_get_GYRO_raw_arr(ICM20948* icm, uint16_t* array_ptr);
+uint8_t ICM20948_GYRO_DLPF_enable(ICM20948*);//OK
+uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* );//OK
 
-int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
-int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
-int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);
+int8_t ICM20948_get_GYRO_raw_arr(ICM20948* icm, uint16_t* array_ptr);//OK
 
-float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw);
+int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);//ok
+int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);//ok
+int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);//ok
+
+float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw);//ok
 
 uint8_t ICM20948_GYRO_X_SELF_TEST(ICM20948*);
 uint8_t ICM20948_GYRO_Y_SELF_TEST(ICM20948*);
@@ -528,8 +528,9 @@ uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948*);
 */
 uint8_t ICM20948_TEMP_Init(ICM20948*, TEMP_DLPF);
 
+//degC = ((RAW - RoomTempOffset)/Temp_sensitivity)+21degC
 uint16_t ICM20948_get_TEMP_raw(ICM20948* icm);
-float ICM20948_get_TEMP(ICM20948* icm); //degC = ((RAW - RoomTempOffset)/Temp_sensitivity)+21degC
+float ICM20948_get_TEMP(ICM20948* icm); 
 
 /*
     EXT_SLV_SENS_DATA 00-23
