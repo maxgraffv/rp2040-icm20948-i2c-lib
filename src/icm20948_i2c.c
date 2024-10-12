@@ -612,3 +612,21 @@ uint8_t ICM20948_DMP_disable(ICM20948* icm)
 
 	return 1;
 }
+
+uint8_t ICM20948_FIFO_enable(ICM20948* icm)
+{
+	uint8_t usr_ctrl = ICM20948_get_register(icm, Bank0, USER_CTRL);
+	usr_ctrl |= (1<<USER_CTRL_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, USER_CTRL, usr_ctrl);
+
+	return 1;
+}
+
+uint8_t ICM20948_FIFO_disable(ICM20948* icm)
+{
+	uint8_t usr_ctrl = ICM20948_get_register(icm, Bank0, USER_CTRL);
+	usr_ctrl &= ~(1<<USER_CTRL_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, USER_CTRL, usr_ctrl);
+
+	return 1;
+}
