@@ -694,6 +694,59 @@ uint8_t ICM20948_I2C_MST_reset(ICM20948*)
 	return 1;
 }
 
+uint8_t ICM20948_I2C_MST_CYCLE_enable(ICM20948* icm)
+{
+	uint8_t lp_config = ICM20948_get_register(icm, Bank0, LP_CONFIG);
+	lp_config |= (1<<LP_CONFIG_I2C_MST_CYCLE);
+	ICM20948_set_register(icm, Bank0, LP_CONFIG, lp_config);
+
+	return 1;
+}
+
+uint8_t ICM20948_I2C_MST_CYCLE_disable(ICM20948* icm)
+{
+	uint8_t lp_config = ICM20948_get_register(icm, Bank0, LP_CONFIG);
+	lp_config &= ~(1<<LP_CONFIG_I2C_MST_CYCLE);
+	ICM20948_set_register(icm, Bank0, LP_CONFIG, lp_config);
+
+	return 1;
+}
+
+uint8_t ICM20948_ACCEL_CYCLE_enable(ICM20948* icm)
+{
+	uint8_t lp_config = ICM20948_get_register(icm, Bank0, LP_CONFIG);
+	lp_config |= (1<<LP_CONFIG_ACCEL_CYCLE);
+	ICM20948_set_register(icm, Bank0, LP_CONFIG, lp_config);
+
+	return 1;
+}
+
+uint8_t ICM20948_ACCEL_CYCLE_disable(ICM20948* icm)
+{
+	uint8_t lp_config = ICM20948_get_register(icm, Bank0, LP_CONFIG);
+	lp_config &= ~(1<<LP_CONFIG_ACCEL_CYCLE);
+	ICM20948_set_register(icm, Bank0, LP_CONFIG, lp_config);
+
+	return 1;
+}
+
+uint8_t ICM20948_GYRO_CYCLE_enable(ICM20948* icm)
+{
+	uint8_t lp_config = ICM20948_get_register(icm, Bank0, LP_CONFIG);
+	lp_config |= (1<<LP_CONFIG_GYRO_CYCLE);
+	ICM20948_set_register(icm, Bank0, LP_CONFIG, lp_config);
+
+	return 1;
+}
+
+uint8_t ICM20948_GYRO_CYCLE_disable(ICM20948* icm)
+{
+	uint8_t lp_config = ICM20948_get_register(icm, Bank0, LP_CONFIG);
+	lp_config &= ~(1<<LP_CONFIG_GYRO_CYCLE);
+	ICM20948_set_register(icm, Bank0, LP_CONFIG, lp_config);
+
+	return 1;
+}
 
 
 
