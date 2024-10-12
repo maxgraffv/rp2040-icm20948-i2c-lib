@@ -981,13 +981,89 @@ int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm)
 float ICM20948_ACCEL_raw_to_g(ICM20948* icm, int16_t accel_raw)
 {
 	float accel = (float)(accel_raw);
-	float sensitivity = ICM20948;
+	float sensitivity = ICM20948_getAccelSensitivity(ICM20948_get_ACCEL_FS_SEL(icm));
 	float accel_g = accel/sensitivity;
 
-
+	return accel_g;
 }
 
 
+uint8_t ICM20948_set_ACCEL_FS_SEL(ICM20948* icm, ACCEL_FS accel_fs_sel )
+{
+	uint8_t accel_config = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG);
+	accel_config &= 0b11111001;
+
+	switch(accel_fs_sel)
+	{
+		case ACCEL_FS_2:
+			accel_config |= (ACCEL_FS_2<<1);
+		break;	 
+		case ACCEL_FS_4:
+			accel_config |= (ACCEL_FS_4<<1);
+		break; 
+		case ACCEL_FS_8:
+			accel_config |= (ACCEL_FS_8<<1);
+		break; 
+		case ACCEL_FS_16:
+			accel_config |= (ACCEL_FS_16<<1);
+		break; 
+	}
+
+	ICM20948_set_register(icm, Bank2, ACCEL_CONFIG, accel_config);
+
+	return 1;
+}
+
+ACCEL_FS ICM20948_get_ACCEL_FS_SEL(ICM20948*)
+{
+
+	uint8_t accel_config = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG);
+	accel_config &= 0b00000110;
+	accel_config >>= 1;
+
+	ACCEL_FS accel_fs = ACCEL_FS_2;
+
+	switch(accel_config)
+	{
+		case 0:
+			accel_fs = ACCEL_FS_2;
+		break;	
+		case 1:
+			accel_fs = ACCEL_FS_4;
+		break;
+		case 2:
+			accel_fs = ACCEL_FS_8;
+		break;
+		case 3:
+			accel_fs = ACCEL_FS_16;
+		break;
+	}
+
+	return accel_fs;
+}
+
+float ICM20948_getAccelSensitivity(ACCEL_FS accel_fs)
+{
+	float sensitivity = 16384;
+	switch(accel_fs)
+	{
+		case ACCEL_FS_2:
+			sensitivity = 16384;
+		break;
+		case ACCEL_FS_2:
+			sensitivity = 8192;
+		break;
+		case ACCEL_FS_2:
+			sensitivity = 4096 ;
+		break;
+		case ACCEL_FS_2:
+			sensitivity = 2048;
+		break;
+	}
+
+
+	return sensitivity;
+}
 
 
 

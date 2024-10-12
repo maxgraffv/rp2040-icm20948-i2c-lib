@@ -446,15 +446,15 @@ uint8_t ICM20948_ACCEL_Init(ICM20948*, ACCEL_DLPF, AccelFullScale);
     11			2000							16.4
 */
 typedef enum{
-    ACCEL_FS_2 = 2,
-    ACCEL_FS_4 = 4,
-    ACCEL_FS_8 = 8,
-    ACCEL_FS_16 = 16
+    ACCEL_FS_2 = 0,
+    ACCEL_FS_4 = 1,
+    ACCEL_FS_8 = 2,
+    ACCEL_FS_16 = 3
 } ACCEL_FS;
 
-float ICM20948_getAccelSensitivity(ACCEL_FS);
-ACCEL_FS ICM20948_get_ACCEL_FS_SEL(ICM20948*);
-uint8_t ICM20948_set_ACCEL_FS_SEL(ICM20948*, ACCEL_FS );
+float ICM20948_getAccelSensitivity(ACCEL_FS); //ok
+ACCEL_FS ICM20948_get_ACCEL_FS_SEL(ICM20948*); //ok
+uint8_t ICM20948_set_ACCEL_FS_SEL(ICM20948*, ACCEL_FS ); //ok
 
 
 typedef enum{
