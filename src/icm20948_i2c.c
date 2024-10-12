@@ -978,6 +978,14 @@ int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm)
 	return accel_y_raw;
 }
 
+float ICM20948_ACCEL_raw_to_g(ICM20948* icm, int16_t accel_raw)
+{
+	float accel = (float)(accel_raw);
+	float sensitivity = ICM20948;
+	float accel_g = accel/sensitivity;
+
+
+}
 
 
 

@@ -442,7 +442,7 @@ int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
 
-float ICM20948_ACCEL_raw_to_mps(ICM20948* icm, int16_t gyro_raw);
+float ICM20948_ACCEL_raw_to_g(ICM20948* icm, int16_t);
 
 uint8_t ICM20948_ACCEL_X_SELF_TEST(ICM20948*);
 uint8_t ICM20948_ACCEL_Y_SELF_TEST(ICM20948*);
