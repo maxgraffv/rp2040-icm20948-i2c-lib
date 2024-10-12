@@ -595,10 +595,20 @@ uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* icm)
 }
 
 
-uint8_t ICM20948_DPM_enable(ICM20948*)
+uint8_t ICM20948_DMP_enable(ICM20948* icm)
 {
+	uint8_t usr_ctrl = ICM20948_get_register(icm, Bank0, USER_CTRL);
+	usr_ctrl |= (1<<USER_CTRL_DMP_EN);
+	ICM20948_set_register(icm, Bank0, USER_CTRL, usr_ctrl);
 
-
-
+	return 1;
 }
 
+uint8_t ICM20948_DMP_disable(ICM20948* icm)
+{
+	uint8_t usr_ctrl = ICM20948_get_register(icm, Bank0, USER_CTRL);
+	usr_ctrl &= ~(1<<USER_CTRL_DMP_EN);
+	ICM20948_set_register(icm, Bank0, USER_CTRL, usr_ctrl);
+
+	return 1;
+}

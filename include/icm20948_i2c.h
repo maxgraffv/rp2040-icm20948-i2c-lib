@@ -301,8 +301,8 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm);//ok
 /*
 	USER_CTRL
 */
-uint8_t ICM20948_DPM_enable(ICM20948*);
-uint8_t ICM20948_DPM_disable(ICM20948*);
+uint8_t ICM20948_DMP_enable(ICM20948*);
+uint8_t ICM20948_DMP_disable(ICM20948*);
 
 uint8_t ICM20948_FIFO_enable(ICM20948*);
 uint8_t ICM20948_FIFO_disable(ICM20948*);
