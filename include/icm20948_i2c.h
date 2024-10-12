@@ -295,8 +295,8 @@ uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_add
 /*
     WHO_AM_I
 */
-uint8_t ICM20948_get_who_am_i(ICM20948* icm);//ok
-uint8_t ICM20948_who_am_i_check(ICM20948* icm);//ok
+uint8_t ICM20948_get_who_am_i(ICM20948* icm);
+uint8_t ICM20948_who_am_i_check(ICM20948* icm);
 
 /*
 	USER_CTRL
@@ -313,7 +313,7 @@ uint8_t ICM20948_I2C_MST_disable(ICM20948*);
 uint8_t ICM20948_SPI_MODE_ONLY_enable(ICM20948*);
 uint8_t ICM20948_SPI_MODE_ONLY_disable(ICM20948*);
 
-uint8_t ICM20948_DPM_reset(ICM20948*);
+uint8_t ICM20948_DMP_reset(ICM20948*);
 uint8_t ICM20948_SRAM_reset(ICM20948*);
 uint8_t ICM20948_I2C_MST_reset(ICM20948*);
 
