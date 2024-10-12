@@ -146,7 +146,7 @@ uint8_t ICM20948_Init(ICM20948* icm)
 	uint8_t MOD_CTRL_USR_reg = 0x00;
 
 
-	ICM20948_Sleep_enable(icm, 0);
+	ICM20948_SleepMode_disable(icm);
 	ICM20948_GYRO_init(icm, GYRO_DLPF_NBW_154_3, FS_1000);
 
 	float deg = 0;
@@ -559,10 +559,11 @@ uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948* icm, GYRO_DLPF dlpf_sel)
 
 	if(dlpf_sel == GYRO_DLPF_NBW_12316)
 	{
-		ICM20948_GYRO_DLPF_enable(icm, 0);
+		ICM20948_GYRO_DLPF_disable(icm);
 	}
 	else
 	{
+		ICM20948_GYRO_DLPF_enable(icm);
 		gyro_config_1 &= 0b11000111;
 		dlpf_val <<= 3;
 		gyro_config_1 |= dlpf_val;
@@ -747,6 +748,171 @@ uint8_t ICM20948_GYRO_CYCLE_disable(ICM20948* icm)
 
 	return 1;
 }
+
+uint8_t ICM20948_WOF_enable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable |= (1<<INT_ENABLE_REG_WOF_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_WOF_disable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable &= ~(1<<INT_ENABLE_REG_WOF_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_WOM_enable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable |= (1<<INT_ENABLE_WOM_INT_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_WOM_disable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable &= ~(1<<INT_ENABLE_WOM_INT_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_PLL_RDY_enable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable |= (1<<INT_ENABLE_PLL_RDY_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_PLL_RDY_disable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable &= ~(1<<INT_ENABLE_PLL_RDY_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_DMP_INT1_enable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable |= (1<<INT_ENABLE_DMP_INT1_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_DMP_INT1_disable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable &= ~(1<<INT_ENABLE_DMP_INT1_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_I2C_MST_INT_enable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable |= (1<<INT_ENABLE_I2C_MST_INT_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_I2C_MST_INT_disable(ICM20948* icm)
+{
+	uint8_t int_enable = ICM20948_get_register(icm, Bank0, INT_ENABLE);
+	int_enable &= ~(1<<INT_ENABLE_I2C_MST_INT_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE, int_enable);
+
+	return 1;
+}
+
+uint8_t ICM20948_RAW_DATA_RDY_INT_enable(ICM20948* icm)
+{
+	uint8_t int_enable_1 = ICM20948_get_register(icm, Bank0, INT_ENABLE_1);
+	int_enable_1 |= (1<<INT_ENABLE_1_RAW_DATA_0RDY_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE_1, int_enable_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_RAW_DATA_RDY_INT_disable(ICM20948* icm)
+{
+	uint8_t int_enable_1 = ICM20948_get_register(icm, Bank0, INT_ENABLE_1);
+	int_enable_1 &= ~(1<<INT_ENABLE_1_RAW_DATA_0RDY_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE_1, int_enable_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_FIFO_OVERFLOW_INT_enable(ICM20948* icm);
+{
+	uint8_t int_enable_2 = ICM20948_get_register(icm, Bank0, INT_ENABLE_2);
+	int_enable_2 |= (1<<INT_ENABLE_2_FIFO_OVERFLOW_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE_2, int_enable_2);
+
+	return 1;
+}
+
+uint8_t ICM20948_FIFO_OVERFLOW_INT_disable(ICM20948* icm);
+{
+	uint8_t int_enable_2 = ICM20948_get_register(icm, Bank0, INT_ENABLE_2);
+	int_enable_2 &= ~(1<<INT_ENABLE_2_FIFO_OVERFLOW_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE_2, int_enable_2);
+
+	return 1;
+}
+
+uint8_t ICM20948_FIFO_WATERMARK_INT_enable(ICM20948* icm);
+{
+	uint8_t int_enable_3 = ICM20948_get_register(icm, Bank0, INT_ENABLE_3);
+	int_enable_3 |= (1<<INT_ENABLE_3_FIFO_WM_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE_3, int_enable_3);
+
+	return 1;
+}
+
+uint8_t ICM20948_FIFO_WATERMARK_INT_disable(ICM20948* icm);
+{
+	uint8_t int_enable_3 = ICM20948_get_register(icm, Bank0, INT_ENABLE_3);
+	int_enable_3 &= ~(1<<INT_ENABLE_3_FIFO_WM_EN);
+	ICM20948_set_register(icm, Bank0, INT_ENABLE_3, int_enable_3);
+
+	return 1;
+}
+
+
+
+
+
+
+
+
+
+uint8_t ICM20948_WakeOnMotion_occured(ICM20948* icm)
+{
+	uint8_t int_status = ICM20948_get_register(icm, Bank0, INT_STATUS);
+	uint8_t WOM = int_status & 0b00001000;
+	WOM >>= 3;
+
+	return WOM;
+}
+
+
+
+
 
 
 

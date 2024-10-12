@@ -406,6 +406,10 @@ uint8_t ICM20948_FIFO_WATERMARK_INT_enable(ICM20948* icm);
 uint8_t ICM20948_FIFO_WATERMARK_INT_disable(ICM20948* icm);
 
 /*
+    !!!!!!!!!!!
+    TODO
+    !!!!!!!!
+
     I2C_MST_STATUS
 */
 uint8_t ICM20948_get_i2C_MST_status(ICM20948* icm);
