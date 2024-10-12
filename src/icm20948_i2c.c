@@ -957,6 +957,32 @@ float ICM20948_get_DELAY_TIME_ms(ICM20948* icm)
 
 
 
+int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm)
+{
+	int16_t accel_x_raw = (int16_t)ICM20948_get_register_16b(icm, Bank0, ACCEL_XOUT_H, ACCEL_XOUT_L);
+
+	return accel_x_raw;
+}
+
+int16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm)
+{
+	int16_t accel_y_raw = (int16_t)ICM20948_get_register_16b(icm, Bank0, ACCEL_YOUT_H, ACCEL_YOUT_L);
+
+	return accel_y_raw;
+}
+
+int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm)
+{
+	int16_t accel_x_raw = (int16_t)ICM20948_get_register_16b(icm, Bank0, ACCEL_ZOUT_H, ACCEL_ZOUT_L);
+
+	return accel_y_raw;
+}
+
+
+
+
+
+
 
 
 
