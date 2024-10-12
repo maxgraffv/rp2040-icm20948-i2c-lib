@@ -438,6 +438,47 @@ float ICM20948_get_DELAY_TIME_ms(ICM20948*);
 */
 uint8_t ICM20948_ACCEL_Init(ICM20948*, ACCEL_DLPF, AccelFullScale);
 
+/*
+    FS_SEL | FullScale Range (degrees/sec) | Sensitivity 
+    00			250								131
+    01			500								65.5
+    10			1000							32.8
+    11			2000							16.4
+*/
+typedef enum{
+    ACCEL_FS_2 = 2,
+    ACCEL_FS_4 = 4,
+    ACCEL_FS_8 = 8,
+    ACCEL_FS_16 = 16
+} ACCEL_FS;
+
+float ICM20948_getAccelSensitivity(ACCEL_FS FS);
+GYRO_FS ICM20948_get_GYRO_FS_SEL(ICM20948*);
+uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948*, GYRO_FS );
+
+
+typedef enum{
+    GYRO_DLPF_NBW_12316 = -1,
+    GYRO_DLPF_NBW_229_8 = 0,
+    GYRO_DLPF_NBW_187_6 = 1,
+    GYRO_DLPF_NBW_154_3 = 2,
+    GYRO_DLPF_NBW_73_3 = 3,
+    GYRO_DLPF_NBW_35_9 = 4,
+    GYRO_DLPF_NBW_17_8 = 5,
+    GYRO_DLPF_NBW_8_9 = 6,
+    GYRO_DLPF_NBW_376_5 = 7
+}GYRO_DLPF;
+
+GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* );//OK
+uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );//OK
+
+uint8_t ICM20948_GYRO_DLPF_enable(ICM20948*);//OK
+uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* );//OK
+
+
+
+
+
 int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
@@ -454,6 +495,11 @@ uint8_t ICM20948_set_ACCEL_AVG_SAMPLES(ICM20948*, ACCEL_AVG_SAMPLES);
 uint16_t ICM20948_set_ACCEL_SAMPLE_RATE_DIV(ICM20948*, uint8_t);
 uint16_t ICM20948_get_ACCEL_SAMPLE_RATE_DIV(ICM20948*);
 
+
+
+/*
+    Wake On Motion
+*/
 uint8_t ICM20948_WOM_Logic_enable(ICM20948*);
 uint8_t ICM20948_WOM_Logic_disable(ICM20948*);
 
@@ -466,7 +512,7 @@ uint16_t ICM20948_set_WOM_THRESHOLD(ICM20948*, uint8_t);
 /*
 	GYRO
 */
-uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, FullScaleRange);//OK
+uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, GYRO_FS);//OK
 
 /*
     FS_SEL | FullScale Range (degrees/sec) | Sensitivity 
@@ -476,15 +522,15 @@ uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, FullScaleRange);//OK
     11			2000							16.4
 */
 typedef enum{
-    FS_250 = 250,
-    FS_500 = 500,
-    FS_1000 = 1000,
-    FS_2000 = 2000
-} FullScaleRange;
+    GYRO_FS_250 = 250,
+    GYRO_FS_500 = 500,
+    GYRO_FS_1000 = 1000,
+    GYRO_FS_2000 = 2000
+} GYRO_FS;
 
-float ICM20948_getGyroSensitivity(FullScaleRange FS);//OK
-FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948*);//OK
-uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948*, FullScaleRange );//OK
+float ICM20948_getGyroSensitivity(GYRO_FS FS);//OK
+GYRO_FS ICM20948_get_GYRO_FS_SEL(ICM20948*);//OK
+uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948*, GYRO_FS );//OK
 
 
 typedef enum{

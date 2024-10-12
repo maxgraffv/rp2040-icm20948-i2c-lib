@@ -199,7 +199,7 @@ uint8_t ICM20948_SleepMode_disable(ICM20948* icm)
 	return 1;
 }
 
-uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, FullScaleRange fs)
+uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs)
 {
 
 	uint8_t GYRO_SMPLRT_DIV_val = 0x00; //Gyro samplerate divider
@@ -436,38 +436,38 @@ FullScaleRange ICM20948_get_GYRO_FS_SEL(ICM20948* icm)
 	switch(fs_sel_val)
 	{
 		case 0:
-			FS_sel = FS_250;
+			FS_sel = GYRO_FS_250;
 		break;
 		case 1:
-			FS_sel = FS_500;
+			FS_sel = GYRO_FS_500;
 		break;
 		case 2:
-			FS_sel = FS_1000;
+			FS_sel = GYRO_FS_1000;
 		break;
 		case 3:
-			FS_sel = FS_2000;
+			FS_sel = GYRO_FS_2000;
 		break;
 	}
 
 	return FS_sel;
 }
 
-uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948* icm, FullScaleRange fs_sel)
+uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948* icm, GYRO_FS fs_sel)
 {
 	uint8_t fs_sel_val = 0b00000000;
 
 	switch(fs_sel)
 	{
-		case (FS_250):
+		case (GYRO_FS_250):
 			fs_sel_val = 0b00000000;
 		break;
-		case (FS_500):
+		case (GYRO_FS_500):
 			fs_sel_val = 0b00000010;
 		break;
-		case FS_1000:
+		case GYRO_FS_1000:
 			fs_sel_val = 0b00000100;
 		break;
-		case FS_2000:
+		case GYRO_FS_2000:
 			fs_sel_val = 0b00000110;
 		break;
 	}
@@ -480,21 +480,21 @@ uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948* icm, FullScaleRange fs_sel)
 	return 1;
 }
 
-float ICM20948_getGyroSensitivity(FullScaleRange FS)
+float ICM20948_getGyroSensitivity(GYRO_FS FS)
 {
 	float sensitivity = 131;
 	switch(FS)
 	{
-		case FS_250:
+		case GYRO_FS_250:
 			sensitivity = 131;
 		break;
-		case FS_500:
+		case GYRO_FS_500:
 			sensitivity = 65.5;
 		break;
-		case FS_1000:
+		case GYRO_FS_1000:
 			sensitivity = 32.8;
 		break;
-		case FS_2000:
+		case GYRO_FS_2000:
 			sensitivity = 16.4;
 		break;
 	}
