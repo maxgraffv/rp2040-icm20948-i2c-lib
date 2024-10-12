@@ -910,6 +910,33 @@ uint8_t ICM20948_WakeOnMotion_occured(ICM20948* icm)
 	return WOM;
 }
 
+uint8_t ICM20948_PLL_Ready(ICM20948* icm) // PLL Enabled and Ready Status
+{
+	uint8_t int_status = ICM20948_get_register(icm, Bank0, INT_STATUS);
+	uint8_t PLL_RDY = int_status & 0b00000100;
+	PLL_RDY >>= 2;
+
+	return PLL_RDY;
+}
+
+uint8_t ICM20948_DMP_INT1_occured(ICM20948* icm) 
+{
+	uint8_t int_status = ICM20948_get_register(icm, Bank0, INT_STATUS);
+	uint8_t DMP_INT = int_status & 0b00000010;
+	DMP_INT >>= 1;
+
+	return DMP_INT;
+}
+
+uint8_t ICM20948_I2C_MST_INT_occured(ICM20948* icm) 
+{
+	uint8_t int_status = ICM20948_get_register(icm, Bank0, INT_STATUS);
+	uint8_t I2C_MST_INT = int_status & 0b00000001;
+
+	return I2C_MST_INT;
+}
+
+
 
 
 

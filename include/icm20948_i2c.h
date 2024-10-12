@@ -417,9 +417,9 @@ uint8_t ICM20948_get_i2C_MST_status(ICM20948* icm);
 /*
     INT_STATUS 1/2/3
 */
-uint8_t ICM20948_get_WOM_INT_status(ICM20948* icm);
-uint8_t ICM20948_get_PLL_RDY_status(ICM20948* icm);
-uint8_t ICM20948_get_DMP_INT1_status(ICM20948* icm);
+uint8_t ICM20948_WakeOnMotion_occured(ICM20948*);
+uint8_t ICM20948_PLL_Ready(ICM20948*);
+uint8_t ICM20948_DMP_INT1_occured(ICM20948* icm) 
 uint8_t ICM20948_get_I2C_MST_INT_status(ICM20948* icm);
 
 uint8_t ICM20948_get_RAW_DATA_RDY_INT_status(ICM20948* icm);
