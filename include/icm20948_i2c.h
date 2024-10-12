@@ -430,7 +430,7 @@ uint8_t ICM20948_get_FIFO_WATERMARK_INT_status(ICM20948* icm);
 /*
     DELAY_TIME
 */
-uint16_t ICM20948_get_DELAY_TIME(ICM20948* icm);
+float ICM20948_get_DELAY_TIME_ms(ICM20948*);
 
 
 /*

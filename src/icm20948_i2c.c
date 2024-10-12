@@ -941,6 +941,23 @@ uint8_t ICM20948_I2C_MST_INT_occured(ICM20948* icm)
 
 
 
+float ICM20948_get_DELAY_TIME_ms(ICM20948* icm)
+{
+	float delay_time_H = (float)ICM20948_get_register(icm, Bank0, DELAY_TIMEH);
+	float delay_time_L = (float)ICM20948_get_register(icm, Bank0, DELAY_TIMEL);
+	float ms = (delay_time_H * 256 + delay_time_L) * 0.9645;
+
+	return ms;
+}
+
+
+
+
+
+
+
+
+
 
 
 
