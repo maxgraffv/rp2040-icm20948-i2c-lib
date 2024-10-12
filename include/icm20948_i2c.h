@@ -438,8 +438,6 @@ float ICM20948_get_DELAY_TIME_ms(ICM20948*);
 */
 uint8_t ICM20948_ACCEL_Init(ICM20948*, ACCEL_DLPF, AccelFullScale);
 
-int8_t ICM20948_get_ACCEL_raw_arr(ICM20948* icm, uint16_t* array_ptr);
-
 int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
@@ -506,8 +504,6 @@ uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );//OK
 
 uint8_t ICM20948_GYRO_DLPF_enable(ICM20948*);//OK
 uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* );//OK
-
-int8_t ICM20948_get_GYRO_raw_arr(ICM20948* icm, uint16_t* array_ptr);//OK
 
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);//ok
 int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);//ok
