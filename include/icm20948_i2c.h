@@ -272,6 +272,10 @@
 // ACCEL_CONFIG_2 Register 
 #define ACCEL_CONFIG_2_DEC2_CFG  4  // Decimator for low-power mode
 
+// ACCEL INTEL CTRL
+#define ACCEL_INTEL_CTRL_EN         1
+#define ACCEL_INTEL_CTRL_MODE_INT   0
+
 typedef enum{ 
 	Bank0 = 0, 
 	Bank1 = 1, 
@@ -510,9 +514,16 @@ uint16_t ICM20948_get_ACCEL_SAMPLE_RATE_DIV(ICM20948*);
 uint8_t ICM20948_WOM_Logic_enable(ICM20948*);
 uint8_t ICM20948_WOM_Logic_disable(ICM20948*);
 
+typedef enum
+{
+    WOM_ALGORITHM_COMPARE_PREVIOUS = 1,
+    WOM_ALGORITHM_COMPARE_INITIAL = 0
+
+} WOM_ALGORITHM;
+
 uint8_t ICM20948_WOM_Algorithm_select(ICM20948*, WOM_ALGORITHM);
 
-uint16_t ICM20948_set_WOM_THRESHOLD(ICM20948*, uint8_t);
+uint8_t ICM20948_set_WOM_THRESHOLD(ICM20948*, uint8_t);
 
 
 

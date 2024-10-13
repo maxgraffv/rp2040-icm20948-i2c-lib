@@ -1188,19 +1188,45 @@ uint16_t ICM20948_get_ACCEL_SAMPLE_RATE_DIV(ICM20948* icm)
 	uint16_t samplerate = ICM20948_get_register_16b(icm, Bank2, ACCEL_SMPLRT_DIV_1, ACCEL_SMPLRT_DIV_2);
 	samplerate &= 0b0000111111111111;
 
+	return samplerate;
+}
+
+uint8_t ICM20948_WOM_Logic_enable(ICM20948* icm)
+{
+	uint8_t accel_intel = ICM20948_get_register(icm, Bank2, ACCEL_INTEL_CTRL);
+	accel_intel |= (1<<ACCEL_INTEL_CTRL_EN);
+	ICM20948_set_register(icm, Bank2, ACCEL_INTEL_CTRL, accel_intel);
+
 	return 1;
 }
 
+uint8_t ICM20948_WOM_Logic_disable(ICM20948* icm)
+{
+	uint8_t accel_intel = ICM20948_get_register(icm, Bank2, ACCEL_INTEL_CTRL);
+	accel_intel &= ~(1<<ACCEL_INTEL_CTRL_EN);
+	ICM20948_set_register(icm, Bank2, ACCEL_INTEL_CTRL, accel_intel);
 
+	return 1;
+}
 
+uint8_t ICM20948_WOM_Algorithm_select(ICM20948* icm, WOM_ALGORITHM wom_alg)
+{
+	uint8_t accel_intel = ICM20948_get_register(icm, Bank2, ACCEL_INTEL_CTRL);
+	uint8_t selected = wom_alg;
+	accel_intel &= 0b11111110;
+	accel_intel |= selected;
 
+	ICM20948_set_register(icm, Bank2, ACCEL_INTEL_CTRL, accel_intel);
 
+	return 1;
+}
 
+uint8_t ICM20948_set_WOM_THRESHOLD(ICM20948* icm, uint8_t threshold)
+{
+	ICM20948_set_register(icm, Bank2, ACCEL_WOM_THR, threshold);
 
-
-
-
-
+	return 1;
+}
 
 
 
