@@ -1223,9 +1223,37 @@ uint8_t ICM20948_set_WOM_THRESHOLD(ICM20948* icm, uint8_t threshold)
 	return 1;
 }
 
+uint8_t ICM20948_set_TEMP_DLPFCFG(ICM20948* icm, TEMP_DLPF dlpf)
+{
+	uint8_t temp_config = dlpf;
+	ICM20948_set_register(icm, Bank2, TEMP_CONFIG, temp_config);
 
+	return 1;
+}
 
+uint8_t ICM20948_TEMP_Init(ICM20948* icm, TEMP_DLPF dlpf)
+{
+	ICM20948_set_TEMP_DLPFCFG(icm, dlpf);
 
+	return 1;
+}
+
+uint16_t ICM20948_get_TEMP_raw(ICM20948* icm)
+{
+	uint16_t temp_raw = ICM20948_get_register_16b(icm, Bank0, TEMP_OUT_H, TEMP_OUT_L);
+
+	return temp_raw;
+}
+
+float ICM20948_get_TEMP_C(ICM20948* icm)
+{
+	uint16_t temp_raw = ICM20948_get_TEMP_raw(icm);
+	float sensitivity = 333.87;
+	float RoomTemp_Offset = 21;
+	float temp_C = ((temp_raw - RoomTemp_Offset)/sensitivity) + 21;
+
+	return temp_C;
+}
 
 
 

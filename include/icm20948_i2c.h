@@ -590,11 +590,25 @@ uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948*);
 /*
 	TEMP
 */
+
+typedef enum
+{
+    TEMP_DLPF_NBW_7932 = 0,
+    TEMP_DLPF_NBW_217_9 = 1,
+    TEMP_DLPF_NBW_123_5 = 2,
+    TEMP_DLPF_NBW_65_9 = 3,
+    TEMP_DLPF_NBW_34_1 = 4,
+    TEMP_DLPF_NBW_17_3 = 5,
+    TEMP_DLPF_NBW_8_8 = 6,
+    TEMP_DLPF_NBW_7932 = 7
+} TEMP_DLPF;
+
 uint8_t ICM20948_TEMP_Init(ICM20948*, TEMP_DLPF);
+uint8_t ICM20948_set_TEMP_DLPFCFG(ICM20948*, TEMP_DLPF);
 
 //degC = ((RAW - RoomTempOffset)/Temp_sensitivity)+21degC
 uint16_t ICM20948_get_TEMP_raw(ICM20948* icm);
-float ICM20948_get_TEMP(ICM20948* icm); 
+float ICM20948_get_TEMP_C(ICM20948* icm); 
 
 /*
     EXT_SLV_SENS_DATA 00-23
