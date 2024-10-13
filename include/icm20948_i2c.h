@@ -442,7 +442,7 @@ float ICM20948_get_DELAY_TIME_ms(ICM20948*);
 /*
     ACCEL
 */
-uint8_t ICM20948_ACCEL_Init(ICM20948*, ACCEL_DLPF, AccelFullScale);
+uint8_t ICM20948_ACCEL_Init(ICM20948*, ACCEL_DLPF, AccelFS);
 
 /*
     FS_SEL | FullScale Range (g) | Sensitivity 

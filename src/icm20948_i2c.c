@@ -199,29 +199,14 @@ uint8_t ICM20948_SleepMode_disable(ICM20948* icm)
 	return 1;
 }
 
-uint8_t ICM20948_GYRO_init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs)
+uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs)
 {
-
-	uint8_t GYRO_SMPLRT_DIV_val = 0x00; //Gyro samplerate divider
-	uint8_t GYRO_CONFIG_2_val = 0x00;
-	uint8_t XG_OFFS_USRH_val = 0x00;
-	uint8_t XG_OFFS_USRL_val = 0x00;
-	uint8_t YG_OFFS_USRH_val = 0x00;
-	uint8_t YG_OFFS_USRL_val = 0x00;
-	uint8_t ZG_OFFS_USRH_val = 0x00;
-	uint8_t ZG_OFFS_USRL_val = 0x00;
-	uint8_t ODR_ALIGN_EN_val = 0x00; //ODR calculated as = 1.1KHz/(1+GYROSMPLRT_DIV)
-
 	//Choosing DLPF NBW 
 	ICM20948_set_GYRO_DLPFCFG(icm, dlpf);
 
 	//FS_SEL
 	ICM20948_set_GYRO_FS_SEL(icm, fs);
 
-	//GYRO CONFIG 2 - default
-	GYRO_CONFIG_2_val = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_2);
-	GYRO_CONFIG_2_val &= 0b11000000;
-	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_2, GYRO_CONFIG_2_val);
 
 	return 1;
 }
@@ -956,6 +941,16 @@ float ICM20948_get_DELAY_TIME_ms(ICM20948* icm)
 
 
 
+uint8_t ICM20948_ACCEL_Init(ICM20948* icm, ACCEL_DLPF dlpf , AccelFS fs)
+{
+	//DLPF
+	ICM20948_set_ACCEL_DLPFCFG(icm, dlpf);
+
+	//ACCEL Full Scale
+	ICM20948_set_ACCEL_FS_SEL(icm, fs);
+
+	return 1;
+}
 
 int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm)
 {
