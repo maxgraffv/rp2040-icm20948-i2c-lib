@@ -1160,8 +1160,36 @@ uint8_t ICM20948_set_ACCEL_AVG_SAMPLES(ICM20948* icm, ACCEL_AVG_SAMPLES avg_samp
 	return 1;
 }
 
+uint16_t ICM20948_set_ACCEL_SAMPLE_RATE_DIV(ICM20948* icm, uint16_t samplerate)
+{
+	if(samplerate >= 4096)
+		samplerate = 4095;
 
+	uint16_t samplerate_l_16 = samplerate & 0b0000000011111111;
 
+	uint16_t samplerate_h_16 = samplerate & 0b1111111100000000;
+	samplerate_h_16 >>= 8;
+
+	uint8_t samplerate_h_8 = (uint8_t)(samplerate_h_16);
+	uint8_t samplerate_l_8 = (uint8_t)(samplerate_l_16);
+
+	uint8_t samplerate_h = ICM20948_get_register(icm, Bank2, ACCEL_SMPLRT_DIV_1);
+	samplerate_h &= 0b11110000;
+	samplerate_h |= samplerate_h_8;
+
+	ICM20948_set_register(icm, Bank2, ACCEL_SMPLRT_DIV_1, samplerate_h)
+	ICM20948_set_register(icm, Bank2, ACCEL_SMPLRT_DIV_2, samplerate_l_8);
+
+	return 1;
+}
+
+uint16_t ICM20948_get_ACCEL_SAMPLE_RATE_DIV(ICM20948* icm)
+{
+	uint16_t samplerate = ICM20948_get_register_16b(icm, Bank2, ACCEL_SMPLRT_DIV_1, ACCEL_SMPLRT_DIV_2);
+	samplerate &= 0b0000111111111111;
+
+	return 1;
+}
 
 
 
