@@ -266,8 +266,10 @@
 #define ODR_ALIGN_EN_bit 	0 // Enable ODR start-time alignment
 
 
+// ACCEL_CONFIG_1 Register 
+#define ACCEL_CONFIG_FCHOICE  0
 
-// ACCEL_CONFIG_2 Register (0x15, Bank 2)
+// ACCEL_CONFIG_2 Register 
 #define ACCEL_CONFIG_2_DEC2_CFG  4  // Decimator for low-power mode
 
 typedef enum{ 
@@ -439,11 +441,11 @@ float ICM20948_get_DELAY_TIME_ms(ICM20948*);
 uint8_t ICM20948_ACCEL_Init(ICM20948*, ACCEL_DLPF, AccelFullScale);
 
 /*
-    FS_SEL | FullScale Range (degrees/sec) | Sensitivity 
-    00			250								131
-    01			500								65.5
-    10			1000							32.8
-    11			2000							16.4
+    FS_SEL | FullScale Range (g) | Sensitivity 
+    00			2					131
+    01			4					65.5
+    10			8   				32.8
+    11			16  				16.4
 */
 typedef enum{
     ACCEL_FS_2 = 0,
@@ -460,7 +462,7 @@ uint8_t ICM20948_set_ACCEL_FS_SEL(ICM20948*, ACCEL_FS ); //ok
 typedef enum{
     ACCEL_DLPF_NBW_1248 = -1,
     ACCEL_DLPF_NBW_265 = 0,
-    ACCEL_DLPF_NBW_265_2 = 2,
+    ACCEL_DLPF_NBW_265_2 = 1,
     ACCEL_DLPF_NBW_136 = 2,
     ACCEL_DLPF_NBW_68_8 = 3,
     ACCEL_DLPF_NBW_34_4 = 4,
@@ -469,15 +471,11 @@ typedef enum{
     ACCEL_DLPF_NBW_499 = 7
 }ACCEL_DLPF;
 
-ACCEL_DLPF ICM20948_get_ACCEL_DLPFCFG(ICM20948* );
-uint8_t ICM20948_set_ACCEL_DLPFCFG(ICM20948*, ACCEL_DLPF );
+ACCEL_DLPF ICM20948_get_ACCEL_DLPFCFG(ICM20948* );//ok
+uint8_t ICM20948_set_ACCEL_DLPFCFG(ICM20948*, ACCEL_DLPF );//ok
 
-uint8_t ICM20948_ACCEL_DLPF_enable(ICM20948*);
-uint8_t ICM20948_ACCEL_DLPF_disable(ICM20948* );
-
-
-
-
+uint8_t ICM20948_ACCEL_DLPF_enable(ICM20948*);//ok
+uint8_t ICM20948_ACCEL_DLPF_disable(ICM20948* );//ok
 
 int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
@@ -488,6 +486,15 @@ float ICM20948_ACCEL_raw_to_g(ICM20948* icm, int16_t);
 uint8_t ICM20948_ACCEL_X_SELF_TEST(ICM20948*);
 uint8_t ICM20948_ACCEL_Y_SELF_TEST(ICM20948*);
 uint8_t ICM20948_ACCEL_Z_SELF_TEST(ICM20948*);
+
+typedef enum
+{
+    ACCEL_AVG_SAMPLES_1 = 0,
+    ACCEL_AVG_SAMPLES_8 = 1,
+    ACCEL_AVG_SAMPLES_16 = 2,
+    ACCEL_AVG_SAMPLES_32 = 3,
+}ACCEL_AVG_SAMPLES;
+
 
 uint8_t ICM20948_set_ACCEL_AVG_SAMPLES(ICM20948*, ACCEL_AVG_SAMPLES);
 //TODO: X/Y/Z A offset get/set

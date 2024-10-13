@@ -987,7 +987,6 @@ float ICM20948_ACCEL_raw_to_g(ICM20948* icm, int16_t accel_raw)
 	return accel_g;
 }
 
-
 uint8_t ICM20948_set_ACCEL_FS_SEL(ICM20948* icm, ACCEL_FS accel_fs_sel )
 {
 	uint8_t accel_config = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG);
@@ -1065,14 +1064,101 @@ float ICM20948_getAccelSensitivity(ACCEL_FS accel_fs)
 	return sensitivity;
 }
 
+uint8_t ICM20948_ACCEL_DLPF_enable(ICM20948* icm)
+{
+	uint8_t accel_config = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG);
+	accel_config |= (1<<ACCEL_CONFIG_FCHOICE);
+	ICM20948_set_register(icm, Bank2, ACCEL_CONFIG, accel_config);
 
+	return 1;
+}
 
+uint8_t ICM20948_ACCEL_DLPF_disable(ICM20948* icm );
+{
+	uint8_t accel_config = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG);
+	accel_config &= ~(1<<ACCEL_CONFIG_FCHOICE);
+	ICM20948_set_register(icm, Bank2, ACCEL_CONFIG, accel_config);
 
+	return 1;
+}
 
+uint8_t ICM20948_set_ACCEL_DLPFCFG(ICM20948* icm, ACCEL_DLPF accel_dlpf )
+{
+	uint8_t accel_config = 0x00;
+	uint8_t dlpf_val =  accel_dlpf;
 
+	if(accel_dlpf == -1)
+	{
+		ICM20948_ACCEL_DLPF_disable(icm);
+	}
+	else
+	{
+		ICM20948_ACCEL_DLPF_enable(icm);
+		accel_config = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG);
+		accel_config &= 0b11000111;
+		dlpf_val <<= 3;
+		accel_config |= dlpf_val;
+		ICM20948_set_register(icm, Bank2, ACCEL_CONFIG, accel_config);
+	}
+}
 
+ACCEL_DLPF ICM20948_get_ACCEL_DLPFCFG(ICM20948* icm)
+{
+	uint8_t accel_config = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG);
 
+	uint8_t fchoice = accel_config & 0x01;
+	ACCEL_DLPF dlpf = ACCEL_DLPF_NBW_1248;
 
+	if(fchoice)
+	{
+		accel_config &= 0b00111000;
+		accel_config >>= 3;
+
+		switch(accel_config)
+		{
+			case ACCEL_DLPF_NBW_265 :
+				dlpf = ACCEL_DLPF_NBW_265 ;
+			break;
+			case ACCEL_DLPF_NBW_265_2 :
+				dlpf = ACCEL_DLPF_NBW_265_2 ;
+			break;
+			case ACCEL_DLPF_NBW_136 :
+				dlpf = ACCEL_DLPF_NBW_136 ;
+			break;
+			case ACCEL_DLPF_NBW_68_8 :
+				dlpf = ACCEL_DLPF_NBW_68_8 ;
+			break;
+			case ACCEL_DLPF_NBW_34_4 :
+				dlpf = ACCEL_DLPF_NBW_34_4 ;
+			break;
+			case ACCEL_DLPF_NBW_17 :
+				dlpf = ACCEL_DLPF_NBW_17 ;
+			break;
+			case ACCEL_DLPF_NBW_8_3 :
+				dlpf = ACCEL_DLPF_NBW_8_3 ;
+			break;
+			case ACCEL_DLPF_NBW_499 :
+				dlpf = ACCEL_DLPF_NBW_499 ;
+			break;
+		}
+
+	}
+
+	return dlpf;
+}
+
+uint8_t ICM20948_set_ACCEL_AVG_SAMPLES(ICM20948* icm, ACCEL_AVG_SAMPLES avg_sample)
+{
+	uint8_t accel_config_2 = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG_2);
+	uint8_t sample_val = avg_sample;
+
+	accel_config_2 &= 0b11111100;
+	accel_config_2 |= sample_val;
+
+	ICM20948_set_register(icm, Bank2, ACCEL_CONFIG_2, accel_config_2);
+
+	return 1;
+}
 
 
 
