@@ -425,7 +425,7 @@ uint8_t ICM20948_get_i2C_MST_status(ICM20948* icm);
 */
 uint8_t ICM20948_WakeOnMotion_occured(ICM20948*);
 uint8_t ICM20948_PLL_Ready(ICM20948*);
-uint8_t ICM20948_DMP_INT1_occured(ICM20948* icm) 
+uint8_t ICM20948_DMP_INT1_occured(ICM20948* icm);
 uint8_t ICM20948_get_I2C_MST_INT_status(ICM20948* icm);
 
 uint8_t ICM20948_get_RAW_DATA_RDY_INT_status(ICM20948* icm);
@@ -442,14 +442,9 @@ float ICM20948_get_DELAY_TIME_ms(ICM20948*);
 /*
     ACCEL
 */
-uint8_t ICM20948_ACCEL_Init(ICM20948*, ACCEL_DLPF, AccelFS);
 
 /*
     FS_SEL | FullScale Range (g) | Sensitivity 
-    00			2					131
-    01			4					65.5
-    10			8   				32.8
-    11			16  				16.4
 */
 typedef enum{
     ACCEL_FS_2 = 0,
@@ -480,6 +475,8 @@ uint8_t ICM20948_set_ACCEL_DLPFCFG(ICM20948*, ACCEL_DLPF );//ok
 
 uint8_t ICM20948_ACCEL_DLPF_enable(ICM20948*);//ok
 uint8_t ICM20948_ACCEL_DLPF_disable(ICM20948* );//ok
+
+uint8_t ICM20948_ACCEL_Init(ICM20948*, ACCEL_DLPF, ACCEL_FS);
 
 int16_t ICM20948_get_ACCEL_X_raw(ICM20948* icm);
 int16_t ICM20948_get_ACCEL_Y_raw(ICM20948* icm);
@@ -514,14 +511,12 @@ uint16_t ICM20948_get_ACCEL_SAMPLE_RATE_DIV(ICM20948*);
 uint8_t ICM20948_WOM_Logic_enable(ICM20948*);
 uint8_t ICM20948_WOM_Logic_disable(ICM20948*);
 
-typedef enum
-{
+typedef enum{
     WOM_ALGORITHM_COMPARE_PREVIOUS = 1,
     WOM_ALGORITHM_COMPARE_INITIAL = 0
-
 } WOM_ALGORITHM;
 
-uint8_t ICM20948_WOM_Algorithm_select(ICM20948*, WOM_ALGORITHM);
+uint8_t ICM20948_WOM_Algorithm_select(ICM20948* icm, WOM_ALGORITHM wom_alg);
 
 uint8_t ICM20948_set_WOM_THRESHOLD(ICM20948*, uint8_t);
 
@@ -530,7 +525,6 @@ uint8_t ICM20948_set_WOM_THRESHOLD(ICM20948*, uint8_t);
 /*
 	GYRO
 */
-uint8_t ICM20948_GYRO_init(ICM20948*, GYRO_DLPF, GYRO_FS);//OK
 
 /*
     FS_SEL | FullScale Range (degrees/sec) | Sensitivity 
@@ -569,6 +563,8 @@ uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );//OK
 uint8_t ICM20948_GYRO_DLPF_enable(ICM20948*);//OK
 uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* );//OK
 
+uint8_t ICM20948_GYRO_Init(ICM20948*, GYRO_DLPF, GYRO_FS);//OK
+
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);//ok
 int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);//ok
 int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);//ok
@@ -579,7 +575,7 @@ uint8_t ICM20948_GYRO_X_SELF_TEST(ICM20948*);
 uint8_t ICM20948_GYRO_Y_SELF_TEST(ICM20948*);
 uint8_t ICM20948_GYRO_Z_SELF_TEST(ICM20948*);
 
-uint8_t ICM20948_set_GYRO_AVG_FILTER_CFG(ICM20948*, GYRO_AVGCFG);
+// uint8_t ICM20948_set_GYRO_AVG_FILTER_CFG(ICM20948*, GYRO_AVGCFG);
 
 uint8_t ICM20948_set_GYRO_SAMPLE_RATE_DIV(ICM20948*, uint8_t);
 uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948*);
@@ -593,14 +589,14 @@ uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948*);
 
 typedef enum
 {
-    TEMP_DLPF_NBW_7932 = 0,
+    TEMP_DLPF_NBW_7932_1 = 0,
     TEMP_DLPF_NBW_217_9 = 1,
     TEMP_DLPF_NBW_123_5 = 2,
     TEMP_DLPF_NBW_65_9 = 3,
     TEMP_DLPF_NBW_34_1 = 4,
     TEMP_DLPF_NBW_17_3 = 5,
     TEMP_DLPF_NBW_8_8 = 6,
-    TEMP_DLPF_NBW_7932 = 7
+    TEMP_DLPF_NBW_7932_2 = 7
 } TEMP_DLPF;
 
 uint8_t ICM20948_TEMP_Init(ICM20948*, TEMP_DLPF);
@@ -613,19 +609,19 @@ float ICM20948_get_TEMP_C(ICM20948* icm);
 /*
     EXT_SLV_SENS_DATA 00-23
 */
-uint8_t ICM20948_get_EXT_SLV_DATA(ICM20948*, EXT_SLV_SENS_DATA);
-uint8_t ICM20948_get_EXT_SLV_DATA_arr(ICM20948*, EXT_SLV_SENS_DATA, uint8_t* ptr);
+// uint8_t ICM20948_get_EXT_SLV_DATA(ICM20948*, EXT_SLV_SENS_DATA);
+// uint8_t ICM20948_get_EXT_SLV_DATA_arr(ICM20948*, EXT_SLV_SENS_DATA, uint8_t* ptr);
 
 /*
     FIFO
 */
 uint8_t ICM20948_FIFO_reset(ICM20948* icm);
-uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE);
+// uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE);
 
-uint8_t ICM20948_get_FIFO_COUNT(ICM20948* icm, FIFO_MODE);
+// uint8_t ICM20948_get_FIFO_COUNT(ICM20948* icm, FIFO_MODE);
 
 
-uint8_t ICM20948_SLV_FIFO_enable(ICM20948* icm, EXT_SLV_SENS);
+// uint8_t ICM20948_SLV_FIFO_enable(ICM20948* icm, EXT_SLV_SENS);
 
 uint8_t ICM20948_FIFO_ACCEL_enable(ICM20948* icm);
 uint8_t ICM20948_FIFO_GYRO_X_enable(ICM20948* icm);
@@ -667,7 +663,7 @@ uint8_t ICM20948_WOF_DEGLITCH_disable(ICM20948*);
 uint8_t ICM20948_WOF_EDGE_INT_enable(ICM20948*);
 uint8_t ICM20948_WOF_EDGE_INT_disable(ICM20948*);
 
-uint8_t ICM20948_set_EXT_SYNC(ICM20948*, EXT_SYNC);
+// uint8_t ICM20948_set_EXT_SYNC(ICM20948*, EXT_SYNC);
 
 /*
     MOD_CTR_USR
@@ -682,3 +678,9 @@ uint8_t ICM20948_set_i2C_MST_ODR_CONFIG(ICM20948*, uint8_t);
 
 uint8_t ICM20948_I2C_MultiMaster_enable(ICM20948*);
 uint8_t ICM20948_I2C_MultiMaster_disable(ICM20948*);
+
+
+
+
+
+#endif
