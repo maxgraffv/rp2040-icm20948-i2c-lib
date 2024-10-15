@@ -121,15 +121,12 @@ uint8_t ICM20948_Init(ICM20948* icm)
 	printf("ICM Default Init...\n");
 
 	
-	ICM20948_reset(icm);
+	// ICM20948_reset(icm);
 	ICM20948_SleepMode_disable(icm);
 	ICM20948_set_CLOCK_SRC(icm, CLOCK_SRC_Auto_Sel_1);
 	ICM20948_GYRO_Init(icm, GYRO_DLPF_NBW_154_3, GYRO_FS_1000);
 	ICM20948_ACCEL_Init(icm, ACCEL_DLPF_NBW_68_8, ACCEL_FS_4);
 	ICM20948_TEMP_Init(icm, TEMP_DLPF_NBW_8_8);
-
-	float deg = 0;
-	float dps = 0;
 
 	return 1;
 }
@@ -563,8 +560,7 @@ uint8_t ICM20948_set_GYRO_AVG_FILTER_CFG(ICM20948* icm, GYRO_AVG_FILTER avg_filt
 
 uint8_t ICM20948_set_GYRO_SAMPLE_RATE_DIV(ICM20948* icm, uint8_t sample_rate)
 {
-	uint8_t rate_set = sample_rate;
-	ICM20948_set_register(icm, Bank2, GYRO_SMPLRT_DIV, rate_set);
+	ICM20948_set_register(icm, Bank2, GYRO_SMPLRT_DIV, sample_rate);
 
 	return 1;
 }
@@ -578,7 +574,7 @@ uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948* icm)
 
 float ICM20948_get_GYRO_ODR_kHz(ICM20948* icm)
 {
-	float gyro_odr = 1.1/((float)ICM20948_get_GYRO_SAMPLE_RATE_DIV(icm));
+	float gyro_odr = 1.1/(1 + (float)ICM20948_get_GYRO_SAMPLE_RATE_DIV(icm));
 	printf("gyro odr: %f\n", gyro_odr);
 
 	return gyro_odr;

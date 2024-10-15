@@ -40,18 +40,34 @@ void printExactGyroAngle(ICM20948* icm)
 
 	ICM20948_Init(icm);
 	ICM20948_ODR_ALIGN_enable(icm);
-	ICM20948_set_GYRO_SAMPLE_RATE_DIV(icm, (uint8_t)16);
-	ICM20948_set_ACCEL_SAMPLE_RATE_DIV(icm, 255);
+	ICM20948_set_GYRO_SAMPLE_RATE_DIV(icm, 16);
+	uint8_t read_g_rate = ICM20948_get_GYRO_SAMPLE_RATE_DIV(icm);
+	ICM20948_set_ACCEL_SAMPLE_RATE_DIV(icm, 17);
 
-	float gyro_data_ms = 0;
-	float accel_data_ms = 0;
+	float gyro_data_hz = 0;
+	float accel_data_hz = 0;
+	float gyro_data_s = 0;
+	float accel_data_s = 0;
 
-	for(int i = 0; i < 2; i++)
+	float gyro = 0;
+	float delta_gyro = 0;
+
+	for(int i = 0; i < 10000; i++)
 	{
-		gyro_data_ms = (ICM20948_get_GYRO_ODR_kHz(icm)*1000);
-		accel_data_ms = (ICM20948_get_ACCEL_ODR_kHz(icm)*1000);
+		gyro_data_hz = (ICM20948_get_GYRO_ODR_kHz(icm)*1000);
+		accel_data_hz = (ICM20948_get_ACCEL_ODR_kHz(icm)*1000);
 
-		printf("GYRO: %f ms; ACCEL: %f ms \n", gyro_data_ms, accel_data_ms);
+		gyro_data_s = 1/gyro_data_hz;
+		accel_data_s = 1/accel_data_hz;
+
+		// printf("GYRO: %f Hz; ACCEL: %f Hz \n", gyro_data_hz, accel_data_hz);
+		// printf("GYRO: %f s; ACCEL: %f s \n", gyro_data_s, accel_data_s);
+
+		delta_gyro = ICM20948_GYRO_raw_to_dps(icm, ICM20948_get_GYRO_X_raw(icm));
+		delta_gyro *= gyro_data_s;
+		gyro += delta_gyro;
+
+		printf("gyro: %f deg\n", gyro);
 
 	}
 
