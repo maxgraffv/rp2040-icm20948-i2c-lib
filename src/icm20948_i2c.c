@@ -564,7 +564,24 @@ uint8_t ICM20948_set_GYRO_AVG_FILTER_CFG(ICM20948* icm, GYRO_AVG_FILTER avg_filt
 	gyro_config_2 &= 0b11111000;
 	gyro_config_2 |= filter_sel;
 	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_2, gyro_config_2);
+
+	return 1;
 }
+
+uint8_t ICM20948_set_GYRO_SAMPLE_RATE_DIV(ICM20948* icm, uint8_t sample_rate)
+{
+	ICM20948_set_register(icm, Bank2, GYRO_SMPLRT_DIV, sample_rate);
+
+	return 1;
+}
+
+uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948* icm)
+{
+	return ICM20948_get_register(icm, Bank2, GYRO_SMPLRT_DIV);
+}
+
+
+
 
 uint8_t ICM20948_DMP_enable(ICM20948* icm)
 {
