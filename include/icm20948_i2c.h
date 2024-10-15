@@ -589,8 +589,14 @@ typedef enum{
 
 uint8_t ICM20948_set_GYRO_AVG_FILTER_CFG(ICM20948*, GYRO_AVG_FILTER);
 
+/*
+    Controls Data Output Rate, FIFO sample rate, DMP sequence rate
+    Only effective when FCHOICE = 1 and (0 < DLPF < 7)
+*/
 uint8_t ICM20948_set_GYRO_SAMPLE_RATE_DIV(ICM20948*, uint8_t);
 uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948*);
+
+float ICM20948_get_ODR_kHz(ICM20948*);
 
 //TODO: X/Y/Z G offset get/set
 //TODO: X/Y/Z G User OFFSET
@@ -628,9 +634,15 @@ float ICM20948_get_TEMP_C(ICM20948* icm);
     FIFO
 */
 uint8_t ICM20948_FIFO_reset(ICM20948* icm);
-// uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE);
 
-// uint8_t ICM20948_get_FIFO_COUNT(ICM20948* icm, FIFO_MODE);
+typedef enum{
+    FIFO_MODE_STREAM = 0,
+    FIFO_MODE_SNAPSHOT = 1
+}FIFO_MODE;
+
+uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE);
+
+uint16_t ICM20948_get_FIFO_COUNT(ICM20948* icm);
 
 
 // uint8_t ICM20948_SLV_FIFO_enable(ICM20948* icm, EXT_SLV_SENS);

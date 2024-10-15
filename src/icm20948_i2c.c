@@ -580,8 +580,12 @@ uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948* icm)
 	return ICM20948_get_register(icm, Bank2, GYRO_SMPLRT_DIV);
 }
 
+float ICM20948_get_ODR_kHz(ICM20948* icm)
+{
+	float odr = 1.1/((float)ICM20948_get_GYRO_SAMPLE_RATE_DIV(icm));
 
-
+	return odr;
+}
 
 uint8_t ICM20948_DMP_enable(ICM20948* icm)
 {
@@ -1261,8 +1265,37 @@ float ICM20948_get_TEMP_C(ICM20948* icm)
 	return temp_C;
 }
 
+uint8_t ICM20948_FIFO_reset(ICM20948* icm)
+{
+	uint8_t fifo_rst = ICM20948_get_register(icm, Bank0, FIFO_RST);
+	fifo_rst |= 0x01;
+	ICM20948_set_register(icm, Bank0, FIFO_RST, fifo_rst);
 
+	fifo_rst = ICM20948_get_register(icm, Bank0, FIFO_RST);
+	fifo_rst &= 0b11100000;
+	ICM20948_set_register(icm, Bank0, FIFO_RST, fifo_rst);
 
+	return 1;
+}
+
+uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE mode_sel)
+{
+	uint8_t fifo_mode = ICM20948_get_register(icm, Bank0, FIFO_MODE);
+	uint8_t mode = mode_sel;
+	fifo_mode &= 0b11111110;
+	fifo_mode |= mode;
+	ICM20948_set_register(icm, Bank0, FIFO_MODE, fifo_mode);
+
+	return 1;
+}
+
+uint16_t ICM20948_get_FIFO_COUNT(ICM20948* icm)
+{
+	uint16_t fifo_count = ICM20948_get_register_16b(icm, Bank0, FIFO_COUNTH, FIFO_COUNTL);
+	fifo_count &= 0b0001111111111111;
+
+	return fifo_count;
+}
 
 
 
