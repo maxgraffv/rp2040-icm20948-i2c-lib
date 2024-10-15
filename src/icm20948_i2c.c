@@ -563,21 +563,25 @@ uint8_t ICM20948_set_GYRO_AVG_FILTER_CFG(ICM20948* icm, GYRO_AVG_FILTER avg_filt
 
 uint8_t ICM20948_set_GYRO_SAMPLE_RATE_DIV(ICM20948* icm, uint8_t sample_rate)
 {
-	ICM20948_set_register(icm, Bank2, GYRO_SMPLRT_DIV, sample_rate);
+	uint8_t rate_set = sample_rate;
+	ICM20948_set_register(icm, Bank2, GYRO_SMPLRT_DIV, rate_set);
 
 	return 1;
 }
 
 uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948* icm)
 {
-	return ICM20948_get_register(icm, Bank2, GYRO_SMPLRT_DIV);
+	uint8_t smplrt = ICM20948_get_register(icm, Bank2, GYRO_SMPLRT_DIV);
+	printf("gyro rate: %d\n", smplrt);
+	return smplrt;
 }
 
-float ICM20948_get_ODR_kHz(ICM20948* icm)
+float ICM20948_get_GYRO_ODR_kHz(ICM20948* icm)
 {
-	float odr = 1.1/((float)ICM20948_get_GYRO_SAMPLE_RATE_DIV(icm));
+	float gyro_odr = 1.1/((float)ICM20948_get_GYRO_SAMPLE_RATE_DIV(icm));
+	printf("gyro odr: %f\n", gyro_odr);
 
-	return odr;
+	return gyro_odr;
 }
 
 uint8_t ICM20948_DMP_enable(ICM20948* icm)
@@ -1185,6 +1189,15 @@ uint16_t ICM20948_get_ACCEL_SAMPLE_RATE_DIV(ICM20948* icm)
 	return samplerate;
 }
 
+float ICM20948_get_ACCEL_ODR_kHz(ICM20948* icm)
+{
+	float sample_rate = (float)ICM20948_get_ACCEL_SAMPLE_RATE_DIV(icm);
+
+	float accel_odr = 1.125/(1+sample_rate);
+
+	return accel_odr;
+}
+
 uint8_t ICM20948_WOM_Logic_enable(ICM20948* icm)
 {
 	uint8_t accel_intel = ICM20948_get_register(icm, Bank2, ACCEL_INTEL_CTRL);
@@ -1271,7 +1284,7 @@ uint8_t ICM20948_FIFO_reset(ICM20948* icm)
 	return 1;
 }
 
-uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE mode_sel)
+uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE_ENUM mode_sel)
 {
 	uint8_t fifo_mode = ICM20948_get_register(icm, Bank0, FIFO_MODE);
 	uint8_t mode = mode_sel;
