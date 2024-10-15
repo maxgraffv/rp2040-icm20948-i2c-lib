@@ -654,6 +654,8 @@ uint8_t ICM20948_SLV_2_FIFO_disable(ICM20948* icm);
 uint8_t ICM20948_SLV_3_FIFO_enable(ICM20948* icm);
 uint8_t ICM20948_SLV_3_FIFO_disable(ICM20948* icm);
 
+
+
 uint8_t ICM20948_FIFO_ACCEL_enable(ICM20948* icm);
 uint8_t ICM20948_FIFO_GYRO_X_enable(ICM20948* icm);
 uint8_t ICM20948_FIFO_GYRO_Y_enable(ICM20948* icm);

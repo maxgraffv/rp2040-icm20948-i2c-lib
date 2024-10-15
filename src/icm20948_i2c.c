@@ -121,22 +121,15 @@ uint8_t ICM20948_Init(ICM20948* icm)
 	printf("ICM Default Init...\n");
 
 	
+	ICM20948_reset(icm);
 	ICM20948_SleepMode_disable(icm);
+	ICM20948_set_CLOCK_SRC(icm, CLOCK_SRC_Auto_Sel_1);
 	ICM20948_GYRO_Init(icm, GYRO_DLPF_NBW_154_3, GYRO_FS_1000);
 	ICM20948_ACCEL_Init(icm, ACCEL_DLPF_NBW_68_8, ACCEL_FS_4);
 	ICM20948_TEMP_Init(icm, TEMP_DLPF_NBW_8_8);
 
 	float deg = 0;
 	float dps = 0;
-
-	// printf("DLPF: %d \t\t FS: %d \t\t Sensitivity: %f\n", ICM20948_get_GYRO_DLPFCFG(icm), ICM20948_get_GYRO_FS_SEL(icm), ICM20948_getGyroSensitivity(ICM20948_get_GYRO_FS_SEL(icm)));
-	// for(int i = 0; i < 2000; i++)
-	// {
-	// 	sleep_ms(10);
-	// 	dps = ICM20948_GYRO_raw_to_dps( icm, ICM20948_get_GYRO_X_raw(icm) );
-	// 	deg += (dps*0.01); 
-	// 	printf("Deg: %f\n", deg);
-	// }
 
 	return 1;
 }
@@ -1365,6 +1358,24 @@ uint8_t ICM20948_SLV_3_FIFO_disable(ICM20948* icm)
 	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
 	fifo_en_1 &= ~(1<<FIFO_EN_1_SLV_3_FIFO_EN);
 	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_ODR_ALIGN_enable(ICM20948* icm)
+{
+	uint8_t odr_align_en = ICM20948_get_register(icm, Bank2, ODR_ALIGN_EN);
+	odr_align_en |= (1<<ODR_ALIGN_EN_bit);
+	ICM20948_set_register(icm, Bank2, ODR_ALIGN_EN, odr_align_en);
+
+	return 1;
+}
+
+uint8_t ICM20948_ODR_ALIGN_disable(ICM20948* icm)
+{
+	uint8_t odr_align_en = ICM20948_get_register(icm, Bank2, ODR_ALIGN_EN);
+	odr_align_en &= ~(1<<ODR_ALIGN_EN_bit);
+	ICM20948_set_register(icm, Bank2, ODR_ALIGN_EN, odr_align_en);
 
 	return 1;
 }

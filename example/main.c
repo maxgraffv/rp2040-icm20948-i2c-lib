@@ -1,15 +1,5 @@
 #include "icm20948_i2c.h"
 #include <stdio.h>
-void blink()
-{
-	gpio_put(25, 1);
-	sleep_ms(300);
-	gpio_put(25, 0);
-	sleep_ms(300);
-}
-
-
-
 
 
 
