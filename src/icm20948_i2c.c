@@ -1297,9 +1297,74 @@ uint16_t ICM20948_get_FIFO_COUNT(ICM20948* icm)
 	return fifo_count;
 }
 
+uint8_t ICM20948_SLV_0_FIFO_enable(ICM20948* icm)
+{
+	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
+	fifo_en_1 |= (1<<FIFO_EN_1_SLV_0_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
 
+	return 1;
+}
 
+uint8_t ICM20948_SLV_0_FIFO_disable(ICM20948* icm)
+{
+	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
+	fifo_en_1 &= ~(1<<FIFO_EN_1_SLV_0_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
 
+	return 1;
+}
 
+uint8_t ICM20948_SLV_1_FIFO_enable(ICM20948* icm)
+{
+	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
+	fifo_en_1 |= (1<<FIFO_EN_1_SLV_1_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
 
+	return 1;
+}
 
+uint8_t ICM20948_SLV_1_FIFO_disable(ICM20948* icm)
+{
+	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
+	fifo_en_1 &= ~(1<<FIFO_EN_1_SLV_1_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_SLV_2_FIFO_enable(ICM20948* icm)
+{
+	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
+	fifo_en_1 |= (1<<FIFO_EN_1_SLV_2_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_SLV_2_FIFO_disable(ICM20948* icm)
+{
+	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
+	fifo_en_1 &= ~(1<<FIFO_EN_1_SLV_2_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_SLV_3_FIFO_enable(ICM20948* icm)
+{
+	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
+	fifo_en_1 |= (1<<FIFO_EN_1_SLV_3_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
+
+	return 1;
+}
+
+uint8_t ICM20948_SLV_3_FIFO_disable(ICM20948* icm)
+{
+	uint8_t fifo_en_1 = ICM20948_get_register(icm, Bank0, FIFO_EN_1);
+	fifo_en_1 &= ~(1<<FIFO_EN_1_SLV_3_FIFO_EN);
+	ICM20948_set_register(icm, Bank0, FIFO_EN_1, fifo_en_1);
+
+	return 1;
+}

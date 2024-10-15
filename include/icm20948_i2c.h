@@ -645,7 +645,14 @@ uint8_t ICM20948_set_FIFO_MODE(ICM20948* icm, FIFO_MODE);
 uint16_t ICM20948_get_FIFO_COUNT(ICM20948* icm);
 
 
-// uint8_t ICM20948_SLV_FIFO_enable(ICM20948* icm, EXT_SLV_SENS);
+uint8_t ICM20948_SLV_0_FIFO_enable(ICM20948* icm);
+uint8_t ICM20948_SLV_0_FIFO_disable(ICM20948* icm);
+uint8_t ICM20948_SLV_1_FIFO_enable(ICM20948* icm);
+uint8_t ICM20948_SLV_1_FIFO_disable(ICM20948* icm);
+uint8_t ICM20948_SLV_2_FIFO_enable(ICM20948* icm);
+uint8_t ICM20948_SLV_2_FIFO_disable(ICM20948* icm);
+uint8_t ICM20948_SLV_3_FIFO_enable(ICM20948* icm);
+uint8_t ICM20948_SLV_3_FIFO_disable(ICM20948* icm);
 
 uint8_t ICM20948_FIFO_ACCEL_enable(ICM20948* icm);
 uint8_t ICM20948_FIFO_GYRO_X_enable(ICM20948* icm);
