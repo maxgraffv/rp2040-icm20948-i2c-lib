@@ -557,6 +557,14 @@ uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* icm)
 	return 1;
 }
 
+uint8_t ICM20948_set_GYRO_AVG_FILTER_CFG(ICM20948* icm, GYRO_AVG_FILTER avg_filter)
+{
+	uint8_t gyro_config_2 = ICM20948_get_register(icm, Bank2, GYRO_CONFIG_2);	
+	uint8_t filter_sel = avg_filter;
+	gyro_config_2 &= 0b11111000;
+	gyro_config_2 |= filter_sel;
+	ICM20948_set_register(icm, Bank2, GYRO_CONFIG_2, gyro_config_2);
+}
 
 uint8_t ICM20948_DMP_enable(ICM20948* icm)
 {
