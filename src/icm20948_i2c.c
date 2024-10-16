@@ -1404,6 +1404,8 @@ uint8_t ICM20948_set_GYRO_X_BIAS(ICM20948* icm, int16_t bias)
 
 	ICM20948_set_register(icm, Bank2, XG_OFFS_USRH, bias_8_h);
 	ICM20948_set_register(icm, Bank2, XG_OFFS_USRL, bias_8_l);
+
+	return 1;
 }
 
 uint8_t ICM20948_set_GYRO_Y_BIAS(ICM20948* icm, int16_t bias)
@@ -1417,6 +1419,8 @@ uint8_t ICM20948_set_GYRO_Y_BIAS(ICM20948* icm, int16_t bias)
 
 	ICM20948_set_register(icm, Bank2, YG_OFFS_USRH, bias_8_h);
 	ICM20948_set_register(icm, Bank2, YG_OFFS_USRL, bias_8_l);
+
+	return 1;
 }
 
 uint8_t ICM20948_set_GYRO_Z_BIAS(ICM20948* icm, int16_t bias)
@@ -1430,8 +1434,67 @@ uint8_t ICM20948_set_GYRO_Z_BIAS(ICM20948* icm, int16_t bias)
 
 	ICM20948_set_register(icm, Bank2, ZG_OFFS_USRH, bias_8_h);
 	ICM20948_set_register(icm, Bank2, ZG_OFFS_USRL, bias_8_l);
+
+	return 1;
 }
 
+uint8_t ICM20948_set_ACCEL_X_BIAS(ICM20948* icm, int16_t bias)
+{
+	uint16_t bias_16_h = bias & 0b0111111110000000;
+		bias_16_h >>=7;
+	uint16_t bias_16_l = bias & 0b000000001111111;
 
+	uint8_t xa_l = ICM20948_get_register(icm, Bank1, XA_OFFS_L);
 
+	uint8_t bias_8_h = (uint8_t)bias_16_h;
+	uint8_t bias_8_l = (uint8_t)bias_16_l;
+	bias_8_l << 1;
+	xa_l &= 0b00000001;
+	xa_l |= bias_8_l;
+
+	ICM20948_set_register(icm, Bank1, XA_OFFS_H, bias_8_h);
+	ICM20948_set_register(icm, Bank1, XA_OFFS_L, xa_l);
+
+	return 1;
+}
+
+uint8_t ICM20948_set_ACCEL_Y_BIAS(ICM20948* icm, int16_t bias)
+{
+	uint16_t bias_16_h = bias & 0b0111111110000000;
+		bias_16_h >>=7;
+	uint16_t bias_16_l = bias & 0b000000001111111;
+
+	uint8_t ya_l = ICM20948_get_register(icm, Bank1, YA_OFFS_L);
+
+	uint8_t bias_8_h = (uint8_t)bias_16_h;
+	uint8_t bias_8_l = (uint8_t)bias_16_l;
+	bias_8_l << 1;
+	ya_l &= 0b00000001;
+	ya_l |= bias_8_l;
+
+	ICM20948_set_register(icm, Bank1, YA_OFFS_H, bias_8_h);
+	ICM20948_set_register(icm, Bank1, YA_OFFS_L, ya_l);
+
+	return 1;
+}
+
+uint8_t ICM20948_set_ACCEL_Z_BIAS(ICM20948* icm, int16_t bias)
+{
+	uint16_t bias_16_h = bias & 0b0111111110000000;
+		bias_16_h >>=7;
+	uint16_t bias_16_l = bias & 0b000000001111111;
+
+	uint8_t za_l = ICM20948_get_register(icm, Bank1, ZA_OFFS_L);
+
+	uint8_t bias_8_h = (uint8_t)bias_16_h;
+	uint8_t bias_8_l = (uint8_t)bias_16_l;
+	bias_8_l << 1;
+	za_l &= 0b00000001;
+	za_l |= bias_8_l;
+
+	ICM20948_set_register(icm, Bank1, ZA_OFFS_H, bias_8_h);
+	ICM20948_set_register(icm, Bank1, ZA_OFFS_L, za_l);
+
+	return 1;
+}
 

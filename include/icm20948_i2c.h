@@ -716,6 +716,9 @@ uint8_t ICM20948_set_GYRO_X_BIAS(ICM20948*, int16_t);
 uint8_t ICM20948_set_GYRO_Y_BIAS(ICM20948*, int16_t);
 uint8_t ICM20948_set_GYRO_Z_BIAS(ICM20948*, int16_t);
 
+uint8_t ICM20948_set_ACCEL_X_BIAS(ICM20948*, int16_t);
+uint8_t ICM20948_set_ACCEL_Y_BIAS(ICM20948*, int16_t);
+uint8_t ICM20948_set_ACCEL_Z_BIAS(ICM20948*, int16_t);
 
 
 
