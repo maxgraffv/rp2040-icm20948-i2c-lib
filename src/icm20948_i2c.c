@@ -568,14 +568,12 @@ uint8_t ICM20948_set_GYRO_SAMPLE_RATE_DIV(ICM20948* icm, uint8_t sample_rate)
 uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948* icm)
 {
 	uint8_t smplrt = ICM20948_get_register(icm, Bank2, GYRO_SMPLRT_DIV);
-	printf("gyro rate: %d\n", smplrt);
 	return smplrt;
 }
 
 float ICM20948_get_GYRO_ODR_kHz(ICM20948* icm)
 {
 	float gyro_odr = 1.1/(1 + (float)ICM20948_get_GYRO_SAMPLE_RATE_DIV(icm));
-	printf("gyro odr: %f\n", gyro_odr);
 
 	return gyro_odr;
 }
@@ -1387,4 +1385,12 @@ uint8_t ICM20948_ODR_ALIGN_disable(ICM20948* icm)
 	ICM20948_set_register(icm, Bank2, ODR_ALIGN_EN, odr_align_en);
 
 	return 1;
+}
+
+uint8_t ICM20948_get_RAW_DATA_RDY_INT_status(ICM20948* icm)
+{
+	uint8_t int_status_1 = ICM20948_get_register(icm, Bank0, INT_STATUS_1);
+	int_status_1 &= 0x01;
+
+	return int_status_1;
 }
