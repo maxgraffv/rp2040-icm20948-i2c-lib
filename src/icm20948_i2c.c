@@ -1394,3 +1394,46 @@ uint8_t ICM20948_get_RAW_DATA_RDY_INT_status(ICM20948* icm)
 
 	return int_status_1;
 }
+
+uint8_t ICM20948_set_GYRO_X_BIAS(ICM20948* icm, int16_t bias)
+{
+	uint16_t bias_16_h = bias & 0b1111111100000000;
+		bias_16_h >>=8;
+	uint16_t bias_16_l = bias & 0b0000000011111111;
+
+	uint8_t bias_8_h = (uint8_t)bias_16_h;
+	uint8_t bias_8_l = (uint8_t)bias_16_l;
+
+	ICM20948_set_register(icm, Bank2, XG_OFFS_USRH, bias_8_h);
+	ICM20948_set_register(icm, Bank2, XG_OFFS_USRL, bias_8_l);
+}
+
+uint8_t ICM20948_set_GYRO_Y_BIAS(ICM20948* icm, int16_t bias)
+{
+	uint16_t bias_16_h = bias & 0b1111111100000000;
+		bias_16_h >>=8;
+	uint16_t bias_16_l = bias & 0b0000000011111111;
+
+	uint8_t bias_8_h = (uint8_t)bias_16_h;
+	uint8_t bias_8_l = (uint8_t)bias_16_l;
+
+	ICM20948_set_register(icm, Bank2, YG_OFFS_USRH, bias_8_h);
+	ICM20948_set_register(icm, Bank2, YG_OFFS_USRL, bias_8_l);
+}
+
+uint8_t ICM20948_set_GYRO_Z_BIAS(ICM20948* icm, int16_t bias)
+{
+	uint16_t bias_16_h = bias & 0b1111111100000000;
+		bias_16_h >>=8;
+	uint16_t bias_16_l = bias & 0b0000000011111111;
+
+	uint8_t bias_8_h = (uint8_t)bias_16_h;
+	uint8_t bias_8_l = (uint8_t)bias_16_l;
+
+	ICM20948_set_register(icm, Bank2, ZG_OFFS_USRH, bias_8_h);
+	ICM20948_set_register(icm, Bank2, ZG_OFFS_USRL, bias_8_l);
+}
+
+
+
+

@@ -712,6 +712,9 @@ uint8_t ICM20948_set_i2C_MST_ODR_CONFIG(ICM20948*, uint8_t);
 uint8_t ICM20948_I2C_MultiMaster_enable(ICM20948*);
 uint8_t ICM20948_I2C_MultiMaster_disable(ICM20948*);
 
+uint8_t ICM20948_set_GYRO_X_BIAS(ICM20948*, int16_t);
+uint8_t ICM20948_set_GYRO_Y_BIAS(ICM20948*, int16_t);
+uint8_t ICM20948_set_GYRO_Z_BIAS(ICM20948*, int16_t);
 
 
 
