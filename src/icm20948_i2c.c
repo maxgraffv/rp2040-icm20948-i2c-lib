@@ -1259,8 +1259,6 @@ float ICM20948_get_TEMP_C(ICM20948* icm)
 	float sensitivity = 333.87;
 	float RoomTemp_Offset = 21;
 	float temp_C = ((temp_raw - RoomTemp_Offset)/sensitivity) + 21;
-	float temp_offset = 10;
-	temp_C -= temp_offset;
 
 	return temp_C;
 }
