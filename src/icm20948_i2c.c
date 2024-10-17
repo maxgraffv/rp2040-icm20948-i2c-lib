@@ -1609,3 +1609,81 @@ uint8_t ICM20948_ACCEL_BIAS_CONFIGURE(ICM20948* icm, int16_t samples)
 */
 	return 1;
 }
+
+
+
+uint8_t ICM20948_read_data(ICM20948* icm)
+{
+
+	float gyro_data_hz = (ICM20948_get_GYRO_ODR_kHz(icm)*1000);
+	float accel_data_hz = (ICM20948_get_ACCEL_ODR_kHz(icm)*1000);
+	float gyro_data_s = 1/gyro_data_hz;
+	float accel_data_s = 1/accel_data_hz;
+
+	uint16_t gyro_x_raw = 0;
+	uint16_t gyro_y_raw = 0;
+	uint16_t gyro_z_raw = 0;
+
+	uint16_t accel_x_raw = 0;
+	uint16_t accel_y_raw = 0;
+	uint16_t accel_z_raw = 0;
+
+	float gyro_x = 0;
+	float gyro_y = 0;
+	float gyro_z = 0;
+
+	float accel_x = 0;
+	float accel_y = 0;
+	float accel_z = 0;
+
+	float delta_gyro_x = 0;
+	float delta_gyro_y = 0;
+	float delta_gyro_z = 0;
+
+	float temp = 0;
+
+
+		while (!ICM20948_get_RAW_DATA_RDY_INT_status(icm))
+		{
+			//To be left empty
+		}
+
+		gyro_x_raw = ICM20948_get_GYRO_X_raw(icm);
+		gyro_y_raw = ICM20948_get_GYRO_Y_raw(icm);
+		gyro_z_raw = ICM20948_get_GYRO_Z_raw(icm);
+
+		accel_x_raw = ICM20948_get_ACCEL_X_raw(icm);
+		accel_y_raw = ICM20948_get_ACCEL_Y_raw(icm);
+		accel_z_raw = ICM20948_get_ACCEL_Z_raw(icm);
+
+		accel_x = ICM20948_ACCEL_raw_to_g(icm, accel_x_raw);
+		accel_y = ICM20948_ACCEL_raw_to_g(icm, accel_y_raw);
+		accel_z = ICM20948_ACCEL_raw_to_g(icm, accel_z_raw);
+
+		delta_gyro_x = ICM20948_GYRO_raw_to_dps(icm, gyro_x_raw);
+		delta_gyro_y = ICM20948_GYRO_raw_to_dps(icm, gyro_y_raw);
+		delta_gyro_z = ICM20948_GYRO_raw_to_dps(icm, gyro_z_raw);
+
+		delta_gyro_x *= gyro_data_s;
+		delta_gyro_y *= gyro_data_s;
+		delta_gyro_z *= gyro_data_s;
+
+		gyro_x += delta_gyro_x;
+		gyro_y += delta_gyro_y;
+		gyro_z += delta_gyro_z;
+
+		temp = ICM20948_get_TEMP_C(icm);
+
+		icm->angle_x = gyro_x;
+		icm->angle_y = gyro_y;
+		icm->angle_z = gyro_z;
+
+		icm->accel_x = accel_x;
+		icm->accel_y = accel_y;
+		icm->accel_z = accel_z;
+
+		icm->temp = temp;
+
+}
+
+
