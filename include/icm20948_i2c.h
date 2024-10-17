@@ -290,9 +290,14 @@ typedef struct{
     float angle_x;
     float angle_y;
     float angle_z;
+
     float accel_x;
     float accel_y;
     float accel_z;
+
+    float gyro_datarate_sec;
+    float accel_datarate_sec;
+
     float temp;
 }ICM20948;
 
