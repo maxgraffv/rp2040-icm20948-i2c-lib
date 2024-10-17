@@ -484,6 +484,9 @@ int16_t ICM20948_get_ACCEL_Z_raw(ICM20948* icm);
 
 float ICM20948_ACCEL_raw_to_g(ICM20948* icm, int16_t);
 
+//Converts g's to meters per second^2 [m/s^2]
+float ICM20948_g_to_mps2(float);
+
 uint8_t ICM20948_ACCEL_X_SELF_TEST(ICM20948*);
 uint8_t ICM20948_ACCEL_Y_SELF_TEST(ICM20948*);
 uint8_t ICM20948_ACCEL_Z_SELF_TEST(ICM20948*);
@@ -598,8 +601,6 @@ uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948*);
 
 float ICM20948_get_GYRO_ODR_kHz(ICM20948*);
 
-//TODO: X/Y/Z G offset get/set
-//TODO: X/Y/Z G User OFFSET
 
 /*
 	TEMP

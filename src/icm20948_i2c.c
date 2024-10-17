@@ -979,6 +979,12 @@ float ICM20948_ACCEL_raw_to_g(ICM20948* icm, int16_t accel_raw)
 	return accel_g;
 }
 
+float ICM20948_g_to_m_per_s2(float g)
+{
+	float ms2 = g*9.80665;
+	return ms2;
+}
+
 uint8_t ICM20948_set_ACCEL_FS_SEL(ICM20948* icm, ACCEL_FS accel_fs_sel )
 {
 	uint8_t accel_config = ICM20948_get_register(icm, Bank2, ACCEL_CONFIG);
