@@ -1,6 +1,7 @@
 #include "icm20948_i2c.h"
 #include "stdio.h"
 #include <stdlib.h>
+#include <math.h>
 
 uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank )
 {
@@ -126,9 +127,11 @@ uint8_t ICM20948_Init(ICM20948* icm)
 	// ICM20948_reset(icm);
 	ICM20948_SleepMode_disable(icm);
 	ICM20948_set_CLOCK_SRC(icm, CLOCK_SRC_Auto_Sel_1);
-	ICM20948_GYRO_Init(icm, GYRO_DLPF_NBW_154_3, GYRO_FS_1000);
+	ICM20948_ODR_ALIGN_enable(icm);
+	ICM20948_GYRO_Init(icm, GYRO_DLPF_NBW_154_3, GYRO_FS_1000, 15, 500);
 	ICM20948_ACCEL_Init(icm, ACCEL_DLPF_NBW_68_8, ACCEL_FS_4);
 	ICM20948_TEMP_Init(icm, TEMP_DLPF_NBW_65_9);
+
 
 	return 1;
 }
@@ -168,14 +171,22 @@ uint8_t ICM20948_SleepMode_disable(ICM20948* icm)
 	return 1;
 }
 
-uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs)
+uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs, uint8_t sample_rate, uint16_t sample_num)
 {
+	//Enable Gyro
+	ICM20948_GYRO_enable(icm);
+
 	//Choosing DLPF NBW 
 	ICM20948_set_GYRO_DLPFCFG(icm, dlpf);
 
 	//FS_SEL
 	ICM20948_set_GYRO_FS_SEL(icm, fs);
 
+	//Sample rate
+	ICM20948_set_GYRO_SAMPLE_RATE_DIV(icm, sample_rate);
+
+	//Number of samples at configuration
+	ICM20948_GYRO_BIAS_CONFIGURE(icm, sample_num);
 
 	return 1;
 }
@@ -1506,3 +1517,42 @@ uint8_t ICM20948_set_ACCEL_Z_BIAS(ICM20948* icm, int16_t bias)
 	return 1;
 }
 
+uint8_t ICM20948_GYRO_BIAS_CONFIGURE(ICM20948* icm, int16_t samples)
+{
+	int sum_x = 0;
+	int sum_y = 0;
+	int sum_z = 0;
+
+	float avg_x = 0;
+	float avg_y = 0;
+	float avg_z = 0;
+
+	for (int i = 0; i < samples; i++)
+	{	
+		while (!ICM20948_get_RAW_DATA_RDY_INT_status(icm))
+		{
+			//To be left empty
+		}
+
+		sum_x += (int)ICM20948_get_GYRO_X_raw(icm);
+		sum_y += (int)ICM20948_get_GYRO_Y_raw(icm);
+		sum_z += (int)ICM20948_get_GYRO_Z_raw(icm);
+	}
+
+	avg_x = ((float)sum_x)/500;
+	avg_y = ((float)sum_y)/500;
+	avg_z = ((float)sum_z)/500;
+
+	int16_t bias_x = (-1)*(int16_t)ceilf(avg_x);	
+	int16_t bias_y = (-1)*(int16_t)ceilf(avg_y);
+	int16_t bias_z = (-1)*(int16_t)ceilf(avg_z);
+
+	// printf("AVG X: %f; AVG Y: %f; AVG Z: %f;\n", avg_x, avg_y, avg_z);
+	// printf("BIAS X: %d; BIAS Y: %d; BIAS Z: %d;\n", bias_x, bias_y, bias_z);
+
+	ICM20948_set_GYRO_X_BIAS(icm, bias_x);
+	ICM20948_set_GYRO_Y_BIAS(icm, bias_y);
+	ICM20948_set_GYRO_Z_BIAS(icm, bias_z);
+
+	return 1;
+}

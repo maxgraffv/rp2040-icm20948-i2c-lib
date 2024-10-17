@@ -386,6 +386,18 @@ uint8_t ICM20948_GYRO_disable(ICM20948* icm);//ok
   !!!!!!!!!!!!!!!!!!!!!
 */
 
+/*
+    INT_PIN_CFG
+*/
+
+
+
+
+
+
+
+
+
 
 /*
     INT_ENABLE
@@ -569,7 +581,7 @@ uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948*, GYRO_DLPF );//OK
 uint8_t ICM20948_GYRO_DLPF_enable(ICM20948*);//OK
 uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* );//OK
 
-uint8_t ICM20948_GYRO_Init(ICM20948*, GYRO_DLPF, GYRO_FS);//OK
+uint8_t ICM20948_GYRO_Init(ICM20948*, GYRO_DLPF, GYRO_FS, uint8_t, uint16_t);//OK
 
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);//ok
 int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);//ok
@@ -716,6 +728,9 @@ uint8_t ICM20948_set_i2C_MST_ODR_CONFIG(ICM20948*, uint8_t);
 uint8_t ICM20948_I2C_MultiMaster_enable(ICM20948*);
 uint8_t ICM20948_I2C_MultiMaster_disable(ICM20948*);
 
+/*
+    BIAS registers
+*/
 uint8_t ICM20948_set_GYRO_X_BIAS(ICM20948*, int16_t);
 uint8_t ICM20948_set_GYRO_Y_BIAS(ICM20948*, int16_t);
 uint8_t ICM20948_set_GYRO_Z_BIAS(ICM20948*, int16_t);
@@ -724,6 +739,11 @@ uint8_t ICM20948_set_ACCEL_X_BIAS(ICM20948*, int16_t);
 uint8_t ICM20948_set_ACCEL_Y_BIAS(ICM20948*, int16_t);
 uint8_t ICM20948_set_ACCEL_Z_BIAS(ICM20948*, int16_t);
 
+/*
+    CONFIGURE GYRO BIAS
+*/
+
+uint8_t ICM20948_GYRO_BIAS_CONFIGURE(ICM20948*, int16_t);
 
 
 #endif
