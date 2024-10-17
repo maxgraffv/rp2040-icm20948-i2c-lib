@@ -322,7 +322,7 @@ CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948* icm)
 uint8_t ICM20948_ACCEL_enable(ICM20948* icm)
 {
 	uint8_t pwr_mgmt_2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_2);
-	pwr_mgmt_2 |= 0b00111000;
+	pwr_mgmt_2 &= 0b11000111;
 	ICM20948_set_register(icm, Bank0, PWR_MGMT_2, pwr_mgmt_2);
 
 	return 1;
@@ -331,7 +331,7 @@ uint8_t ICM20948_ACCEL_enable(ICM20948* icm)
 uint8_t ICM20948_ACCEL_disable(ICM20948* icm)
 {
 	uint8_t pwr_mgmt_2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_2);
-	pwr_mgmt_2 &= 0b11000111;
+	pwr_mgmt_2 |= 0b00111000;
 	ICM20948_set_register(icm, Bank0, PWR_MGMT_2, pwr_mgmt_2);
 
 	return 1;
@@ -340,7 +340,7 @@ uint8_t ICM20948_ACCEL_disable(ICM20948* icm)
 uint8_t ICM20948_GYRO_enable(ICM20948* icm)
 {
 	uint8_t pwr_mgmt_2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_2);
-	pwr_mgmt_2 |= 0b00000111;
+	pwr_mgmt_2 &= 0b11111000;
 	ICM20948_set_register(icm, Bank0, PWR_MGMT_2, pwr_mgmt_2);
 
 	return 1;
@@ -349,7 +349,7 @@ uint8_t ICM20948_GYRO_enable(ICM20948* icm)
 uint8_t ICM20948_GYRO_disable(ICM20948* icm)
 {
 	uint8_t pwr_mgmt_2 = ICM20948_get_register(icm, Bank0, PWR_MGMT_2);
-	pwr_mgmt_2 &= 0b11111000;
+	pwr_mgmt_2 |= 0b00000111;
 	ICM20948_set_register(icm, Bank0, PWR_MGMT_2, pwr_mgmt_2);
 
 	return 1;
@@ -1628,9 +1628,9 @@ uint8_t ICM20948_read_data(ICM20948* icm)
 	uint16_t accel_y_raw = 0;
 	uint16_t accel_z_raw = 0;
 
-	float gyro_x = 0;
-	float gyro_y = 0;
-	float gyro_z = 0;
+	float gyro_x = icm->angle_x;
+	float gyro_y = icm->angle_y;
+	float gyro_z = icm->angle_z;
 
 	float accel_x = 0;
 	float accel_y = 0;
@@ -1639,9 +1639,6 @@ uint8_t ICM20948_read_data(ICM20948* icm)
 	float delta_gyro_x = 0;
 	float delta_gyro_y = 0;
 	float delta_gyro_z = 0;
-
-	float temp = 0;
-
 
 		while (!ICM20948_get_RAW_DATA_RDY_INT_status(icm))
 		{
@@ -1672,7 +1669,7 @@ uint8_t ICM20948_read_data(ICM20948* icm)
 		gyro_y += delta_gyro_y;
 		gyro_z += delta_gyro_z;
 
-		temp = ICM20948_get_TEMP_C(icm);
+	float temp = ICM20948_get_TEMP_C(icm);
 
 		icm->angle_x = gyro_x;
 		icm->angle_y = gyro_y;
@@ -1684,6 +1681,7 @@ uint8_t ICM20948_read_data(ICM20948* icm)
 
 		icm->temp = temp;
 
+	return 1;
 }
 
 
