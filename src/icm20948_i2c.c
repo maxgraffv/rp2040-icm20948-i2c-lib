@@ -76,7 +76,6 @@ uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_add
 
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen, uint8_t addr_pin_high )
 {
-	printf("ICM20948 Creating\n");
 	ICM20948* icm_ptr = (ICM20948*)malloc(sizeof(ICM20948));
 
 	icm_ptr->i2c_ptr = i2c_chosen;
@@ -86,6 +85,9 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen, uint8_t addr_pin_high )
 	else
 		icm_ptr->i2c_address = 0b1101000;
 
+	icm_ptr->angle_x = 0;
+	icm_ptr->angle_y = 0;
+	icm_ptr->angle_z = 0;
 	
 	if(ICM20948_who_am_i_check(icm_ptr))
 		return icm_ptr;
@@ -126,7 +128,7 @@ uint8_t ICM20948_Init(ICM20948* icm)
 	ICM20948_set_CLOCK_SRC(icm, CLOCK_SRC_Auto_Sel_1);
 	ICM20948_GYRO_Init(icm, GYRO_DLPF_NBW_154_3, GYRO_FS_1000);
 	ICM20948_ACCEL_Init(icm, ACCEL_DLPF_NBW_68_8, ACCEL_FS_4);
-	ICM20948_TEMP_Init(icm, TEMP_DLPF_NBW_8_8);
+	ICM20948_TEMP_Init(icm, TEMP_DLPF_NBW_65_9);
 
 	return 1;
 }

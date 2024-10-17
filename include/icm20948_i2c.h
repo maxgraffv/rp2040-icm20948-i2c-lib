@@ -287,6 +287,9 @@ typedef struct{
 	uint8_t i2c_address;
 	uint8_t who_am_i_val;
 	i2c_inst_t* i2c_ptr;
+    float angle_x;
+    float angle_y;
+    float angle_z;
 }ICM20948;
 
 uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );//ok
