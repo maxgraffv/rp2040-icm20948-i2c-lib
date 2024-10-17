@@ -129,7 +129,7 @@ uint8_t ICM20948_Init(ICM20948* icm)
 	ICM20948_set_CLOCK_SRC(icm, CLOCK_SRC_Auto_Sel_1);
 	ICM20948_ODR_ALIGN_enable(icm);
 	ICM20948_GYRO_Init(icm, GYRO_DLPF_NBW_154_3, GYRO_FS_1000, 15, 500);
-	ICM20948_ACCEL_Init(icm, ACCEL_DLPF_NBW_68_8, ACCEL_FS_4);
+	ICM20948_ACCEL_Init(icm, ACCEL_DLPF_NBW_68_8, ACCEL_FS_4, 15, 500);
 	ICM20948_TEMP_Init(icm, TEMP_DLPF_NBW_65_9);
 
 
@@ -951,13 +951,19 @@ float ICM20948_get_DELAY_TIME_ms(ICM20948* icm)
 
 
 
-uint8_t ICM20948_ACCEL_Init(ICM20948* icm, ACCEL_DLPF dlpf , ACCEL_FS fs)
+uint8_t ICM20948_ACCEL_Init(ICM20948* icm, ACCEL_DLPF dlpf , ACCEL_FS fs, uint16_t samplerate_div, uint16_t sample_num)
 {
 	//DLPF
 	ICM20948_set_ACCEL_DLPFCFG(icm, dlpf);
 
 	//ACCEL Full Scale
 	ICM20948_set_ACCEL_FS_SEL(icm, fs);
+
+	//Sample rate
+	ICM20948_set_ACCEL_SAMPLE_RATE_DIV(icm, samplerate_div);
+
+	//Number of samples at configuration
+	ICM20948_ACCEL_BIAS_CONFIGURE(icm, sample_num);
 
 	return 1;
 }
@@ -1539,9 +1545,9 @@ uint8_t ICM20948_GYRO_BIAS_CONFIGURE(ICM20948* icm, int16_t samples)
 		sum_z += (int)ICM20948_get_GYRO_Z_raw(icm);
 	}
 
-	avg_x = ((float)sum_x)/500;
-	avg_y = ((float)sum_y)/500;
-	avg_z = ((float)sum_z)/500;
+	avg_x = ((float)sum_x)/samples;
+	avg_y = ((float)sum_y)/samples;
+	avg_z = ((float)sum_z)/samples;
 
 	int16_t bias_x = (-1)*(int16_t)ceilf(avg_x);	
 	int16_t bias_y = (-1)*(int16_t)ceilf(avg_y);
@@ -1554,5 +1560,46 @@ uint8_t ICM20948_GYRO_BIAS_CONFIGURE(ICM20948* icm, int16_t samples)
 	ICM20948_set_GYRO_Y_BIAS(icm, bias_y);
 	ICM20948_set_GYRO_Z_BIAS(icm, bias_z);
 
+	return 1;
+}
+
+uint8_t ICM20948_ACCEL_BIAS_CONFIGURE(ICM20948* icm, int16_t samples)
+{
+	/*
+	int sum_x = 0;
+	int sum_y = 0;
+	int sum_z = 0;
+
+	float avg_x = 0;
+	float avg_y = 0;
+	float avg_z = 0;
+
+	for (int i = 0; i < samples; i++)
+	{	
+		while (!ICM20948_get_RAW_DATA_RDY_INT_status(icm))
+		{
+			//To be left empty
+		}
+
+		sum_x += (int)ICM20948_get_ACCEL_X_raw(icm);
+		sum_y += (int)ICM20948_get_ACCEL_Y_raw(icm);
+		sum_z += (int)ICM20948_get_ACCEL_Z_raw(icm);
+	}
+
+	avg_x = ((float)sum_x)/samples;
+	avg_y = ((float)sum_y)/samples;
+	avg_z = ((float)sum_z)/samples;
+
+	int16_t bias_x = (int16_t)ceilf(avg_x);	
+	int16_t bias_y = (int16_t)ceilf(avg_y);
+	int16_t bias_z = (int16_t)ceilf(avg_z);
+
+	printf("AVG X: %f; AVG Y: %f; AVG Z: %f;\n", avg_x, avg_y, avg_z);
+	printf("BIAS X: %d; BIAS Y: %d; BIAS Z: %d;\n", bias_x, bias_y, bias_z);
+
+	// ICM20948_set_ACCEL_X_BIAS(icm, bias_x);
+	// ICM20948_set_ACCEL_Y_BIAS(icm, bias_y);
+	// ICM20948_set_ACCEL_Z_BIAS(icm, bias_z);
+*/
 	return 1;
 }
