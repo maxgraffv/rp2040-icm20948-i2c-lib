@@ -94,6 +94,9 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen, uint8_t addr_pin_high )
 	icm_ptr->accel_y = 0;
 	icm_ptr->accel_z = 0;
 
+	icm_ptr->gyro_datarate_sec = 0;
+	icm_ptr->accel_datarate_sec = 0;
+
 	icm_ptr->temp = 0;
 	
 	if(ICM20948_who_am_i_check(icm_ptr))
@@ -193,6 +196,10 @@ uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs, uint8_t sa
 
 	//Number of samples at configuration
 	ICM20948_GYRO_BIAS_CONFIGURE(icm, sample_num);
+
+	float gyro_data_hz = (ICM20948_get_GYRO_ODR_kHz(icm)*1000);
+	float gyro_data_s = 1/gyro_data_hz;
+	icm->gyro_datarate_sec = gyro_data_s;
 
 	return 1;
 }
@@ -971,6 +978,10 @@ uint8_t ICM20948_ACCEL_Init(ICM20948* icm, ACCEL_DLPF dlpf , ACCEL_FS fs, uint16
 	//Number of samples at configuration
 	ICM20948_ACCEL_BIAS_CONFIGURE(icm, sample_num);
 
+	float accel_data_hz = (ICM20948_get_ACCEL_ODR_kHz(icm)*1000);
+	float accel_data_s = 1/accel_data_hz;
+	icm->accel_datarate_sec = accel_data_s;
+
 	return 1;
 }
 
@@ -1615,71 +1626,42 @@ uint8_t ICM20948_ACCEL_BIAS_CONFIGURE(ICM20948* icm, int16_t samples)
 uint8_t ICM20948_read_data(ICM20948* icm)
 {
 
-	float gyro_data_hz = (ICM20948_get_GYRO_ODR_kHz(icm)*1000);
-	float accel_data_hz = (ICM20948_get_ACCEL_ODR_kHz(icm)*1000);
-	float gyro_data_s = 1/gyro_data_hz;
-	float accel_data_s = 1/accel_data_hz;
+	while (!ICM20948_get_RAW_DATA_RDY_INT_status(icm))
+	{
+		//To be left empty
+	}
 
-	uint16_t gyro_x_raw = 0;
-	uint16_t gyro_y_raw = 0;
-	uint16_t gyro_z_raw = 0;
+	uint16_t gyro_x_raw = ICM20948_get_GYRO_X_raw(icm);
+	uint16_t gyro_y_raw = ICM20948_get_GYRO_Y_raw(icm);
+	uint16_t gyro_z_raw = ICM20948_get_GYRO_Z_raw(icm);
 
-	uint16_t accel_x_raw = 0;
-	uint16_t accel_y_raw = 0;
-	uint16_t accel_z_raw = 0;
+	uint16_t accel_x_raw = ICM20948_get_ACCEL_X_raw(icm);
+	uint16_t accel_y_raw = ICM20948_get_ACCEL_Y_raw(icm);
+	uint16_t accel_z_raw = ICM20948_get_ACCEL_Z_raw(icm);
 
-	float gyro_x = icm->angle_x;
-	float gyro_y = icm->angle_y;
-	float gyro_z = icm->angle_z;
+	float accel_x = ICM20948_ACCEL_raw_to_g(icm, accel_x_raw);
+	float accel_y = ICM20948_ACCEL_raw_to_g(icm, accel_y_raw);
+	float accel_z = ICM20948_ACCEL_raw_to_g(icm, accel_z_raw);
 
-	float accel_x = 0;
-	float accel_y = 0;
-	float accel_z = 0;
+	float delta_gyro_x = ICM20948_GYRO_raw_to_dps(icm, gyro_x_raw);
+	float delta_gyro_y = ICM20948_GYRO_raw_to_dps(icm, gyro_y_raw);
+	float delta_gyro_z = ICM20948_GYRO_raw_to_dps(icm, gyro_z_raw);
 
-	float delta_gyro_x = 0;
-	float delta_gyro_y = 0;
-	float delta_gyro_z = 0;
-
-		while (!ICM20948_get_RAW_DATA_RDY_INT_status(icm))
-		{
-			//To be left empty
-		}
-
-		gyro_x_raw = ICM20948_get_GYRO_X_raw(icm);
-		gyro_y_raw = ICM20948_get_GYRO_Y_raw(icm);
-		gyro_z_raw = ICM20948_get_GYRO_Z_raw(icm);
-
-		accel_x_raw = ICM20948_get_ACCEL_X_raw(icm);
-		accel_y_raw = ICM20948_get_ACCEL_Y_raw(icm);
-		accel_z_raw = ICM20948_get_ACCEL_Z_raw(icm);
-
-		accel_x = ICM20948_ACCEL_raw_to_g(icm, accel_x_raw);
-		accel_y = ICM20948_ACCEL_raw_to_g(icm, accel_y_raw);
-		accel_z = ICM20948_ACCEL_raw_to_g(icm, accel_z_raw);
-
-		delta_gyro_x = ICM20948_GYRO_raw_to_dps(icm, gyro_x_raw);
-		delta_gyro_y = ICM20948_GYRO_raw_to_dps(icm, gyro_y_raw);
-		delta_gyro_z = ICM20948_GYRO_raw_to_dps(icm, gyro_z_raw);
-
-		delta_gyro_x *= gyro_data_s;
-		delta_gyro_y *= gyro_data_s;
-		delta_gyro_z *= gyro_data_s;
-
-		gyro_x += delta_gyro_x;
-		gyro_y += delta_gyro_y;
-		gyro_z += delta_gyro_z;
+	delta_gyro_x *= icm->gyro_datarate_sec;
+	delta_gyro_y *= icm->gyro_datarate_sec;
+	delta_gyro_z *= icm->gyro_datarate_sec;
 
 	float temp = ICM20948_get_TEMP_C(icm);
 
-		icm->angle_x = gyro_x;
-		icm->angle_y = gyro_y;
-		icm->angle_z = gyro_z;
+	icm->angle_x += delta_gyro_x;
+	icm->angle_y += delta_gyro_y;
+	icm->angle_z += delta_gyro_z;
 
-		icm->accel_x = accel_x;
-		icm->accel_y = accel_y;
-		icm->accel_z = accel_z;
+	icm->accel_x = accel_x;
+	icm->accel_y = accel_y;
+	icm->accel_z = accel_z;
 
-		icm->temp = temp;
+	icm->temp = temp;
 
 	return 1;
 }
