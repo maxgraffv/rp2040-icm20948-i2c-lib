@@ -290,6 +290,10 @@ typedef struct{
     float angle_x;
     float angle_y;
     float angle_z;
+    float accel_x;
+    float accel_y;
+    float accel_z;
+    float temp;
 }ICM20948;
 
 uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );//ok

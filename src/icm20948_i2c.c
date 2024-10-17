@@ -89,6 +89,12 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen, uint8_t addr_pin_high )
 	icm_ptr->angle_x = 0;
 	icm_ptr->angle_y = 0;
 	icm_ptr->angle_z = 0;
+
+	icm_ptr->accel_x = 0;
+	icm_ptr->accel_y = 0;
+	icm_ptr->accel_z = 0;
+
+	icm_ptr->temp = 0;
 	
 	if(ICM20948_who_am_i_check(icm_ptr))
 		return icm_ptr;
