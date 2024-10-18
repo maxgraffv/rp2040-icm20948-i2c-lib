@@ -12,9 +12,9 @@ All listed and described below.
 
 ## Functions
 ### createICM()
-\'''c
+```c
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
-\'''
+```
 
 - [createICM(i2c_inst_t*, uint8_t)][#returns pointer to ICM struct allocated memory]
 - [ICM20948_Init(ICM20948*)][#Initiates ICM's struct variables]
