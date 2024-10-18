@@ -8,7 +8,7 @@ All listed and described below.
 ## Table of Content
 - [Functions](#Functions)
 - [Example](#Example)
-- [To Be Dealt With](#tbdw)
+- [To Be Dealt With](#to-be-dealt-with)
 
 
 ## Functions
@@ -186,7 +186,7 @@ GYRO: x 1.587118; y 14.270452; z -355.719299;            ACCEL: x 0.071045; y -0
 
 
 
-## To Be Dealt With {#tbdw}
+## To Be Dealt With
 Many ICM20948 features available have not been implemented, mostly because of no need to do so and a short timeline for completing this project.  
 To be completed in near future:  ~~hopefully~~  
 
