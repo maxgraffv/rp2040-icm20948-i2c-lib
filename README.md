@@ -5,9 +5,9 @@ Supporting basic functionality, like gyro, accelerometer and temperature sensor 
 All listed and described below.
 
 ## Table of Content
-- [Functions Description][#Functions]
-- [Example][#Example]
-- [To Be Dealt With][#TBDW]
+- [Functions Description](#Functions)
+- [Example](#Example)
+- [To Be Dealt With](#TBDW)
 
 
 ## Functions
