@@ -55,6 +55,7 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
 uint8_t ICM20948_Init(ICM20948* icm);
 ```
 **Performs:**
+- reset() - Setting all register to default values
 - SleepMode_disable() - Waking up the sensor
 - Set_Clock_Source() - Set's the default clocksource at Auto_sel = 1; Advised by ICM20948 documentation
 - ODR_ALIGN_enable() - Enabling Output Datarate Alignment
@@ -62,5 +63,14 @@ uint8_t ICM20948_Init(ICM20948* icm);
 - ACCEL_Init() - Initiating Accelerometer with default values; To be configured by a user;
 - TEMP_Init() - Initiating Temperature sensor with default values; To be configured by a user;
 
+### SleepMode
+```c
+uint8_t ICM20948_SleepMode_enable(ICM20948* icm);
+uint8_t ICM20948_SleepMode_disable(ICM20948* icm);
+uint8_t ICM20948_isSleepMode(ICM20948* icm);
+```
+When in Sleep Mode - sensor does not perform any action. (Not to be confused with Low Power Mode)
+Enable/Disable functions do as described, enable and desable SleepMode
+Whereas **isSleepMode** checks sleepMode and returns 1 if SleepMode is enabled and 0 when disabled;
 
 
