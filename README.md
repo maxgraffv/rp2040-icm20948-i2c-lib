@@ -70,7 +70,22 @@ uint8_t ICM20948_SleepMode_disable(ICM20948* icm);
 uint8_t ICM20948_isSleepMode(ICM20948* icm);
 ```
 When in Sleep Mode - sensor does not perform any action. (Not to be confused with Low Power Mode)  
-Enable/Disable functions do as described, enable and desable SleepMode  
+**Enable/Disable** functions do as described, enable and disable SleepMode  
 Whereas **isSleepMode** checks sleepMode and returns 1 if SleepMode is enabled and 0 when disabled  
+
+
+### GYRO_Init()
+```c
+uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs, uint8_t sample_rate, uint16_t sample_num)
+```
+
+Takes arguments as shown above, and performs the following:
+- **GYRO_enable()** - Enables Gyro
+- **set_DLPFCFG()** - sets Digital Low Pass Filter
+- **set_FS_SEL()** - sets Full Scale Range
+- **set_SAMPLE_RATE_DIV()** - sets Sample Rate Divider
+- **BIAS_CONFIGURE()** - sets GYRO Bias values
+- **get_GYRO_ODR_kHZ()** - reads ODR register value, calculates and sets **ICM's** ***gyro_data_s*** value based on it  
+
 
 
