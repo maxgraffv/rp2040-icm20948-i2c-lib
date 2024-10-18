@@ -15,6 +15,12 @@ missing features listed [here](#to-be-dealt-with)
 
 
 ## Functions
+- [ICM20948 Struct](#icm20948-struct)
+- [createICM()](#createicm)
+- [Init()](#init)
+- [SleepMode](#sleepmode)
+- [GYRO_Init()](#gyro_init)
+
 ### ICM20948 Struct
 ```c
 typedef struct
