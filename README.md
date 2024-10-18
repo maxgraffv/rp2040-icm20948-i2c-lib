@@ -6,7 +6,7 @@ Supporting basic functionality, like gyro, accelerometer and temperature sensor 
 All listed and described below.
 
 ## Table of Content
-- [Functions description](#Functions)
+- [Functions](#Functions)
 - [Example](#Example)
 - [To Be Dealt With](#TBDW)
 
@@ -179,3 +179,25 @@ GYRO: x 4.719713; y 15.211473; z -355.625275;            ACCEL: x 0.064819; y -0
 GYRO: x 1.587118; y 14.270452; z -355.719299;            ACCEL: x 0.071045; y -0.420532; z 0.877441;             TEMP: 27.607363 C
 ```
 
+
+
+
+
+
+
+
+## To Be Dealt With {#TBDW}
+Many ICM20948 features available have not been implemented, mostly because of no need to do so and a short timeline for completing this project.  
+To be completed in near future:  ~~hopefully~~  
+
+- [ ] Low Power Mode - although some functions declared; No Implementations as of this time
+- [ ] Lacks ICM as I2C Master Functionality
+- [ ] Accelerometer Bias gives weird values; hence ACCEL_set_BIAS() commented out
+- [ ] No Interrupt Pin Configuration functionality, besides Raw Data Rady Interrupt
+- [ ] No FSYNC Functionality, although many functions declared;
+- [ ] No FIFO Functionality, although many functions declared;
+- [ ] No Accel and Gyro self-test functionality
+- [ ] No magnetometer functionality, needs ICM as I2C Master Operating
+
+***DISCLAIMER***
+Most of functions performing those features have been declared, few have been defined, but are **not advised** to be used by an unexperienced user, as the're not fully functioning.
