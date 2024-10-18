@@ -17,8 +17,8 @@ All listed and described below.
 typedef struct
 {
     uint8_t i2c_address;
-	uint8_t who_am_i_val;
-	i2c_inst_t* i2c_ptr;
+    uint8_t who_am_i_val;
+    i2c_inst_t* i2c_ptr;
     float gyro_datarate_sec;
     float accel_datarate_sec;
 
