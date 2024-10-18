@@ -69,8 +69,8 @@ uint8_t ICM20948_SleepMode_enable(ICM20948* icm);
 uint8_t ICM20948_SleepMode_disable(ICM20948* icm);
 uint8_t ICM20948_isSleepMode(ICM20948* icm);
 ```
-When in Sleep Mode - sensor does not perform any action. (Not to be confused with Low Power Mode)
-Enable/Disable functions do as described, enable and desable SleepMode
-Whereas **isSleepMode** checks sleepMode and returns 1 if SleepMode is enabled and 0 when disabled;
+When in Sleep Mode - sensor does not perform any action. (Not to be confused with Low Power Mode)  
+Enable/Disable functions do as described, enable and desable SleepMode  
+Whereas **isSleepMode** checks sleepMode and returns 1 if SleepMode is enabled and 0 when disabled  
 
 
