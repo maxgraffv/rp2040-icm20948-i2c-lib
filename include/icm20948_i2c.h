@@ -302,12 +302,12 @@ typedef struct{
     float temp;
 }ICM20948;
 
-uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );//ok
+uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank );
 
-ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );//ok
-uint8_t ICM20948_Init(ICM20948* icm);//ok
+ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
+uint8_t ICM20948_Init(ICM20948* icm);
 
-uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr);//ok
+uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr);
 uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value);//ok
 uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_addr_H, uint8_t reg_addr_L);//ok
 

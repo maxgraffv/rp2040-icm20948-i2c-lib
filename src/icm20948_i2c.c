@@ -132,7 +132,7 @@ uint8_t ICM20948_Init(ICM20948* icm)
 {
 	printf("ICM Init...\n");
 	
-	// ICM20948_reset(icm);
+	ICM20948_reset(icm);
 	ICM20948_SleepMode_disable(icm);
 	ICM20948_set_CLOCK_SRC(icm, CLOCK_SRC_Auto_Sel_1);
 	ICM20948_ODR_ALIGN_enable(icm);
@@ -208,6 +208,7 @@ uint8_t ICM20948_reset(ICM20948* icm)
 
 	pwr_mgmt_1 |= (1<<PWR_MGMT_1_DEVICE_RESET);
 	ICM20948_set_register(icm, Bank0, PWR_MGMT_1, pwr_mgmt_1);
+	sleep_ms(10);
 
 	return 1;
 }
