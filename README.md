@@ -50,13 +50,17 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
 - needs pico-sdk i2c_inst_t pointer and integer for whether physical address pin is high or low (1 or 0)
 - implements who_am_i_check() to make sure that the sensor connected is valid
 
-### ICM
+### Init()
 ```c
-ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
+uint8_t ICM20948_Init(ICM20948* icm);
 ```
+**Performs:**
+- SleepMode_disable() - Waking up the sensor
+- Set_Clock_Source() - Set's the default clocksource at Auto_sel = 1; Advised by ICM20948 documentation
+- ODR_ALIGN_enable() - Enabling Output Datarate Alignment
+- GYRO_Init() - Initiating Gyro with default values; To be configured by a user;
+- ACCEL_Init() - Initiating Accelerometer with default values; To be configured by a user;
+- TEMP_Init() - Initiating Temperature sensor with default values; To be configured by a user;
 
-- returns a pointer to ICM struct allocated memory
-- needs pico-sdk i2c_inst_t pointer and integer for whether physical address pin is high or low (1 or 0)
-- implements who_am_i_check() to make sure that the sensor connected is valid
 
 
