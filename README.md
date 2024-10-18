@@ -1,9 +1,12 @@
 # ICM20948 I2C Library for RP2040
 ## Description
-Library for ICM20948 9
-The library is made to be as user friendly as possible.
+Library for ICM20948 - a 9axis Motion Sensor - configuration and communication using I2C protocol.  
+The library is made to be as user friendly as possible.   
 Supporting basic functionality, like gyro, accelerometer and temperature sensor data reads.
-All listed and described below.
+All listed and described in [here](#Functions).  
+**IMPORTANT** - the library is not fully complete, lacks many features that are to be done.  
+missing features listed [here](#to-be-dealt-with)  
+
 
 ## Table of Content
 - [Functions](#Functions)
