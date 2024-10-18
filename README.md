@@ -33,12 +33,12 @@ typedef struct
     float temp;
 }ICM20948;
 ```
-- i2c_address, who_am_i _val and i2c_ptr are set by ICM20948_Init() and are not to be messed around with.
-- gyro/accel_datarate_sec are calculated and set by GYRO_Init() which is already implemented in ICM20948_Init();
+- **i2c_address**, who_am_i _val and i2c_ptr are set by ICM20948_Init() and are not to be messed around with.
+- **gyro/accel_datarate_sec** are calculated and set by GYRO_Init() which is already implemented in ICM20948_Init();
     gyro_datarate_sec is used to calculate gyro's angle; Whereas accel_datarate_sec is not used anywhere in the code, as of this moment;
-- angle_x/y/z calculated and set by ICM20948_read_data(), provides current angle of tilt;
-- accel_x/y/z calculated and set by ICM20948_read_data(), provides current acceleration at all axis;
-- temp calculated and set by ICM20948_read_data(), provides current sensor temperature;
+- **angle_x/y/z** calculated and set by ICM20948_read_data(), provides current angle of tilt;
+- **accel_x/y/z** calculated and set by ICM20948_read_data(), provides current acceleration at all axis;
+- **temp** calculated and set by ICM20948_read_data(), provides current sensor temperature;
 
 ### createICM()
 ```c
