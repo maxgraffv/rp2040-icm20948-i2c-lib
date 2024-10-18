@@ -33,21 +33,30 @@ typedef struct
     float temp;
 }ICM20948;
 ```
-- **i2c_address**, who_am_i _val and i2c_ptr are set by ICM20948_Init() and are not to be messed around with.
+- **i2c_address, who_am_i _val and i2c_ptr** are set by createICM20948() and are not to be messed around with.
 - **gyro/accel_datarate_sec** are calculated and set by GYRO_Init() which is already implemented in ICM20948_Init();
     gyro_datarate_sec is used to calculate gyro's angle; Whereas accel_datarate_sec is not used anywhere in the code, as of this moment;
 - **angle_x/y/z** calculated and set by ICM20948_read_data(), provides current angle of tilt;
 - **accel_x/y/z** calculated and set by ICM20948_read_data(), provides current acceleration at all axis;
 - **temp** calculated and set by ICM20948_read_data(), provides current sensor temperature;
 
+
 ### createICM()
 ```c
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
 ```
 
-returns a pointer to ICM struct allocated memory
-needs pico-sdk i2c_inst_t pointer
-either 
-- [ICM20948_Init(ICM20948*)][#Initiates ICM's struct variables]
+- returns a pointer to ICM struct allocated memory
+- needs pico-sdk i2c_inst_t pointer and integer for whether physical address pin is high or low (1 or 0)
+- implements who_am_i_check() to make sure that the sensor connected is valid
+
+### ICM
+```c
+ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
+```
+
+- returns a pointer to ICM struct allocated memory
+- needs pico-sdk i2c_inst_t pointer and integer for whether physical address pin is high or low (1 or 0)
+- implements who_am_i_check() to make sure that the sensor connected is valid
 
 
