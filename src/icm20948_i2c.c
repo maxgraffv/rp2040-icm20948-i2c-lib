@@ -130,8 +130,7 @@ uint8_t ICM20948_who_am_i_check(ICM20948* icm)
 
 uint8_t ICM20948_Init(ICM20948* icm)
 {
-	printf("ICM Default Init...\n");
-
+	printf("ICM Init...\n");
 	
 	// ICM20948_reset(icm);
 	ICM20948_SleepMode_disable(icm);
@@ -140,7 +139,6 @@ uint8_t ICM20948_Init(ICM20948* icm)
 	ICM20948_GYRO_Init(icm, GYRO_DLPF_NBW_154_3, GYRO_FS_1000, 15, 500);
 	ICM20948_ACCEL_Init(icm, ACCEL_DLPF_NBW_68_8, ACCEL_FS_4, 15, 500);
 	ICM20948_TEMP_Init(icm, TEMP_DLPF_NBW_65_9);
-
 
 	return 1;
 }

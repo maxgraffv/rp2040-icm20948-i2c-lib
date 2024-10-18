@@ -287,6 +287,9 @@ typedef struct{
 	uint8_t i2c_address;
 	uint8_t who_am_i_val;
 	i2c_inst_t* i2c_ptr;
+    float gyro_datarate_sec;
+    float accel_datarate_sec;
+
     float angle_x;
     float angle_y;
     float angle_z;
@@ -295,8 +298,6 @@ typedef struct{
     float accel_y;
     float accel_z;
 
-    float gyro_datarate_sec;
-    float accel_datarate_sec;
 
     float temp;
 }ICM20948;
