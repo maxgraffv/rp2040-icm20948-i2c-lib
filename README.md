@@ -207,6 +207,7 @@ To be completed in near future:  ~~hopefully~~
 - [ ] No FIFO Functionality, although many functions declared;
 - [ ] No Accel and Gyro self-test functionality
 - [ ] No magnetometer functionality, needs ICM as I2C Master Operating
+- [ ] Error Handling - at the moment functions return 1 as default
 
 ***DISCLAIMER***
 Most of functions performing those features have been declared, few have been defined, but are **not advised** to be used by an unexperienced user, as the're not fully functioning.
