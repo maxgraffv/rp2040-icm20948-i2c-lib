@@ -1014,7 +1014,7 @@ float ICM20948_ACCEL_raw_to_g(ICM20948* icm, int16_t accel_raw)
 	return accel_g;
 }
 
-float ICM20948_g_to_m_per_s2(float g)
+float ICM20948_g_to_mps2(float g)
 {
 	float ms2 = g*9.80665;
 	return ms2;
