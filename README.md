@@ -342,6 +342,9 @@ Returns Gyro Output Data Rate in kHz.
 
 ### Acceleration Sensor
 
+
+
+
 ### Temperature Sensor
 ```c
 uint8_t ICM20948_Temp_enable(ICM20948* icm)
