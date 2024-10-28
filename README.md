@@ -157,7 +157,12 @@ uint8_t ICM20948_isLowPowerpMode(ICM20948* icm)
 Checks for Low Power Mode status.  
 Returns 1 if enabled, 0 if disabled.  
 
-***___ IMPORTANT ___***
+```c
+uint8_t ICM20948_GYRO_CYCLE_enable(ICM20948* icm)
+uint8_t ICM20948_GYRO_CYCLE_disable(ICM20948* icm)
+```
+
+***___ IMPORTANT ___***   
 Although those are fully functional.  
 ICM needs further configuration for working in LP Mode.  
 Which has not been implemented by this library, at the moment.  
@@ -201,6 +206,8 @@ typedef enum{
 ### Gyro Sensor
 - [Init()](#gyro-init)
 - [Configuration](#gyro-config)
+- [Data Output](#gyro-data)
+
 #### Init() <a id="gyro-init" ></a>
 ```c
 uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs, uint8_t sample_rate, uint16_t sample_num)
@@ -220,29 +227,106 @@ Takes arguments as shown above, and performs the following:
 uint8_t ICM20948_GYRO_enable(ICM20948* icm);
 uint8_t ICM20948_GYRO_disable(ICM20948* icm);
 ```
+Enables/Disables Gyro sensor  
+<br>
+
+
+##### Full Scale Range <a id="gyro-fs"></a>
+```c
+GYRO_FS ICM20948_get_GYRO_FS_SEL(ICM20948* icm);
+uint8_t ICM20948_set_GYRO_FS_SEL(ICM20948* icm, GYRO_FS fs_sel);
+```
+Gets and Sets Gyro Full Scale Range.  
+<br>
+
+```c
+float ICM20948_getGyroSensitivity(GYRO_FS FS)
+```
+Returns Gyro Sensor sensitivity, based on Full Scale Range selected.  
+<br>
+
+##### Digital Low Pass Filter <a id="gyro-dlpf"></a>
+```c
+uint8_t ICM20948_GYRO_DLPF_enable(ICM20948* icm)
+uint8_t ICM20948_GYRO_DLPF_disable(ICM20948* icm)
+```
+Enables/Disables Gyro Digital Low Pass Filter.  
+<br>
+
+```c
+GYRO_DLPF ICM20948_get_GYRO_DLPFCFG(ICM20948* icm )
+uint8_t ICM20948_set_GYRO_DLPFCFG(ICM20948* icm, GYRO_DLPF dlpf_sel)
+```
+Gets/Sets Gyro Digital Low Pass Filter
+<br>
+
+
+##### Averaging Filter <a id="gyro-avgf"></a>
+```c
+uint8_t ICM20948_set_GYRO_AVG_FILTER_CFG(ICM20948* icm, GYRO_AVG_FILTER avg_filter)
+```
+Average Filter Config applies averaging to gyroscope data, smoothing out short-term fluctuations and noise. This feature improves the stability and accuracy of the gyroscope readings, especially when measuring slow or gradual movements.
+<br>
+
+
+#### Data Output <a id="gyro-data"></a>
+<br>
+
+##### Bias <a id="gyro-bias"></a>
+```c
+uint8_t ICM20948_set_GYRO_X_BIAS(ICM20948* icm, int16_t bias)
+uint8_t ICM20948_set_GYRO_Y_BIAS(ICM20948* icm, int16_t bias)
+uint8_t ICM20948_set_GYRO_Z_BIAS(ICM20948* icm, int16_t bias)
+```
+Sets physical bias for gyro readings.  
+Meaning, the bias is applied by the sensor itself, no nned to do it in software.  
+<br>
+
+```c
+uint8_t ICM20948_GYRO_BIAS_CONFIGURE(ICM20948* icm, int16_t samples)
+```
+Function reads Gyro data for number defined by ***sample*** value and sets Gyro Bias using functions above.  
+<br>
+
 
 ```c
 int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
 int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
 int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);
 ```
+Reads and returns Gyro Raw Data from registers.  
+<br>
 
 ```c
-float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw)
+float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw);
 ```
+Converts raw data from Gyro to Degrees Per Second [dps]
+<br>
+
+
 ```c
-
+uint8_t ICM20948_set_GYRO_SAMPLE_RATE_DIV(ICM20948* icm, uint8_t sample_rate)
+uint8_t ICM20948_get_GYRO_SAMPLE_RATE_DIV(ICM20948* icm)
 ```
+Gets/Sets Sample Rate for Gyro sensor.
+<br>
+
+
 ```c
-
+float ICM20948_get_GYRO_ODR_kHz(ICM20948* icm)
 ```
+Returns Gyro Output Data Rate in kHz.  
+<br>
 
-
-### Temperature Sensor
 
 
 ### Acceleration Sensor
 
+### Temperature Sensor
+
+
+
+<!-- 
 ### DMP
 
 ### FIFO
@@ -253,9 +337,9 @@ float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw)
 
 ### I2C Master
 
-### FSYNC
 
 ### Wake On Motion
+ -->
 
 ### Interrupts
 
