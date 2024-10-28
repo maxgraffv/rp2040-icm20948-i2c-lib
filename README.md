@@ -199,9 +199,9 @@ typedef enum{
 
 
 ### Gyro Sensor
-- [Init()](#init-gyro-init)
-- [Configuration](#configuration-gyro-config)
-#### Init() {#gyro-init}
+- [Init()](#gyro-init)
+- [Configuration](#gyro-config)
+#### Init() <a id="gyro-init" ></a>
 ```c
 uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs, uint8_t sample_rate, uint16_t sample_num)
 ```
@@ -215,7 +215,7 @@ Takes arguments as shown above, and performs the following:
 - **get_GYRO_ODR_kHZ()** - reads ODR register value, calculates and sets **ICM's** ***gyro_data_s*** value based on it  
 
 
-#### Configuration {#gyro-config}
+#### Configuration <a id="gyro-config"></a>
 ```c
 uint8_t ICM20948_GYRO_enable(ICM20948* icm);
 uint8_t ICM20948_GYRO_disable(ICM20948* icm);
