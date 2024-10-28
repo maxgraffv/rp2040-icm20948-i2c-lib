@@ -174,7 +174,8 @@ Reduces Gyro power consumption, periodically powering down and waking it up.
 Requires further configuration, not yet implemented.  
 <br>
 
-<u>IMPORTANT</u>
+**IMPORTANT**
+<br>
 Although those are fully functional.  
 ICM needs further configuration for working in LP Mode.  
 Which has not been implemented by this library, at the moment.  
