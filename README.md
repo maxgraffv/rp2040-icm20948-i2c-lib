@@ -20,8 +20,11 @@ missing features listed [here](#to-be-dealt-with)
 - [SleepMode](#sleepmode)
 - [Low Power Mode](#low-power-mode)
 - [Clock Source](#clock-source)
-
 - [Gyro Sensor](#gyro-sensor)
+- [Acceleration Sensor](#acceleration-sensor)
+- [Temperature Sensor](#temperature-sensor)
+- [Interrupts](#interrupts)
+- [Register Custom Control](#register-readwrite)
 
 ### General Overview
 - [ICM20948 Struct](#icm20948-struct)
