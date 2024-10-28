@@ -340,7 +340,49 @@ Returns Gyro Output Data Rate in kHz.
 ### Acceleration Sensor
 
 ### Temperature Sensor
+```c
+uint8_t ICM20948_Temp_enable(ICM20948* icm)
+uint8_t ICM20948_Temp_disable(ICM20948* icm)
+```
+Enables/Disables Temperature Sensor
+<br>
+<br>
 
+```c
+uint8_t ICM20948_isTemp(ICM20948* icm)
+```
+Checks if Temp Sensor is enabled  
+Returns 1 if enabled, 0 if disabled  
+<br>
+<br>
+
+```c
+uint8_t ICM20948_set_TEMP_DLPFCFG(ICM20948* icm, TEMP_DLPF dlpf)
+```
+Sets Temp Sensor's Digital Low Pass Filter.  
+<br>
+<br>
+
+
+```c
+uint8_t ICM20948_TEMP_Init(ICM20948* icm, TEMP_DLPF dlpf)
+```
+Initiates Temp Sensor.  
+Performs:
+- Temp_enable()
+- Set_Temp_DLPF()
+<br>
+<br>
+
+```c
+float ICM20948_get_TEMP_C(ICM20948* icm)
+```
+Returns temperature in Celsius.  
+***Disclaimer***  
+It's the sensors temperature, not environment temperature.  
+The readings may get higher, the harder the sensor works.  
+<br>
+<br>
 
 
 <!-- 
@@ -351,6 +393,7 @@ Returns Gyro Output Data Rate in kHz.
 ### SPI Mode
 
 ### SRAM
+uint8_t ICM20948_SRAM_reset(ICM20948* icm)
 
 ### I2C Master
 
@@ -359,6 +402,22 @@ Returns Gyro Output Data Rate in kHz.
  -->
 
 ### Interrupts
+```c
+uint8_t ICM20948_RAW_DATA_RDY_INT_enable(ICM20948* icm)
+uint8_t ICM20948_RAW_DATA_RDY_INT_disable(ICM20948* icm)
+```
+Enables/Disables Interrupt to Pin 1, when "fresh" data is ready to be read.  
+<br>
+<br>
+
+```c
+uint8_t ICM20948_get_RAW_DATA_RDY_INT_status(ICM20948* icm)
+```
+Returns Raw Data Ready Interrupt status.  
+Returns 1 if data ready, 0 if data is not ready.  
+<br>
+<br>
+
 
 
 
