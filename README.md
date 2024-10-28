@@ -83,6 +83,7 @@ When in Sleep Mode - sensor does not perform any action. (Not to be confused wit
 Whereas **isSleepMode** checks sleepMode and returns 1 if SleepMode is enabled and 0 when disabled  
 
 
+### Gyro Sensor
 ### GYRO_Init()
 ```c
 uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs, uint8_t sample_rate, uint16_t sample_num)
@@ -98,11 +99,45 @@ Takes arguments as shown above, and performs the following:
 
 
 
+### General
+
+#### read_data()
+
+#### reset()
+
+#### ODR_align()
+
+### Low Power Mode
+
+### Temperature Sensor
+
+### Clock Source
+
+
+### Acceleration Sensor
+
+### DMP
+
+### FIFO
+
+### SPI Mode
+
+### SRAM
+
+### I2C Master
+
+### FSYNC
+
+### Wake On Motion
+
+### Interrupts
+
+### 
 
 
 
 
-
+### Register read/write
 
 
 
@@ -199,7 +234,7 @@ GYRO: x 1.587118; y 14.270452; z -355.719299;            ACCEL: x 0.071045; y -0
 Many ICM20948 features available have not been implemented, mostly because of no need to do so and a short timeline for completing this project.  
 To be completed in near future:  ~~hopefully~~  
 
-- [ ] Low Power Mode - although some functions declared; No Implementations as of this time
+- [ ] Low Power Mode - only enable/disable functions; no configuration available
 - [ ] Lacks ICM as I2C Master Functionality
 - [ ] Accelerometer Bias gives weird values; hence ACCEL_set_BIAS() commented out
 - [ ] No Interrupt Pin Configuration functionality, besides Raw Data Rady Interrupt
