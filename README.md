@@ -9,19 +9,30 @@ missing features listed [here](#to-be-dealt-with)
 
 
 ## Table of Content
-- [Functions](#Functions)
-- [Example](#Example)
+- [Features](#features)
+- [Simple Code Example](#Example)
 - [To Be Dealt With](#to-be-dealt-with)
 
 
-## Functions
+### Features
+- [General Overview](#general)
+- [Data Rate Alignment](#data-rate-alignment)
+- [SleepMode](#sleepmode)
+- [Low Power Mode](#low-power-mode)
+- [Clock Source](#clock-source)
+
+- [Gyro Sensor](#gyro-sensor)
+
+### General Overview
 - [ICM20948 Struct](#icm20948-struct)
 - [createICM()](#createicm)
 - [Init()](#init)
-- [SleepMode](#sleepmode)
-- [GYRO_Init()](#gyro_init)
+- [Who Am I](#who-am-i)
+- [Reset()](#reset)
+- [Read Data](#read_data)
 
-### ICM20948 Struct
+
+#### ICM20948 Struct
 ```c
 typedef struct
 {
@@ -50,7 +61,7 @@ typedef struct
 - **temp** calculated and set by ICM20948_read_data(), provides current sensor temperature;
 
 
-### createICM()
+#### createICM()
 ```c
 ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
 ```
@@ -59,7 +70,7 @@ ICM20948* createICM20948( i2c_inst_t* i2c_chosen_ptr, uint8_t addr_pin_high );
 - needs pico-sdk i2c_inst_t pointer and integer for whether physical address pin is high or low (1 or 0)
 - implements who_am_i_check() to make sure that the sensor connected is valid
 
-### Init()
+#### Init()
 ```c
 uint8_t ICM20948_Init(ICM20948* icm);
 ```
@@ -72,19 +83,125 @@ uint8_t ICM20948_Init(ICM20948* icm);
 - ACCEL_Init() - Initiating Accelerometer with default values; To be configured by a user;
 - TEMP_Init() - Initiating Temperature sensor with default values; To be configured by a user;
 
+#### Who Am I
+Who_Am_I value, stored in a Bank 0, in Register WHO_AM_I at address 0x00.  
+ICM20948's valid Who_Am_I value is 0xEA or 234 in decimal.  
+
+```c
+uint8_t ICM20948_get_who_am_i(ICM20948* icm);
+```
+Function returns read Who_Am_I value. Should be 0xEA.  
+
+```c
+uint8_t ICM20948_who_am_i_check(ICM20948* icm);
+```
+Function returns *** 1 *** if the Who_Am_I value is valid for ICM20948.   
+Returns *** 0 *** if not valid. As if the device is not recognized as ICM20948.  
+
+
+#### reset()
+```c
+uint8_t ICM20948_reset(ICM20948* icm);
+```
+Resets every register value to a default.  
+Implements 10 milisecond sleep/delay for RP2040, so the sensor can initialize every register.  
+Otherwise other functions occuring immediately after restart may not be performed and even end up in a stall.   
+It's possible to lower the delay, for a user to play around with.  
+
+#### read_data()
+```c
+uint8_t ICM20948_read_data(ICM20948* icm)
+```
+Acts as a "data update". Updating values held in a allocated icm struct with fresh ones.  
+***Doesn't return the data***
+Use icm pointers to read.  
+
+
+
+### Data Rate Alignment
+```c
+uint8_t ICM20948_ODR_ALIGN_enable(ICM20948* icm);
+uint8_t ICM20948_ODR_ALIGN_disable(ICM20948* icm);
+```
+Enables/Disables Output Data Rate Alignment.  
+It Aligns the data rate of used sensors, so that they produce "fresh" data, at the same time.  
+Recommended to be enabled.  
+
+
 ### SleepMode
 ```c
 uint8_t ICM20948_SleepMode_enable(ICM20948* icm);
 uint8_t ICM20948_SleepMode_disable(ICM20948* icm);
-uint8_t ICM20948_isSleepMode(ICM20948* icm);
 ```
+uint8_t ICM20948_isSleepMode(ICM20948* icm);
 When in Sleep Mode - sensor does not perform any action. (Not to be confused with Low Power Mode)  
 **Enable/Disable** functions do as described, enable and disable SleepMode  
-Whereas **isSleepMode** checks sleepMode and returns 1 if SleepMode is enabled and 0 when disabled  
+
+```c
+uint8_t ICM20948_isSleepMode(ICM20948* icm)
+```
+**isSleepMode** checks sleepMode and returns 1 if SleepMode is enabled and 0 when disabled.  
+
+
+
+### Low Power Mode
+```c
+uint8_t ICM20948_LowPowerMode_enable(ICM20948* icm);
+uint8_t ICM20948_LowPowerMode_disable(ICM20948* icm);
+```
+Enables/Disables Low Power Mode.  
+
+```c
+uint8_t ICM20948_isLowPowerpMode(ICM20948* icm)
+```
+Checks for Low Power Mode status.  
+Returns 1 if enabled, 0 if disabled.  
+
+***___ IMPORTANT ___***
+Although those are fully functional.  
+ICM needs further configuration for working in LP Mode.  
+Which has not been implemented by this library, at the moment.  
+Recommended to be disabled, until further update.  
+See [TBDW](#to-be-dealt-with).  
+
+
+
+### Clock Source
+```c
+uint8_t ICM20948_set_CLOCK_SRC(ICM20948* icm, CLOCK_SRC clk_src);
+```
+Sets Clock Source for the sensor.  
+Recommended to be set to *** CLOCK_SRC_Auto_Sel_1 *** as per Invensense Official Documentation.  
+
+```c
+CLOCK_SRC ICM20948_get_CLOCK_SRC(ICM20948* icm)
+```
+Returns current clock source selected.  
+
+*** Possible values defined in a following enum ***
+```c
+typedef enum{
+    CLOCK_SRC_Internal_20MHz = 0,
+    CLOCK_SRC_Auto_Sel_1 = 1,
+    CLOCK_SRC_Auto_Sel_2 = 2,
+    CLOCK_SRC_Auto_Sel_3 = 3,
+    CLOCK_SRC_Auto_Sel_4 = 4,
+    CLOCK_SRC_Auto_Sel_5 = 5,
+    // CLOCK_SRC_Internal_20MHz = 6, SAME as option = 0
+    CLOCK_SRC_STOP = 7
+} CLOCK_SRC;
+
+```
+
+
+
+
 
 
 ### Gyro Sensor
-### GYRO_Init()
+- [Init()](#init-gyro-init)
+- [Configuration](#configuration-gyro-config)
+#### Init() {#gyro-init}
 ```c
 uint8_t ICM20948_GYRO_Init(ICM20948* icm, GYRO_DLPF dlpf, GYRO_FS fs, uint8_t sample_rate, uint16_t sample_num)
 ```
@@ -98,20 +215,30 @@ Takes arguments as shown above, and performs the following:
 - **get_GYRO_ODR_kHZ()** - reads ODR register value, calculates and sets **ICM's** ***gyro_data_s*** value based on it  
 
 
+#### Configuration {#gyro-config}
+```c
+uint8_t ICM20948_GYRO_enable(ICM20948* icm);
+uint8_t ICM20948_GYRO_disable(ICM20948* icm);
+```
 
-### General
+```c
+int16_t ICM20948_get_GYRO_X_raw(ICM20948* icm);
+int16_t ICM20948_get_GYRO_Y_raw(ICM20948* icm);
+int16_t ICM20948_get_GYRO_Z_raw(ICM20948* icm);
+```
 
-#### read_data()
+```c
+float ICM20948_GYRO_raw_to_dps(ICM20948* icm, int16_t gyro_raw)
+```
+```c
 
-#### reset()
+```
+```c
 
-#### ODR_align()
+```
 
-### Low Power Mode
 
 ### Temperature Sensor
-
-### Clock Source
 
 
 ### Acceleration Sensor
@@ -132,13 +259,31 @@ Takes arguments as shown above, and performs the following:
 
 ### Interrupts
 
-### 
-
-
 
 
 ### Register read/write
+For people looking to expand on the exisitng library.  
+Few functions for "moving around the sensor" have been provided.
 
+```c
+uint8_t ICM20948_selectBank( ICM20948* icm, UserBank bank )
+```
+As ICM's registers are devided into 4 Banks, a user needs to select one to write or read data from.  
+Hence this function is provided.  
+
+
+```c
+uint8_t ICM20948_get_register(ICM20948* icm, UserBank bank, uint8_t reg_addr);
+uint8_t ICM20948_set_register(ICM20948* icm, UserBank bank, uint8_t reg_addr, uint8_t value);
+```
+For reading or writing values to certain registers.  
+Already implements ***selectBank*** function.  
+
+```c
+uint16_t ICM20948_get_register_16b(ICM20948* icm, UserBank bank, uint8_t reg_addr_H, uint8_t reg_addr_L)
+```
+Reads data from two 8bit registers and returns the value as 16bit value.  
+Mostly used for reading GYRO, ACCEL and TEMP data, as they're spread across two registers.  
 
 
 
@@ -243,6 +388,7 @@ To be completed in near future:  ~~hopefully~~
 - [ ] No Accel and Gyro self-test functionality
 - [ ] No magnetometer functionality, needs ICM as I2C Master Operating
 - [ ] Error Handling - at the moment functions return 1 as default
+- [ ] Infinity Loops - when reading data based on INT status
 
 ***DISCLAIMER***
 Most of functions performing those features have been declared, few have been defined, but are **not advised** to be used by an unexperienced user, as the're not fully functioning.
